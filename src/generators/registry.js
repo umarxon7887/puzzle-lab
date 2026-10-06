@@ -1,5 +1,6 @@
 import * as Code from './code/ui.js';
 import * as Maze from './maze/ui.js';
+import * as Sudoku from './sudoku/ui.js';
 
 export const GENERATORS = [
   {
@@ -19,6 +20,15 @@ export const GENERATORS = [
     coverGradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     init: Code.init,
     exportPDF: Code.exportPDF
+  },
+  {
+    id: 'sudoku',
+    nameKey: 'tabSudoku',
+    descriptionKey: 'sudokuDesc',
+    cover: '🔢',
+    coverGradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    init: Sudoku.init,
+    exportPDF: Sudoku.exportPDF
   }
 ];
 
