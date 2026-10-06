@@ -1,6 +1,7 @@
 import * as Code from './code/ui.js';
 import * as Maze from './maze/ui.js';
 import * as Sudoku from './sudoku/ui.js';
+import * as Words from './wordsearch/ui.js';
 
 export const GENERATORS = [
   {
@@ -25,10 +26,19 @@ export const GENERATORS = [
     id: 'sudoku',
     nameKey: 'tabSudoku',
     descriptionKey: 'sudokuDesc',
-    cover: '🔢',
+    cover: '',
     coverGradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     init: Sudoku.init,
     exportPDF: Sudoku.exportPDF
+  },
+  {
+    id: 'words',
+    nameKey: 'tabWords',
+    descriptionKey: 'wordsDesc',
+    cover: '🔍',
+    coverGradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    init: Words.init,
+    exportPDF: Words.exportPDF
   }
 ];
 

@@ -7,20 +7,20 @@ export const translations = {
     tabCode: "Kodni top",
     tabMaze: "Labirint",
     tabSudoku: "Sudoku",
+    tabWords: "So'z qidiruv",
     codeDesc: "Ipuclardan foydalanib, mantiqiy kodni toping",
     mazeDesc: "Qahramonga uyiga yo'l topishga yordam beradigan labirint yarating",
     sudokuDesc: "Klassik, diagonal va shaklli (jigsaw) sudoku topshiriqlari",
+    wordsDesc: "Jadvaldan yashirilgan so'zlarni toping - 6 ta mavzu",
     
-    // Common UI
     settingsBtn: "⚙️ Sozlamalar",
-    pdfBtn: "📄 PDF yuklash",
+    pdfBtn: "📄 PDF",
     pdfTask: "Topshiriq PDF",
     pdfAnswer: "Javob varag'i PDF",
     settingsTitle: "Sozlamalar",
     save: "Saqlash",
     cancel: "Bekor qilish",
     
-    // Code Breaker
     codeGameTitle: "🔐 KODNI TOPING!",
     codeGameDesc: "Quyidagi ipuclardan foydalanib, maxfiy kodni toping.",
     codeLengthLabel: "Kod uzunligi",
@@ -34,7 +34,6 @@ export const translations = {
     wrongAnswer: "❌ Noto'g'ri. Qaytadan urinib ko'ring.",
     includeAnswer: "Javobni PDF'ga qo'shish",
     
-    // Maze
     mazeTitleLabel: "Topshiriq matni",
     fsLabel: "Matn o'lchami:",
     width: "Eni", height: "Bo'yi", seed: "Raqami",
@@ -43,14 +42,21 @@ export const translations = {
     newMaze: "Yangi labirint",
     mazeDefTitle: "Qahramonga uyiga yo'l topishga yordam ber!",
     
-    // Sudoku
     sudokuTypeLabel: "Sudoku turi",
     sudokuLevelLabel: "Daraja",
     sudokuSeedLabel: "Raqami (Seed)",
     sudokuDefTitle: "Sudoku'ni yech!",
     sudokuRule: (N, jig, diag) => `Har bir qator, ustun va ${jig ? 'qalin chiziq bilan chegaralangan shaklda' : 'qalin chiziqli katakchada'} 1 dan ${N} gacha raqamlar takrorlanmasin.` + (diag ? ' Ikkala diagonalda ham.' : ''),
     typeNames: {'4':'4×4 (2×2)', '5':'5×5 (Shaklli)', '6':'6×6 (2×3)', '7':'7×7 (Shaklli)', '8':'8×8 (2×4)', '9':'9×9 (Klassik)', '9x':'9×9 (Diagonal)'},
-    levelNames: ["Oson", "O'rta", "Qiyin", "Juda qiyin"]
+    levelNames: ["Oson", "O'rta", "Qiyin", "Juda qiyin"],
+    
+    wordsCategoryLabel: "Mavzu",
+    wordsLevelLabel: "Daraja",
+    wordsSeedLabel: "Raqami (Seed)",
+    wordsDefTitle: "So'z qidiruv",
+    wordsInstruction: "Jadvaldan quyidagi so'zlarni toping. So'zlar gorizontal, vertikal va diagonal yo'nalishda yashirilgan.",
+    catNames: {school:'Maktab', autumn:'Kuz', animals:'Hayvonlar', food:'Ovqatlar', sport:'Sport', space:'Fazo'},
+    wordsLevelNames: ["Oson (2 yo'nalish)", "O'rta (4 yo'nalish)", "Qiyin (6 yo'nalish)", "Juda qiyin (8 yo'nalish)"]
   },
   ru: {
     title: "Лаборатория головоломок",
@@ -60,19 +66,21 @@ export const translations = {
     tabCode: "Угадай код",
     tabMaze: "Лабиринт",
     tabSudoku: "Судоку",
+    tabWords: "Найди слова",
     codeDesc: "Найдите код с помощью логических подсказок",
     mazeDesc: "Создайте лабиринт, чтобы помочь герою найти дорогу домой",
     sudokuDesc: "Классические, диагональные и фигурные судоку",
+    wordsDesc: "Найдите спрятанные слова в таблице - 6 тем",
     
-    settingsBtn: "⚙️ Настройки",
-    pdfBtn: "📄 Скачать PDF",
+    settingsBtn: "️ Настройки",
+    pdfBtn: " PDF",
     pdfTask: "Задание PDF",
     pdfAnswer: "Ответ PDF",
     settingsTitle: "Настройки",
     save: "Сохранить",
     cancel: "Отмена",
     
-    codeGameTitle: "🔐 УГАДАЙТЕ КОД!",
+    codeGameTitle: " УГАДАЙТЕ КОД!",
     codeGameDesc: "Используйте подсказки ниже, чтобы найти секретный код.",
     codeLengthLabel: "Длина кода",
     digits: "значный",
@@ -99,7 +107,15 @@ export const translations = {
     sudokuDefTitle: "Реши судоку!",
     sudokuRule: (N, jig, diag) => `В каждой строке, столбце и ${jig ? 'фигуре с жирной границей' : 'блоке с жирной границей'} цифры от 1 до ${N} не должны повторяться.` + (diag ? ' То же правило для обеих диагоналей.' : ''),
     typeNames: {'4':'4×4 (2×2)', '5':'5×5 (Фигурное)', '6':'6×6 (2×3)', '7':'7×7 (Фигурное)', '8':'8×8 (2×4)', '9':'9×9 (Классика)', '9x':'9×9 (Диагональ)'},
-    levelNames: ["Легко", "Средне", "Сложно", "Очень сложно"]
+    levelNames: ["Легко", "Средне", "Сложно", "Очень сложно"],
+    
+    wordsCategoryLabel: "Тема",
+    wordsLevelLabel: "Сложность",
+    wordsSeedLabel: "Номер (Seed)",
+    wordsDefTitle: "Найди слова",
+    wordsInstruction: "Найдите следующие слова в таблице. Слова спрятаны по горизонтали, вертикали и диагонали.",
+    catNames: {school:'Школа', autumn:'Осень', animals:'Животные', food:'Еда', sport:'Спорт', space:'Космос'},
+    wordsLevelNames: ["Легко (2 направления)", "Средне (4 направления)", "Сложно (6 направлений)", "Очень сложно (8 направлений)"]
   },
   en: {
     title: "Puzzle Lab",
@@ -109,12 +125,14 @@ export const translations = {
     tabCode: "Code Breaker",
     tabMaze: "Maze",
     tabSudoku: "Sudoku",
+    tabWords: "Word Search",
     codeDesc: "Find the code using logical clues",
     mazeDesc: "Create a maze to help the hero find the way home",
     sudokuDesc: "Classic, diagonal, and jigsaw sudoku puzzles",
+    wordsDesc: "Find hidden words in the grid - 6 themes",
     
     settingsBtn: "⚙️ Settings",
-    pdfBtn: "📄 Download PDF",
+    pdfBtn: "📄 PDF",
     pdfTask: "Task PDF",
     pdfAnswer: "Answer PDF",
     settingsTitle: "Settings",
@@ -127,7 +145,7 @@ export const translations = {
     digits: "digits",
     yourAnswer: "ANSWER:",
     checkAnswer: "Check",
-    newGameBtn: "🔄 New",
+    newGameBtn: " New",
     revealAnswer: "Reveal Answer",
     enterAllDigits: "Enter all digits!",
     correctAnswer: "🎉 Correct! You cracked the code!",
@@ -148,7 +166,15 @@ export const translations = {
     sudokuDefTitle: "Solve the Sudoku!",
     sudokuRule: (N, jig, diag) => `In each row, column, and ${jig ? 'jigsaw region' : 'bold-bordered box'}, digits 1 to ${N} must not repeat.` + (diag ? ' Same rule for both diagonals.' : ''),
     typeNames: {'4':'4×4 (2×2)', '5':'5×5 (Jigsaw)', '6':'6×6 (2×3)', '7':'7×7 (Jigsaw)', '8':'8×8 (2×4)', '9':'9×9 (Classic)', '9x':'9×9 (Diagonal)'},
-    levelNames: ["Easy", "Medium", "Hard", "Expert"]
+    levelNames: ["Easy", "Medium", "Hard", "Expert"],
+    
+    wordsCategoryLabel: "Category",
+    wordsLevelLabel: "Difficulty",
+    wordsSeedLabel: "Seed Number",
+    wordsDefTitle: "Word Search",
+    wordsInstruction: "Find the following words in the grid. Words are hidden horizontally, vertically, and diagonally.",
+    catNames: {school:'School', autumn:'Autumn', animals:'Animals', food:'Food', sport:'Sport', space:'Space'},
+    wordsLevelNames: ["Easy (2 directions)", "Medium (4 directions)", "Hard (6 directions)", "Expert (8 directions)"]
   }
 };
 
