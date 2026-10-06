@@ -70,3 +70,74 @@ button.primary {
   background: var(--primary);
   color: white;
 }
+
+/* Code Generator uchun maxsus stillar */
+.code-display {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+.code-box {
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 800;
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.code-box.hidden {
+  background: var(--primary);
+  color: #fff;
+}
+.code-box.correct {
+  background: #10B981;
+  border-color: #10B981;
+  color: #fff;
+}
+.guess-input {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.guess-input input {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+.guess-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+.attempt-item {
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+.attempt-guess {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.clue {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.clue.correct { background: #D1FAE5; color: #065F46; }
+.clue.wrong-place { background: #FEF3C7; color: #92400E; }
+.clue.wrong { background: #FEE2E2; color: #991B1B; }
