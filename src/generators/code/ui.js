@@ -346,8 +346,8 @@ function drawPdfSheet(canvas, k, withAnswer) {
   ctx.fillText(ansTitle, W/2, y);
   y += 10 * k;
 
-  const boxSize = 40 * k;
-  const boxGap = 12 * k;
+  const boxSize = 50 * k;
+  const boxGap = 15 * k;
   const totalW = state.codeLength * boxSize + (state.codeLength - 1) * boxGap;
   const startX = (W - totalW) / 2;
 

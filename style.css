@@ -1022,3 +1022,26 @@ button.primary:hover {
   border-color: #10B981;
   color: #065F46;
 }
+
+/* ===== MOBIL UCHUN ACTION BAR (Tugmalar sig'maganda pastga tushadi) ===== */
+@media (max-width: 600px) {
+  .action-bar {
+    flex-wrap: wrap;
+  }
+  .action-bar #checkAnswerBtn, 
+  .action-bar #mNew {
+    flex: 1 1 100%; /* Asosiy tugma to'liq kenglikni egallaydi */
+    margin-bottom: 8px;
+  }
+  .action-bar #newGameBtn,
+  .action-bar #settingsBtn,
+  .action-bar .dropdown-container {
+    flex: 1; /* Qolgan tugmalar teng bo'linadi */
+  }
+  .dropdown-container {
+    min-width: 120px;
+  }
+}
+
+/* ===== PDF KATAKCHALARINI KATTALASHTIRISH (Canvas ichida) ===== */
+/* Bu CSS emas, lekin Canvas kodida boxSize 50mm ga o'zgartiriladi */
