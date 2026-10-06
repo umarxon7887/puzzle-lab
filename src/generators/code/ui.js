@@ -4,20 +4,13 @@ import { makePdf, downloadPdf } from '../../core/pdf.js';
 import { renderActionBar } from '../../components/ActionBar.js';
 
 let state = {
-  codeLength: 3,
-  secretCode: [],
-  clues: [],
-  userAnswer: [],
-  showSettings: false,
-  includeAnswerInPdf: false
+  codeLength: 3, secretCode: [], clues: [], userAnswer: [],
+  showSettings: false, includeAnswerInPdf: false
 };
 
 const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
 
-export function init(container) {
-  startNewGame();
-  render(container);
-}
+export function init(container) { startNewGame(); render(container); }
 
 function startNewGame() {
   state.secretCode = generateSecretCode(state.codeLength);
@@ -47,9 +40,7 @@ function render(container) {
           </div>
         `).join('')}
       </div>
-      <div style="text-align:center; font-weight:800; font-size:16px; color:var(--text); margin-bottom:12px;">
-        ${t('yourAnswer')}
-      </div>
+      <div style="text-align:center; font-weight:800; font-size:16px; color:var(--text); margin-bottom:12px;">${t('yourAnswer')}</div>
       <div class="answer-input" id="answerInput">${inputsHtml}</div>
     </div>
   `;
@@ -62,10 +53,7 @@ function render(container) {
     onPdfTask: () => exportPdf(false),
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
-    i18n: {
-      new: t('newGameBtn'), pdf: 'PDF', pdfTask: t('pdfTask'),
-      pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar'
-    }
+    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar' }
   });
 
   attachInputEvents(container);
@@ -97,9 +85,7 @@ function attachInputEvents(container) {
     const input = container.querySelector(`#ans${i}`);
     input.addEventListener('input', (e) => {
       state.userAnswer[i] = e.target.value;
-      if (e.target.value.length === 1 && i < state.codeLength - 1) {
-        container.querySelector(`#ans${i+1}`).focus();
-      }
+      if (e.target.value.length === 1 && i < state.codeLength - 1) container.querySelector(`#ans${i+1}`).focus();
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -134,9 +120,7 @@ function renderSettingsModal(container) {
       </div>
     </div>
   `;
-  container.querySelector('#modalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }
-  });
+  container.querySelector('#modalOverlay').addEventListener('click', (e) => { if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }});
   container.querySelector('#cancelSettingsBtn').addEventListener('click', () => { state.showSettings = false; render(container); });
   container.querySelector('#saveSettingsBtn').addEventListener('click', () => {
     state.codeLength = parseInt(container.querySelector('#settingsLength').value);
@@ -214,7 +198,7 @@ function drawPdfSheet(canvas, k, withAnswer) {
     if (clue.correctPlace > 0 && clue.wrongPlace === 0) { ctx.fillStyle = '#000000'; ctx.fillText('✓', iconX, iconY + 1*k); }
     else if (clue.correctPlace === 0 && clue.wrongPlace > 0) { ctx.fillStyle = '#000000'; ctx.fillText('↻', iconX, iconY + 1*k); }
     else if (clue.correctPlace === 0 && clue.wrongPlace === 0) { ctx.fillStyle = '#000000'; ctx.fillText('✕', iconX, iconY + 1*k); }
-    else { ctx.fillStyle = '#000000'; ctx.fillText('', iconX, iconY + 1*k); }
+    else { ctx.fillStyle = '#000000'; ctx.fillText('↻', iconX, iconY + 1*k); }
     y += clueH + clueGap;
   });
   y += 20 * k;

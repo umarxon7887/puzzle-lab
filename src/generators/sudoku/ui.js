@@ -10,10 +10,7 @@ let state = {
 
 const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
 
-function getSudokusPerPage(type) {
-  const N = TYPES[type].N;
-  return N <= 6 ? 4 : 2;
-}
+function getSudokusPerPage(type) { return TYPES[type].N <= 6 ? 4 : 2; }
 
 export function init(container) {
   state.seed = Math.floor(Math.random()*1e9)+1;
@@ -51,10 +48,7 @@ function render(container) {
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
     onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
-    i18n: {
-      new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'),
-      settings: 'Sozlamalar', showAnswer: 'Javobni ko\'rish', hideAnswer: 'Javobni yashirish'
-    }
+    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko\'rish', hideAnswer: 'Javobni yashirish' }
   });
   draw(container);
 }
@@ -72,13 +66,13 @@ function renderSettingsModal(container) {
           </select>
         </label>
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('sudokuLevelLabel')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📈 ${t('sudokuLevelLabel')}</span>
           <select id="setLevel" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
             ${t('levelNames').map((name, i) => `<option value="${i}" ${state.level === i ? 'selected' : ''}>${name}</option>`).join('')}
           </select>
         </label>
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">🔢 ${t('sudokuSeedLabel')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('sudokuSeedLabel')}</span>
           <input type="number" id="setSeed" min="1" value="${state.seed}" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
         </label>
         <div class="modal-actions">

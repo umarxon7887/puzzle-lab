@@ -19,23 +19,38 @@ export function renderActionBar(container, options) {
 
   const bar = document.createElement('div');
   bar.className = 'action-bar-container';
+  
+  let iconBarHTML = '';
+  
+  if (showNew) {
+    iconBarHTML += `<button class="icon-btn" id="newBtn" data-tooltip="${i18n.new}" title="${i18n.new}" aria-label="${i18n.new}">${Icons.refresh}</button>`;
+  }
+  
+  if (showPdf) {
+    iconBarHTML += `
+      <div style="position:relative;">
+        <button class="icon-btn" id="pdfBtn" data-tooltip="${i18n.pdf}" title="${i18n.pdf}" aria-label="${i18n.pdf}">${Icons.fileDown}</button>
+        <div class="pdf-popover" id="pdfPopover">
+          <button id="pdfTaskBtn">${Icons.fileDown} ${i18n.pdfTask}</button>
+          <button id="pdfAnswerBtn">${Icons.check} ${i18n.pdfAnswer}</button>
+        </div>
+      </div>
+    `;
+  }
+  
+  if (showAnswer) {
+    iconBarHTML += `<button class="icon-btn" id="answerBtn" data-tooltip="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}" title="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}" aria-label="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}">${answerVisible ? Icons.eyeOff : Icons.eye}</button>`;
+  }
+  
+  if (showSettings) {
+    iconBarHTML += `<button class="icon-btn" id="settingsBtn" data-tooltip="${i18n.settings}" title="${i18n.settings}" aria-label="${i18n.settings}">${Icons.settings}</button>`;
+  }
+  
   bar.innerHTML = `
     <button class="primary-action" id="primaryBtn">${primaryText}</button>
-    <div class="icon-bar" id="iconBar">
-      ${showNew ? `<button class="icon-btn" id="newBtn" data-tooltip="${i18n.new}" title="${i18n.new}" aria-label="${i18n.new}">${Icons.refresh}</button>` : ''}
-      ${showPdf ? `
-        <div style="position:relative;">
-          <button class="icon-btn" id="pdfBtn" data-tooltip="${i18n.pdf}" title="${i18n.pdf}" aria-label="${i18n.pdf}">${Icons.fileDown}</button>
-          <div class="pdf-popover" id="pdfPopover">
-            <button id="pdfTaskBtn">${Icons.fileDown} ${i18n.pdfTask}</button>
-            <button id="pdfAnswerBtn">${Icons.check} ${i18n.pdfAnswer}</button>
-          </div>
-        </div>
-      ` : ''}
-      ${showAnswer ? `<button class="icon-btn" id="answerBtn" data-tooltip="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}" title="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}" aria-label="${answerVisible ? i18n.hideAnswer : i18n.showAnswer}">${answerVisible ? Icons.eyeOff : Icons.eye}</button>` : ''}
-      ${showSettings ? `<button class="icon-btn" id="settingsBtn" data-tooltip="${i18n.settings}" title="${i18n.settings}" aria-label="${i18n.settings}">${Icons.settings}</button>` : ''}
-    </div>
+    <div class="icon-bar" id="iconBar">${iconBarHTML}</div>
   `;
+  
   container.appendChild(bar);
 
   document.getElementById('primaryBtn').addEventListener('click', primaryAction);
