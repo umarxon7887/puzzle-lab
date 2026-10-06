@@ -1,9 +1,16 @@
 import { makeRng } from '../../core/utils.js';
 
 export const DIRS = [[0,-1],[1,0],[0,1],[-1,0]];
-export const HEROES = ['🦸','🧒','👧','🐱','🐶','🐰','🦊','🐻','🐼','🐸','🤖','🚀'];
-export const GOALS  = ['🏁','🏠','🏰','🍎','🍯','🥕','🎁','⭐','🌳','🦴','🧀','🍦'];
-export const LEVELS = [[10,14],[20,28],[35,49],[60,85]];
+export const HEROES = ['🦸','🧒','','🐱','🐶','','🦊','🐻','','🐸','🤖',''];
+export const GOALS  = ['🏁','🏠','🏰','🍎','🍯','🥕','🎁','⭐','🌳','','🧀','🍦'];
+
+// YANGILANGAN: Bolalar uchun qulay o'lchamlar
+export const LEVELS = [
+  [10, 14],   // Oson: katta kataklar, kichik bolalar uchun
+  [20, 28],   // O'rta: o'rtacha
+  [30, 40],   // Qiyin: optimal (hozirgi 35x49 o'rniga)
+  [40, 55]    // Juda qiyin: hali ham qulay (hozirgi 60x85 o'rniga)
+];
 
 function regular(n, rot) {
   return Array.from({length:n}, (_, i) => { const t = rot + i*2*Math.PI/n; return [Math.cos(t), Math.sin(t)]; });

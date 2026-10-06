@@ -11,8 +11,8 @@ let state = {
 const FONT = '"Nunito","Trebuchet MS","DejaVu Sans",Arial,sans-serif';
 
 const SHAPE_ICONS = {
-  rect: '', circle: '●', star: '★', heart: '♥',
-  triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡'
+  rect: '▭', circle: '●', star: '★', heart: '♥',
+  triangle: '▲', diamond: '◆', house: '⌂', hexagon: ''
 };
 
 export function init(container) {
@@ -253,7 +253,9 @@ function drawSheet(canvas, k, showSolution) {
 
   const gate = (x, y, d) => (x === m.start[0] && y === m.start[1] && d === m.sDir) || (x === m.end[0] && y === m.end[1] && d === m.eDir);
   ctx.strokeStyle = '#1f2a44';
-  ctx.lineWidth = Math.min(0.9, Math.max(0.3, cell*0.09)) * k;
+  
+  // YANGILANGAN: Qalinroq chiziqlar (professional jurnal sifatida)
+  ctx.lineWidth = Math.min(1.2, Math.max(0.6, cell*0.12)) * k;
   ctx.lineCap = 'round'; 
   ctx.lineJoin = 'round';
   ctx.beginPath();
@@ -275,7 +277,7 @@ function drawSheet(canvas, k, showSolution) {
 
   if (showSolution) {
     ctx.strokeStyle = 'rgba(229,72,77,.85)';
-    ctx.lineWidth = Math.min(2, Math.max(0.5, cell * 0.22)) * k;
+    ctx.lineWidth = Math.min(2.5, Math.max(1.0, cell * 0.25)) * k;
     ctx.beginPath();
     [sp, ...m.path.map(ctr), ep].forEach(([px, py], i) => { i ? ctx.lineTo(px*k, py*k) : ctx.moveTo(px*k, py*k); });
     ctx.stroke();
