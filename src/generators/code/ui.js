@@ -6,10 +6,13 @@ let state = {
   codeLength: 3,
   secretCode: [],
   clues: [],
-  userAnswer: []
+  userAnswer: [],
+  showSettings: false,
+  showPdfDropdown: false,
+  includeAnswerInPdf: false
 };
 
-const FONT = '"Nunito","Trebuchet MS","DejaVu Sans",Arial,sans-serif';
+const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
 
 export function init(container) {
   startNewGame();
@@ -20,29 +23,26 @@ function startNewGame() {
   state.secretCode = generateSecretCode(state.codeLength);
   state.clues = generateClues(state.secretCode, 5);
   state.userAnswer = new Array(state.codeLength).fill('');
-  console.log("Debug - Secret Code:", state.secretCode);
-  console.log("Debug - Clues:", state.clues);
+  state.showSettings = false;
+  state.showPdfDropdown = false;
 }
 
 function render(container) {
   const lang = getLang();
   
+  if (state.showSettings) {
+    renderSettingsModal(container);
+    return;
+  }
+
   container.innerHTML = `
     <div class="card">
-      <h2>🔐 ${t('codeGameTitle')}</h2>
-      <p style="color:#6B7280; margin-bottom:16px;">${t('codeGameDesc')}</p>
-      
-      <div style="margin-bottom:16px;">
-        <span class="section-label">${t('codeLengthLabel')}</span>
-        <div class="level-grid" id="codeLengthPicker">
-          <button data-length="3" class="${state.codeLength === 3 ? 'selected' : ''}">3 ${t('digits')}</button>
-          <button data-length="4" class="${state.codeLength === 4 ? 'selected' : ''}">4 ${t('digits')}</button>
-          <button data-length="5" class="${state.codeLength === 5 ? 'selected' : ''}">5 ${t('digits')}</button>
-        </div>
+      <div class="game-header">
+        <h2>${t('codeGameTitle')}</h2>
+        <p>${t('codeGameDesc')}</p>
       </div>
 
-      <div class="clues-container" id="cluesContainer">
-        <h3 style="margin:0 0 12px; font-size:16px;">${t('cluesTitle')}</h3>
+      <div class="clues-container">
         ${state.clues.map((clue, idx) => `
           <div class="clue-item">
             <div class="clue-guess">${clue.guess.join(' ')}</div>
@@ -51,20 +51,28 @@ function render(container) {
         `).join('')}
       </div>
 
-      <div style="margin-top:20px;">
-        <span class="section-label">${t('yourAnswer')}</span>
-        <div class="answer-input" id="answerInput">
-          ${state.codeLength.map((_, i) => 
-            `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
-          ).join('')}
-        </div>
+      <div style="text-align:center; font-weight:800; font-size:16px; color:var(--text); margin-bottom:12px;">
+        ${t('yourAnswer')}
+      </div>
+      <div class="answer-input" id="answerInput">
+        ${state.codeLength.map((_, i) => 
+          `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
+        ).join('')}
       </div>
       
-      <div class="buttons" style="margin-top:20px;">
-        <button id="checkAnswerBtn" class="primary">${t('checkAnswer')}</button>
-        <button id="newGameBtn">${t('newGameBtn')}</button>
-        <button id="revealAnswerBtn">${t('revealAnswer')}</button>
-        <button id="downloadPdfBtn">${t('downloadPdf')}</button>
+      <div class="action-bar">
+        <button id="checkAnswerBtn" class="primary">✓ ${t('checkAnswer')}</button>
+        <button id="newGameBtn">🔄 ${t('newGameBtn')}</button>
+        
+        <div class="dropdown-container">
+          <button id="pdfDropdownBtn">${t('pdfBtn')} ▼</button>
+          <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
+            <button id="pdfTaskBtn">📋 ${t('pdfTask')}</button>
+            <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
+          </div>
+        </div>
+        
+        <button id="settingsBtn">⚙️</button>
       </div>
     </div>
   `;
@@ -72,18 +80,57 @@ function render(container) {
   attachEvents(container);
 }
 
-function attachEvents(container) {
-  // Kod uzunligini tanlash
-  container.querySelectorAll('#codeLengthPicker button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.codeLength = parseInt(btn.dataset.length);
-      container.querySelectorAll('#codeLengthPicker button').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      startNewGame();
+function renderSettingsModal(container) {
+  const lang = getLang();
+  container.innerHTML = `
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <h3>${t('settingsTitle')}</h3>
+        
+        <label style="display:block; margin-bottom:16px;">
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">${t('codeLengthLabel')}</span>
+          <select id="settingsLength" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
+            <option value="3" ${state.codeLength === 3 ? 'selected' : ''}>3 ${t('digits')}</option>
+            <option value="4" ${state.codeLength === 4 ? 'selected' : ''}>4 ${t('digits')}</option>
+            <option value="5" ${state.codeLength === 5 ? 'selected' : ''}>5 ${t('digits')}</option>
+          </select>
+        </label>
+
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="settingsIncludeAnswer" ${state.includeAnswerInPdf ? 'checked' : ''} style="width:18px; height:18px;">
+          <span style="font-weight:600;">${t('includeAnswer')}</span>
+        </label>
+
+        <div class="modal-actions">
+          <button id="cancelSettingsBtn">${t('cancel')}</button>
+          <button id="saveSettingsBtn" class="primary">${t('save')}</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  container.querySelector('#modalOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'modalOverlay') {
+      state.showSettings = false;
       render(container);
-    });
+    }
   });
 
+  container.querySelector('#cancelSettingsBtn').addEventListener('click', () => {
+    state.showSettings = false;
+    render(container);
+  });
+
+  container.querySelector('#saveSettingsBtn').addEventListener('click', () => {
+    state.codeLength = parseInt(container.querySelector('#settingsLength').value);
+    state.includeAnswerInPdf = container.querySelector('#settingsIncludeAnswer').checked;
+    state.showSettings = false;
+    startNewGame();
+    render(container);
+  });
+}
+
+function attachEvents(container) {
   // Javobni tekshirish
   container.querySelector('#checkAnswerBtn').addEventListener('click', () => {
     const answer = [];
@@ -96,9 +143,7 @@ function attachEvents(container) {
       answer.push(parseInt(val));
     }
 
-    // Javobni tekshirish
     const isCorrect = answer.every((val, idx) => val === state.secretCode[idx]);
-    
     if (isCorrect) {
       alert(t('correctAnswer'));
       revealAnswer(container);
@@ -107,20 +152,40 @@ function attachEvents(container) {
     }
   });
 
-  // Yangi o'yin
   container.querySelector('#newGameBtn').addEventListener('click', () => {
     startNewGame();
     render(container);
   });
 
-  // Javobni ko'rsatish
-  container.querySelector('#revealAnswerBtn').addEventListener('click', () => {
-    revealAnswer(container);
+  container.querySelector('#settingsBtn').addEventListener('click', () => {
+    state.showSettings = true;
+    render(container);
   });
 
-  // PDF yuklab olish
-  container.querySelector('#downloadPdfBtn').addEventListener('click', () => {
-    try { exportPdf(); } catch(e) { alert('PDF xatosi: ' + e.message); }
+  container.querySelector('#pdfDropdownBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.showPdfDropdown = !state.showPdfDropdown;
+    const dropdown = container.querySelector('#pdfDropdown');
+    dropdown.classList.toggle('show', state.showPdfDropdown);
+  });
+
+  // Dropdown tashqarisiga bosilganda yopish
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown-container')) {
+      state.showPdfDropdown = false;
+      const dropdown = container.querySelector('#pdfDropdown');
+      if (dropdown) dropdown.classList.remove('show');
+    }
+  });
+
+  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(false);
+  });
+
+  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(true);
   });
 
   // Inputlar orasida avtomatik o'tish
@@ -134,11 +199,8 @@ function attachEvents(container) {
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (i < state.codeLength - 1) {
-          container.querySelector(`#ans${i+1}`).focus();
-        } else {
-          container.querySelector('#checkAnswerBtn').click();
-        }
+        if (i < state.codeLength - 1) container.querySelector(`#ans${i+1}`).focus();
+        else container.querySelector('#checkAnswerBtn').click();
       }
     });
   }
@@ -148,93 +210,210 @@ function revealAnswer(container) {
   for (let i = 0; i < state.codeLength; i++) {
     const input = container.querySelector(`#ans${i}`);
     input.value = state.secretCode[i];
-    input.style.background = '#D1FAE5';
-    input.style.borderColor = '#10B981';
+    input.classList.add('correct');
+    input.disabled = true;
   }
 }
 
-function drawPdfSheet(canvas, k) {
+// ==========================================
+// CANVAS PDF GENERATION (Professional Design)
+// ==========================================
+function drawPdfSheet(canvas, k, withAnswer) {
   const lang = getLang();
   const ctx = canvas.getContext('2d');
-  canvas.width = Math.round(210 * k);
-  canvas.height = Math.round(297 * k);
-  
-  // Oq fon
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const W = 210 * k, H = 297 * k;
+  canvas.width = W;
+  canvas.height = H;
 
-  const M = 20; // Margin
-  const titleY = M;
-  
-  // Sarlavha
-  ctx.font = `bold ${24 * 0.3528 * k}px ${FONT}`;
-  ctx.fillStyle = '#1f2a44';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-  const title = lang === 'uz' ? 'Kodni toping!' : (lang === 'ru' ? 'Угадайте код!' : 'Crack the Code!');
-  ctx.fillText(title, 105 * k, titleY * k);
+  // 1. Background (White)
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, W, H);
 
-  // Tavsif
-  ctx.font = `${14 * 0.3528 * k}px ${FONT}`;
-  ctx.fillStyle = '#6B7280';
-  const desc = lang === 'uz' 
-    ? 'Quyidagi ipuclardan foydalanib, maxfiy kodni toping.'
-    : (lang === 'ru' ? 'Используйте подсказки ниже, чтобы найти секретный код.' : 'Use the clues below to find the secret code.');
-  ctx.fillText(desc, 105 * k, (titleY + 10) * k);
+  const M = 20 * k; // Margin
+  let y = M;
 
-  // Ipuclar
-  const clueStartY = titleY + 25;
-  const clueHeight = 15;
+  // 2. Header (Gradient)
+  const headerH = 44 * k;
+  const grad = ctx.createLinearGradient(0, y, W, y + headerH);
+  grad.addColorStop(0, '#4F46E5');
+  grad.addColorStop(1, '#7C3AED');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(M, y, W - 2*M, headerH, 12);
+  ctx.fill();
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  const title = lang === 'uz' ? '🔐 KODNI TOPING!' : (lang === 'ru' ? '🔐 УГАДАЙТЕ КОД!' : '🔐 CRACK THE CODE!');
+  ctx.fillText(title, M + 10*k, y + headerH * 0.35);
+
+  ctx.font = `700 ${14 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#FDE68A';
+  const subtitle = lang === 'uz' ? 'Ipuclardan foydalanib, maxfiy kodni toping' : (lang === 'ru' ? 'Используйте подсказки ниже' : 'Use the clues below');
+  ctx.fillText(subtitle, M + 10*k, y + headerH * 0.75);
+
+  y += headerH + 15 * k;
+
+  // 3. Instructions Box
+  const instH = 35 * k;
+  ctx.fillStyle = '#E0EDFF';
+  ctx.strokeStyle = '#B6D2FF';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(M, y, W - 2*M, instH, 12);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = '#1E3A8A';
+  ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'left';
+  const instText = lang === 'uz' ? 'Har bir qatorda raqamlar bor. Yonidagi yozuv shu raqamlarning qanchasi to\'g\'ri ekanligini aytadi.' : (lang === 'ru' ? 'В каждой строке есть цифры. Текст рядом говорит, сколько из них верно.' : 'Each row has digits. The text tells how many are correct.');
+  ctx.fillText(instText, M + 10*k, y + 15 * k);
+
+  y += instH + 15 * k;
+
+  // 4. Clues
+  const clueH = 24 * k;
+  const clueGap = 4 * k;
   
   state.clues.forEach((clue, idx) => {
-    const y = clueStartY + idx * clueHeight;
-    
-    // Taxmin raqamlari
-    ctx.font = `bold ${16 * 0.3528 * k}px ${FONT}`;
-    ctx.fillStyle = '#1f2a44';
+    const isOdd = idx % 2 === 0;
+    ctx.fillStyle = isOdd ? '#F5F3FF' : '#FFFFFF';
+    ctx.strokeStyle = '#E5E7EB';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(M, y, W - 2*M, clueH, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // Clue Number
+    ctx.fillStyle = '#4F46E5';
+    ctx.beginPath();
+    ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `900 ${11 * 0.3528 * k}px ${FONT}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText((idx + 1).toString(), M + 15*k, y + clueH/2 + 1*k);
+
+    // Digits
+    ctx.font = `900 ${20 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#4F46E5';
+    ctx.textAlign = 'center';
+    clue.guess.forEach((digit, dIdx) => {
+      const dx = M + 35*k + dIdx * 18*k;
+      const dy = y + clueH/2;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#4F46E5';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#4F46E5';
+      ctx.fillText(digit.toString(), dx, dy + 1*k);
+    });
+
+    // Hint Text & Dot
     ctx.textAlign = 'left';
-    const guessText = clue.guess.join('  ');
-    ctx.fillText(guessText, M * k, y * k);
-    
-    // Ipucu matni
-    ctx.font = `${12 * 0.3528 * k}px ${FONT}`;
+    ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
     ctx.fillStyle = '#4B5563';
-    ctx.textAlign = 'right';
-    const clueText = getClueText(clue, lang);
-    ctx.fillText(clueText, (210 - M) * k, y * k);
+    const hintX = M + 100*k;
+    ctx.fillText(getClueText(clue, lang), hintX + 12*k, y + clueH/2 + 1*k);
+
+    // Dot (Green, Orange, Red) with B&W safe icons
+    const dotX = hintX;
+    const dotY = y + clueH/2;
+    if (clue.correctPlace > 0 && clue.wrongPlace === 0) {
+      ctx.fillStyle = '#10B981';
+      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#FFFFFF'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('✓', dotX, dotY + 1*k);
+    } else if (clue.correctPlace === 0 && clue.wrongPlace > 0) {
+      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#F59E0B'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('↻', dotX, dotY + 1*k);
+    } else if (clue.correctPlace === 0 && clue.wrongPlace === 0) {
+      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#EF4444'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#EF4444'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('✕', dotX, dotY + 1*k);
+    } else {
+      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#F59E0B'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('↻', dotX, dotY + 1*k);
+    }
+
+    y += clueH + clueGap;
   });
 
-  // Javob kataklari
-  const answerY = clueStartY + state.clues.length * clueHeight + 15;
-  ctx.font = `bold ${14 * 0.3528 * k}px ${FONT}`;
-  ctx.fillStyle = '#1f2a44';
-  ctx.textAlign = 'center';
-  const answerLabel = lang === 'uz' ? 'Javob:' : (lang === 'ru' ? 'Ответ:' : 'Answer:');
-  ctx.fillText(answerLabel, 105 * k, answerY * k);
+  y += 15 * k;
 
-  const boxSize = 12;
-  const boxGap = 5;
-  const totalWidth = state.codeLength * boxSize + (state.codeLength - 1) * boxGap;
-  const startX = 105 - totalWidth / 2;
+  // 5. Answer Section
+  ctx.fillStyle = '#7C3AED';
+  ctx.font = `900 ${18 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'center';
+  const ansTitle = lang === 'uz' ? 'JAVOB:' : (lang === 'ru' ? 'ОТВЕТ:' : 'ANSWER:');
+  ctx.fillText(ansTitle, W/2, y);
+  y += 10 * k;
+
+  const boxSize = 40 * k;
+  const boxGap = 12 * k;
+  const totalW = state.codeLength * boxSize + (state.codeLength - 1) * boxGap;
+  const startX = (W - totalW) / 2;
 
   for (let i = 0; i < state.codeLength; i++) {
-    const x = startX + i * (boxSize + boxGap);
-    ctx.strokeStyle = '#1f2a44';
-    ctx.lineWidth = 1.5;
-    ctx.strokeRect(x * k, (answerY + 5) * k, boxSize * k, boxSize * k);
+    const bx = startX + i * (boxSize + boxGap);
+    
+    // Box
+    ctx.fillStyle = '#FFFFFF';
+    ctx.strokeStyle = '#4F46E5';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(bx, y, boxSize, boxSize, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // Dashed lines inside
+    ctx.strokeStyle = '#A5B4FC';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(bx + 10*k, y + 12*k); ctx.lineTo(bx + boxSize - 10*k, y + 12*k); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(bx + 10*k, y + boxSize - 12*k); ctx.lineTo(bx + boxSize - 10*k, y + boxSize - 12*k); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // If answer is included, draw it
+    if (withAnswer) {
+      ctx.fillStyle = '#10B981';
+      ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(state.secretCode[i].toString(), bx + boxSize/2, y + boxSize/2 + 2*k);
+    }
+
+    // Label (1, 2, 3)
+    ctx.fillStyle = '#F59E0B';
+    ctx.beginPath();
+    ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = `900 ${12 * 0.3528 * k}px ${FONT}`;
+    ctx.fillText((i + 1).toString(), bx + boxSize/2, y + boxSize + 11*k);
   }
 
-  // Pastki qism (raqam)
-  ctx.font = `${10 * 0.3528 * k}px ${FONT}`;
-  ctx.fillStyle = '#9CA3AF';
+  // 6. Footer
+  y = H - 20 * k;
+  ctx.fillStyle = '#6B7280';
+  ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'right';
   const footer = lang === 'uz' ? 'Topshiriqlar Lab' : (lang === 'ru' ? 'Лаборатория головоломок' : 'Puzzle Lab');
-  ctx.fillText(footer, (210 - M) * k, (297 - M) * k);
+  ctx.fillText(footer, W - M, y);
 }
 
-export function exportPdf() {
+export function exportPdf(withAnswer) {
   const c = document.createElement('canvas');
-  drawPdfSheet(c, 300 / 25.4); // 300 DPI
+  drawPdfSheet(c, 300 / 25.4, withAnswer); // 300 DPI
   
   c.toBlob(async blob => {
     if (!blob) {
@@ -244,8 +423,9 @@ export function exportPdf() {
     const jpeg = new Uint8Array(await blob.arrayBuffer());
     const lang = getLang();
     const fileName = lang === 'uz' 
-      ? `Kodni topish topshirig'i.pdf`
-      : (lang === 'ru' ? 'Угадайте код.pdf' : 'Code Breaker.pdf');
+      ? (withAnswer ? `Kodni topish (Javob).pdf` : `Kodni topish.pdf`)
+      : (lang === 'ru' ? (withAnswer ? `Угадайте код (Ответ).pdf` : `Угадайте код.pdf`) 
+      : (withAnswer ? `Code Breaker (Answer).pdf` : `Code Breaker.pdf`));
     const pdf = makePdf(jpeg, c.width, c.height);
     downloadPdf(pdf, fileName);
   }, 'image/jpeg', 0.93);
