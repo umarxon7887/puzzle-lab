@@ -8,12 +8,14 @@ export const translations = {
     tabMaze: "Labirint",
     tabSudoku: "Sudoku",
     tabWords: "So'z qidiruv",
+    tabCross: "Krossvord",
     codeDesc: "Ipuclardan foydalanib, mantiqiy kodni toping",
     mazeDesc: "Qahramonga uyiga yo'l topishga yordam beradigan labirint yarating",
     sudokuDesc: "Klassik, diagonal va shaklli (jigsaw) sudoku topshiriqlari",
     wordsDesc: "Jadvaldan yashirilgan so'zlarni toping - 6 ta mavzu",
+    crossDesc: "Matematik tenglamalardan tuzilgan sonli krossvord",
     
-    settingsBtn: "⚙️ Sozlamalar",
+    settingsBtn: "️ Sozlamalar",
     pdfBtn: "📄 PDF",
     pdfTask: "Topshiriq PDF",
     pdfAnswer: "Javob varag'i PDF",
@@ -21,7 +23,7 @@ export const translations = {
     save: "Saqlash",
     cancel: "Bekor qilish",
     
-    codeGameTitle: "🔐 KODNI TOPING!",
+    codeGameTitle: " KODNI TOPING!",
     codeGameDesc: "Quyidagi ipuclardan foydalanib, maxfiy kodni toping.",
     codeLengthLabel: "Kod uzunligi",
     digits: "xonali",
@@ -30,7 +32,7 @@ export const translations = {
     newGameBtn: "🔄 Yangi",
     revealAnswer: "Javobni ko'rsatish",
     enterAllDigits: "Barcha raqamlarni kiriting!",
-    correctAnswer: "🎉 To'g'ri! Kodni topdingiz!",
+    correctAnswer: " To'g'ri! Kodni topdingiz!",
     wrongAnswer: "❌ Noto'g'ri. Qaytadan urinib ko'ring.",
     includeAnswer: "Javobni PDF'ga qo'shish",
     
@@ -56,7 +58,13 @@ export const translations = {
     wordsDefTitle: "So'z qidiruv",
     wordsInstruction: "Jadvaldan quyidagi so'zlarni toping. So'zlar gorizontal, vertikal va diagonal yo'nalishda yashirilgan.",
     catNames: {school:'Maktab', autumn:'Kuz', animals:'Hayvonlar', food:'Ovqatlar', sport:'Sport', space:'Fazo'},
-    wordsLevelNames: ["Oson (2 yo'nalish)", "O'rta (4 yo'nalish)", "Qiyin (6 yo'nalish)", "Juda qiyin (8 yo'nalish)"]
+    wordsLevelNames: ["Oson (2 yo'nalish)", "O'rta (4 yo'nalish)", "Qiyin (6 yo'nalish)", "Juda qiyin (8 yo'nalish)"],
+    
+    crossLevelLabel: "Daraja",
+    crossSeedLabel: "Raqami (Seed)",
+    crossDefTitle: "Bo'sh katakchalarni to'ldir!",
+    crossInstruction: "Tenglamalarni yechib, bo'sh katakchalarni to'ldiring. Har bir bo'sh katak qolgan ikkitasidan mantiq bilan topiladi.",
+    crossLevelNames: ["Oson (+, -)", "O'rta (+, -, ×)", "Qiyin (+, -, ×, ÷)", "Juda qiyin (+, -, ×, ÷)"]
   },
   ru: {
     title: "Лаборатория головоломок",
@@ -67,13 +75,15 @@ export const translations = {
     tabMaze: "Лабиринт",
     tabSudoku: "Судоку",
     tabWords: "Найди слова",
+    tabCross: "Кроссворд",
     codeDesc: "Найдите код с помощью логических подсказок",
     mazeDesc: "Создайте лабиринт, чтобы помочь герою найти дорогу домой",
     sudokuDesc: "Классические, диагональные и фигурные судоку",
     wordsDesc: "Найдите спрятанные слова в таблице - 6 тем",
+    crossDesc: "Числовой кроссворд из математических уравнений",
     
     settingsBtn: "️ Настройки",
-    pdfBtn: " PDF",
+    pdfBtn: "📄 PDF",
     pdfTask: "Задание PDF",
     pdfAnswer: "Ответ PDF",
     settingsTitle: "Настройки",
@@ -115,7 +125,13 @@ export const translations = {
     wordsDefTitle: "Найди слова",
     wordsInstruction: "Найдите следующие слова в таблице. Слова спрятаны по горизонтали, вертикали и диагонали.",
     catNames: {school:'Школа', autumn:'Осень', animals:'Животные', food:'Еда', sport:'Спорт', space:'Космос'},
-    wordsLevelNames: ["Легко (2 направления)", "Средне (4 направления)", "Сложно (6 направлений)", "Очень сложно (8 направлений)"]
+    wordsLevelNames: ["Легко (2 направления)", "Средне (4 направления)", "Сложно (6 направлений)", "Очень сложно (8 направлений)"],
+    
+    crossLevelLabel: "Сложность",
+    crossSeedLabel: "Номер (Seed)",
+    crossDefTitle: "Заполни пустые клетки!",
+    crossInstruction: "Решите уравнения и заполните пустые клетки. Каждая пустая клетка выводится логически из двух других.",
+    crossLevelNames: ["Легко (+, -)", "Средне (+, -, ×)", "Сложно (+, -, ×, ÷)", "Очень сложно (+, -, ×, ÷)"]
   },
   en: {
     title: "Puzzle Lab",
@@ -126,10 +142,12 @@ export const translations = {
     tabMaze: "Maze",
     tabSudoku: "Sudoku",
     tabWords: "Word Search",
+    tabCross: "Crossword",
     codeDesc: "Find the code using logical clues",
     mazeDesc: "Create a maze to help the hero find the way home",
     sudokuDesc: "Classic, diagonal, and jigsaw sudoku puzzles",
     wordsDesc: "Find hidden words in the grid - 6 themes",
+    crossDesc: "Math crossword from arithmetic equations",
     
     settingsBtn: "⚙️ Settings",
     pdfBtn: "📄 PDF",
@@ -145,10 +163,10 @@ export const translations = {
     digits: "digits",
     yourAnswer: "ANSWER:",
     checkAnswer: "Check",
-    newGameBtn: " New",
+    newGameBtn: "🔄 New",
     revealAnswer: "Reveal Answer",
     enterAllDigits: "Enter all digits!",
-    correctAnswer: "🎉 Correct! You cracked the code!",
+    correctAnswer: " Correct! You cracked the code!",
     wrongAnswer: "❌ Wrong. Try again.",
     includeAnswer: "Include answer in PDF",
     
@@ -174,7 +192,13 @@ export const translations = {
     wordsDefTitle: "Word Search",
     wordsInstruction: "Find the following words in the grid. Words are hidden horizontally, vertically, and diagonally.",
     catNames: {school:'School', autumn:'Autumn', animals:'Animals', food:'Food', sport:'Sport', space:'Space'},
-    wordsLevelNames: ["Easy (2 directions)", "Medium (4 directions)", "Hard (6 directions)", "Expert (8 directions)"]
+    wordsLevelNames: ["Easy (2 directions)", "Medium (4 directions)", "Hard (6 directions)", "Expert (8 directions)"],
+    
+    crossLevelLabel: "Difficulty",
+    crossSeedLabel: "Seed Number",
+    crossDefTitle: "Fill in the blanks!",
+    crossInstruction: "Solve the equations and fill in the empty cells. Each empty cell can be deduced logically from the other two.",
+    crossLevelNames: ["Easy (+, -)", "Medium (+, -, ×)", "Hard (+, -, ×, ÷)", "Expert (+, -, ×, ÷)"]
   }
 };
 

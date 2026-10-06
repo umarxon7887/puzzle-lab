@@ -2,6 +2,7 @@ import * as Code from './code/ui.js';
 import * as Maze from './maze/ui.js';
 import * as Sudoku from './sudoku/ui.js';
 import * as Words from './wordsearch/ui.js';
+import * as Cross from './crossword/ui.js';
 
 export const GENERATORS = [
   {
@@ -39,6 +40,15 @@ export const GENERATORS = [
     coverGradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     init: Words.init,
     exportPDF: Words.exportPDF
+  },
+  {
+    id: 'cross',
+    nameKey: 'tabCross',
+    descriptionKey: 'crossDesc',
+    cover: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="15" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"/><rect x="40" y="15" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"/><rect x="65" y="15" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"/><text x="25" y="30" font-size="12" font-weight="900" fill="#fff" text-anchor="middle">3</text><text x="50" y="30" font-size="12" font-weight="900" fill="#fff" text-anchor="middle">+</text><text x="75" y="30" font-size="12" font-weight="900" fill="#fff" text-anchor="middle">5</text><line x1="15" y1="45" x2="85" y2="45" stroke="#fff" stroke-width="2"/><rect x="40" y="55" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"/><text x="50" y="70" font-size="12" font-weight="900" fill="#fff" text-anchor="middle">8</text></svg>',
+    coverGradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+    init: Cross.init,
+    exportPDF: Cross.exportPDF
   }
 ];
 
