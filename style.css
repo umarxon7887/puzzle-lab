@@ -640,3 +640,67 @@ button.primary:hover {
 .shape-grid button.selected .shape-svg {
   color: white;
 }
+
+/* Code Breaker Clues */
+.clues-container {
+  background: #F9FAFB;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.clue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.clue-item:last-child {
+  margin-bottom: 0;
+}
+
+.clue-guess {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 2px;
+}
+
+.clue-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: right;
+  max-width: 60%;
+}
+
+/* Answer Input */
+.answer-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.answer-input input {
+  width: 50px;
+  height: 50px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  transition: all 0.2s;
+}
+
+.answer-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
