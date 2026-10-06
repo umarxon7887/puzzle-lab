@@ -1,21 +1,20 @@
 import { buildMaze, SHAPES, HEROES, GOALS, LEVELS, DIRS } from './logic.js';
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
+import { renderActionBar } from '../../components/ActionBar.js';
 
 let state = {
   W: 10, H: 14, seed: Math.floor(Math.random()*1e9)+1,
   shape: 'rect', hero: HEROES[0], goal: GOALS[0],
   title: '', fontPt: 28, showSolution: false,
-  level: 0, // 0-Oson, 1-O'rta, 2-Qiyin, 3-Juda qiyin
-  showSettings: false,
-  showPdfDropdown: false,
-  manualSize: false
+  level: 0, showSettings: false, manualSize: false
 };
 
-const FONT = '"Nunito","Trebuchet MS","DejaVu Sans",Arial,sans-serif';
-const SHAPE_SVG = {
-  rect: '▭', circle: '●', star: '★', heart: '♥', 
-  triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡'
+const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
+const SHAPE_NAMES = {
+  uz: {rect:"To'rtburchak", circle:"Doira", star:"Yulduz", heart:"Yurak", triangle:"Uchburchak", diamond:"Romb", house:"Uy", hexagon:"Oltiburchak"},
+  ru: {rect:"Прямоуг.", circle:"Круг", star:"Звезда", heart:"Сердце", triangle:"Треуг.", diamond:"Ромб", house:"Дом", hexagon:"Шестиуг."},
+  en: {rect:"Rect", circle:"Circle", star:"Star", heart:"Heart", triangle:"Triangle", diamond:"Diamond", house:"House", hexagon:"Hexagon"}
 };
 
 export function init(container) {
@@ -25,15 +24,9 @@ export function init(container) {
 }
 
 function render(container) {
-  if (state.showSettings) {
-    renderSettingsModal(container);
-    return;
-  }
-
+  if (state.showSettings) { renderSettingsModal(container); return; }
   const lang = getLang();
-  const levelNames = lang === 'uz' ? ["Oson", "O'rta", "Qiyin", "Juda qiyin"] 
-                 : (lang === 'ru' ? ["Легко", "Средне", "Сложно", "Очень сложно"] 
-                 : ["Easy", "Medium", "Hard", "Expert"]);
+  const levelNames = t('levelNames');
 
   container.innerHTML = `
     <div class="card">
@@ -41,92 +34,69 @@ function render(container) {
         <h2>🌀 ${t('tabMaze')}</h2>
         <p>${t('mazeDefTitle')}</p>
         <div style="margin-top:8px; font-size:13px; color:var(--text-muted);">
-          📊 Daraja: <strong style="color:var(--primary);">${levelNames[state.level]}</strong> | 
-           ${state.W}×${state.H} | 🔢 #${state.seed}
+          📊 ${levelNames[state.level]} | 📐 ${state.W}×${state.H} | 🔢 #${state.seed}
         </div>
       </div>
-
       <canvas id="mCanvas" style="width:100%; max-width:500px; margin:0 auto; display:block; border-radius:12px; border:2px solid var(--border);"></canvas>
-
-      <div class="action-bar" style="margin-top:16px;">
-        <button id="mNew" class="primary">🔄 ${t('newMaze')}</button>
-        
-        <div class="dropdown-container">
-          <button id="pdfDropdownBtn"> ${t('pdfBtn')} ▼</button>
-          <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
-            <button id="pdfTaskBtn"> ${t('pdfTask')}</button>
-            <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
-          </div>
-        </div>
-        
-        <button id="settingsBtn">⚙️</button>
-      </div>
     </div>
   `;
 
+  renderActionBar(container, {
+    primaryText: `🔄 ${t('newMaze')}`,
+    primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; state.manualSize = false; render(container); },
+    showPdf: true, showSettings: true,
+    onPdfTask: () => exportPdf(false),
+    onPdfAnswer: () => exportPdf(true),
+    onSettings: () => { state.showSettings = true; render(container); },
+    i18n: { new: t('newMaze'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar' }
+  });
+
   buildAndDraw(container);
-  attachEvents(container);
 }
 
 function renderSettingsModal(container) {
   const lang = getLang();
-  const levelNames = lang === 'uz' ? ["Oson", "O'rta", "Qiyin", "Juda qiyin"] 
-                 : (lang === 'ru' ? ["Легко", "Средне", "Сложно", "Очень сложно"] 
-                 : ["Easy", "Medium", "Hard", "Expert"]);
-
-  const shapeOptions = Object.keys(SHAPES).map(key => 
-    `<option value="${key}" ${state.shape === key ? 'selected' : ''}>${SHAPE_SVG[key]} ${key}</option>`
-  ).join('');
+  const levelNames = t('levelNames');
+  const shapeNames = SHAPE_NAMES[lang] || SHAPE_NAMES.uz;
 
   container.innerHTML = `
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal">
         <h3>⚙️ ${t('settingsTitle')}</h3>
-        
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📊 ${lang === 'uz' ? 'Daraja' : (lang === 'ru' ? 'Сложность' : 'Difficulty')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📊 ${t('difficulty')}</span>
           <select id="setLevel" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
             ${levelNames.map((name, i) => `<option value="${i}" ${state.level === i ? 'selected' : ''}>${name}</option>`).join('')}
           </select>
         </label>
-
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
-          <label>
-            <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📐 Eni (W)</span>
-            <input type="number" id="setW" min="5" max="50" value="${state.W}" style="width:100%; padding:8px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
-          </label>
-          <label>
-            <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📐 Bo'yi (H)</span>
-            <input type="number" id="setH" min="5" max="70" value="${state.H}" style="width:100%; padding:8px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
-          </label>
+          <label><span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📐 ${t('width')}</span>
+            <input type="number" id="setW" min="5" max="50" value="${state.W}" style="width:100%; padding:8px; border-radius:8px; border:2px solid var(--border); font-family:inherit;"></label>
+          <label><span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📐 ${t('height')}</span>
+            <input type="number" id="setH" min="5" max="70" value="${state.H}" style="width:100%; padding:8px; border-radius:8px; border:2px solid var(--border); font-family:inherit;"></label>
         </div>
-
         <label style="display:block; margin-bottom:12px;">
           <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('shape')}</span>
           <select id="setShape" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
-            ${shapeOptions}
+            ${Object.keys(SHAPES).map(key => `<option value="${key}" ${state.shape === key ? 'selected' : ''}>${shapeNames[key] || key}</option>`).join('')}
           </select>
         </label>
-
         <label style="display:block; margin-bottom:12px;">
           <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">🦸 ${t('hero')}</span>
           <select id="setHero" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit; font-size:20px;">
             ${HEROES.map(h => `<option value="${h}" ${state.hero === h ? 'selected' : ''}>${h}</option>`).join('')}
           </select>
         </label>
-
         <label style="display:block; margin-bottom:12px;">
           <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">🎯 ${t('goal')}</span>
           <select id="setGoal" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit; font-size:20px;">
             ${GOALS.map(g => `<option value="${g}" ${state.goal === g ? 'selected' : ''}>${g}</option>`).join('')}
           </select>
         </label>
-
         <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:12px;">
           <input type="checkbox" id="setSolution" ${state.showSolution ? 'checked' : ''} style="width:18px; height:18px;">
           <span style="font-weight:600;">${t('showSolution')}</span>
         </label>
-
         <div class="modal-actions">
           <button id="cancelSettingsBtn">${t('cancel')}</button>
           <button id="saveSettingsBtn" class="primary">${t('save')}</button>
@@ -135,9 +105,7 @@ function renderSettingsModal(container) {
     </div>
   `;
 
-  container.querySelector('#modalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }
-  });
+  container.querySelector('#modalOverlay').addEventListener('click', (e) => { if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }});
   container.querySelector('#cancelSettingsBtn').addEventListener('click', () => { state.showSettings = false; render(container); });
   container.querySelector('#saveSettingsBtn').addEventListener('click', () => {
     state.level = parseInt(container.querySelector('#setLevel').value);
@@ -155,50 +123,11 @@ function renderSettingsModal(container) {
 }
 
 function buildAndDraw(container) {
-  // Darajaga ko'ra o'lchamni avtomatik sozlash (faqat user o'zgartirmagan bo'lsa)
   if (!state.manualSize) {
     const sizes = [[10,14], [20,28], [35,49], [60,85]];
     [state.W, state.H] = sizes[state.level];
   }
-  
   draw(container);
-}
-
-function attachEvents(container) {
-  container.querySelector('#mNew').addEventListener('click', () => {
-    state.seed = Math.floor(Math.random()*1e9)+1;
-    state.manualSize = false;
-    render(container);
-  });
-
-  container.querySelector('#settingsBtn').addEventListener('click', () => {
-    state.showSettings = true;
-    render(container);
-  });
-
-  container.querySelector('#pdfDropdownBtn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    state.showPdfDropdown = !state.showPdfDropdown;
-    container.querySelector('#pdfDropdown').classList.toggle('show', state.showPdfDropdown);
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.dropdown-container')) {
-      state.showPdfDropdown = false;
-      const dd = container.querySelector('#pdfDropdown');
-      if (dd) dd.classList.remove('show');
-    }
-  });
-
-  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(false);
-  });
-
-  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(true);
-  });
 }
 
 function wrapLines(ctx, text, maxW) {
@@ -219,8 +148,7 @@ function wrapLines(ctx, text, maxW) {
 
 function drawMarker(ctx, emoji, cx, cy, size, k) {
   ctx.font = `${size*0.85*k}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
-  ctx.textAlign = 'center'; 
-  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillStyle = '#1f2a44';
   ctx.fillText(emoji, cx*k, cy*k);
 }
@@ -236,18 +164,14 @@ function drawSheet(canvas, k, showSolution) {
   const M = 14, areaW = 210 - 2*M;
   const fpx = state.fontPt * 0.3528 * k;
   ctx.font = `700 ${fpx}px ${FONT}`;
-  ctx.fillStyle = '#1f2a44'; 
-  ctx.textAlign = 'center'; 
-  ctx.textBaseline = 'top';
+  ctx.fillStyle = '#1f2a44'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
   const lines = wrapLines(ctx, state.title, areaW*k);
   const lh = fpx * 1.25;
   lines.forEach((ln, i) => ctx.fillText(ln, 105*k, M*k + i*lh));
   
   const footH = 7;
   ctx.font = `${8*0.3528*k}px ${FONT}`;
-  ctx.fillStyle = '#7b869c'; 
-  ctx.textAlign = 'right'; 
-  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#7b869c'; ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
   const lang = getLang();
   const footText = lang === 'uz' ? `Labirint #${state.seed} (${state.W}×${state.H})` : (lang === 'ru' ? `Лабиринт №${state.seed}` : `Maze #${state.seed}`);
   ctx.fillText(footText, (210-M)*k, (297-M)*k);
@@ -258,23 +182,17 @@ function drawSheet(canvas, k, showSolution) {
   const cell0 = Math.min(areaW / gw, areaH / gh);
   const S = Math.min(14, Math.max(9, cell0 * 0.95));
   const pad = [0, 0, 0, 0];
-  pad[m.sDir] = S + 1; 
-  pad[m.eDir] = Math.max(pad[m.eDir], S + 1);
+  pad[m.sDir] = S + 1; pad[m.eDir] = Math.max(pad[m.eDir], S + 1);
   const cell = Math.min((areaW - pad[1] - pad[3]) / gw, (areaH - pad[0] - pad[2]) / gh);
   const contentW = gw*cell + pad[1] + pad[3], contentH = gh*cell + pad[0] + pad[2];
   const ox = 105 - contentW/2 + pad[3] - bb.minX*cell;
   const oy = top + (areaH - contentH)/2 + pad[0] - bb.minY*cell;
 
-  //  CHIZIQ QALINLIGINI TUZATISH
-  // Avvalgi: Math.min(0.9, Math.max(0.3, cell*0.09))
-  // Yangi: Katta labirintlarda ham ko'rinadigan qalinlik
   const lineWidth = Math.min(1.2, Math.max(0.6, cell * 0.12)) * k;
-  
   const gate = (x, y, d) => (x === m.start[0] && y === m.start[1] && d === m.sDir) || (x === m.end[0] && y === m.end[1] && d === m.eDir);
   ctx.strokeStyle = '#1f2a44';
   ctx.lineWidth = lineWidth;
-  ctx.lineCap = 'round'; 
-  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.beginPath();
   for (let y = bb.minY; y <= bb.maxY; y++) {
     for (let x = bb.minX; x <= bb.maxX; x++) {
