@@ -229,10 +229,10 @@ function drawPdfSheet(canvas, k, withAnswer) {
   ctx.fillRect(0, 0, W, H);
 
   const M = 14 * k; // Margin
-  let y = M;
+  let y = 12 * k; // Top margin
 
-  // 2. Header
-  const headerBottom = y + 35 * k;
+  // 2. HEADER (Title + Lock)
+  const headerY = y;
   
   // Title
   ctx.fillStyle = '#000000';
@@ -240,125 +240,161 @@ function drawPdfSheet(canvas, k, withAnswer) {
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   const title = lang === 'uz' ? 'KODNI TOPING!' : (lang === 'ru' ? 'УГАДАЙТЕ КОД!' : 'CRACK THE CODE!');
-  ctx.fillText(title, M, y);
+  ctx.fillText(title, M, headerY);
   
   // Subtitle
   ctx.font = `700 ${14 * 0.3528 * k}px ${FONT}`;
   const subtitle = lang === 'uz' ? 'Ipuclardan foydalanib, maxfiy kodni toping' : (lang === 'ru' ? 'Используйте подсказки ниже' : 'Use the clues below');
-  ctx.fillText(subtitle, M, y + 12 * k);
+  ctx.fillText(subtitle, M, headerY + 12 * k);
   
-  // Lock icon (simple outline)
-  const lockX = W - M - 28 * k;
-  const lockY = y;
+  // Lock icon (outline) - O'ng tomonda
+  const lockSize = 28 * k;
+  const lockX = W - M - lockSize;
+  const lockY = headerY;
+  
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 2 * k;
-  // Shackle
+  ctx.fillStyle = '#FFFFFF';
+  
+  // Shackle (qulf halqasi)
   ctx.beginPath();
-  ctx.arc(lockX + 14*k, lockY + 12*k, 8*k, Math.PI, 0);
+  ctx.arc(lockX + lockSize/2, lockY + lockSize*0.4, lockSize*0.3, Math.PI, 0);
   ctx.stroke();
-  // Body
-  ctx.strokeRect(lockX + 4*k, lockY + 10*k, 20*k, 16*k);
-  // Keyhole
+  
+  // Body (qulf tanasi)
+  ctx.fillRect(lockX + lockSize*0.15, lockY + lockSize*0.35, lockSize*0.7, lockSize*0.55);
+  ctx.strokeRect(lockX + lockSize*0.15, lockY + lockSize*0.35, lockSize*0.7, lockSize*0.55);
+  
+  // Keyhole (teshik)
   ctx.beginPath();
-  ctx.arc(lockX + 14*k, lockY + 18*k, 2.5*k, 0, Math.PI*2);
+  ctx.arc(lockX + lockSize/2, lockY + lockSize*0.55, lockSize*0.12, 0, Math.PI*2);
   ctx.fill();
-  ctx.fillRect(lockX + 12.5*k, lockY + 18*k, 3*k, 5*k);
+  ctx.fillRect(lockX + lockSize*0.44, lockY + lockSize*0.55, lockSize*0.12, lockSize*0.2);
 
-  y = headerBottom;
+  y = headerY + 35 * k;
 
   // 3. Name and Date lines
   ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
   ctx.textBaseline = 'alphabetic';
+  
+  // Ism
   ctx.fillText(lang === 'uz' ? 'Ism:' : (lang === 'ru' ? 'Имя:' : 'Name:'), M, y + 10*k);
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.4 * k;
   ctx.beginPath();
   ctx.moveTo(M + 12*k, y + 10*k);
-  ctx.lineTo(W/2 - 5*k, y + 10*k);
+  ctx.lineTo(W/2 - 10*k, y + 10*k);
   ctx.stroke();
 
+  // Sana
   ctx.fillText(lang === 'uz' ? 'Sana:' : (lang === 'ru' ? 'Дата:' : 'Date:'), W/2 + 5*k, y + 10*k);
   ctx.beginPath();
-  ctx.moveTo(W/2 + 18*k, y + 10*k);
+  ctx.moveTo(W/2 + 20*k, y + 10*k);
   ctx.lineTo(W - M - 15*k, y + 10*k);
   ctx.stroke();
 
-  y += 15 * k;
+  y += 20 * k;
 
   // 4. Instructions Box
   const instTop = y;
-  const instH = 30 * k;
+  const instH = 32 * k;
+  
+  // Border
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.5 * k;
   ctx.strokeRect(M, y, W - 2*M, instH);
   
+  // Text
   ctx.fillStyle = '#000000';
-  ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  const instText = lang === 'uz' ? 'Har bir qatorda 3 ta raqam bor. Yonidagi yozuv shu raqamlarning qanchasi to\'g\'ri ekanligini aytadi.' : (lang === 'ru' ? 'В каждой строке 3 цифры. Текст рядом говорит, сколько из них верно.' : 'Each row has 3 digits. The text tells how many are correct.');
-  ctx.fillText(instText, W/2, y + 12 * k);
-
-  // Legend
-  const legendY = y + 20 * k;
-  ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
+  ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  const instLine1 = lang === 'uz' ? 'Har bir qatorda 3 ta raqam bor. Yonidagi yozuv shu raqamlarning qanchasi to\'g\'ri ekanligini aytadi.' : (lang === 'ru' ? 'В каждой строке 3 цифры. Текст рядом говорит, сколько из них верно.' : 'Each row has 3 digits. The text tells how many are correct.');
   
-  // Symbol: fill
+  // Wrap text
+  const words = instLine1.split(' ');
+  let line = '';
+  let lineY = y + 4 * k;
+  const maxWidth = W - 2*M - 10*k;
+  
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, M + 5*k, lineY);
+      line = words[n] + ' ';
+      lineY += 12 * k;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, M + 5*k, lineY);
+  
+  // Legend (belgilar)
+  const legendY = y + 22 * k;
+  ctx.font = `700 ${9 * 0.3528 * k}px ${FONT}`;
+  ctx.textBaseline = 'middle';
+  
+  // Symbol: fill (to'ldirilgan doira)
+  const sym1X = M + 5*k;
   ctx.fillStyle = '#000000';
   ctx.beginPath();
-  ctx.arc(M + 5*k, legendY, 2.5*k, 0, Math.PI*2);
+  ctx.arc(sym1X, legendY, 2.5*k, 0, Math.PI*2);
   ctx.fill();
-  ctx.fillText(lang === 'uz' ? 'raqam to\'g\'ri va o\'z joyida' : (lang === 'ru' ? 'цифра верная и на своём месте' : 'correct digit, correct place'), M + 10*k, legendY + 1*k);
+  ctx.fillText(lang === 'uz' ? 'raqam to\'g\'ri va o\'z joyida' : (lang === 'ru' ? 'цифра верная и на своём месте' : 'correct digit, correct place'), sym1X + 6*k, legendY);
   
-  // Symbol: ring
+  // Symbol: ring (bo'sh doira)
+  const sym2X = M + (W - 2*M)/2;
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.5 * k;
   ctx.beginPath();
-  ctx.arc(W/3, legendY, 2.5*k, 0, Math.PI*2);
+  ctx.arc(sym2X, legendY, 2.5*k, 0, Math.PI*2);
   ctx.stroke();
-  ctx.fillText(lang === 'uz' ? 'raqam to\'g\'ri, lekin boshqa joyda' : (lang === 'ru' ? 'цифра верная, но в другом месте' : 'correct digit, wrong place'), W/3 + 5*k, legendY + 1*k);
+  ctx.fillText(lang === 'uz' ? 'raqam to\'g\'ri, lekin boshqa joyda' : (lang === 'ru' ? 'цифра верная, но в другом месте' : 'correct digit, wrong place'), sym2X + 6*k, legendY);
   
   // Symbol: none (X)
-  const xX = 2*W/3;
+  const sym3X = W - M - 120*k;
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.5 * k;
   ctx.beginPath();
-  ctx.moveTo(xX - 2*k, legendY - 2*k);
-  ctx.lineTo(xX + 2*k, legendY + 2*k);
-  ctx.moveTo(xX + 2*k, legendY - 2*k);
-  ctx.lineTo(xX - 2*k, legendY + 2*k);
+  ctx.moveTo(sym3X - 2.5*k, legendY - 2.5*k);
+  ctx.lineTo(sym3X + 2.5*k, legendY + 2.5*k);
+  ctx.moveTo(sym3X + 2.5*k, legendY - 2.5*k);
+  ctx.lineTo(sym3X - 2.5*k, legendY + 2.5*k);
   ctx.stroke();
-  ctx.fillText(lang === 'uz' ? 'hech narsa to\'g\'ri emas' : (lang === 'ru' ? 'ничего не верно' : 'nothing is correct'), xX + 5*k, legendY + 1*k);
+  ctx.fillText(lang === 'uz' ? 'hech narsa to\'g\'ri emas' : (lang === 'ru' ? 'ничего не верно' : 'nothing is correct'), sym3X + 6*k, legendY);
 
   // Dashed line
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.3 * k;
   ctx.setLineDash([3, 3]);
   ctx.beginPath();
-  ctx.moveTo(M, legendY + 5*k);
-  ctx.lineTo(W - M, legendY + 5*k);
+  ctx.moveTo(M, legendY + 6*k);
+  ctx.lineTo(W - M, legendY + 6*k);
   ctx.stroke();
   ctx.setLineDash([]);
 
-  y = instTop + instH + 15 * k;
+  y = instTop + instH + 10 * k;
 
-  // 5. Clues
+  // 5. CLUES
   const clueH = 26 * k;
-  const clueGap = 0;
   
   state.clues.forEach((clue, idx) => {
-    // Border top/bottom
+    const clueY = y + idx * clueH;
+    
+    // Horizontal lines
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 0.3 * k;
     ctx.beginPath();
-    ctx.moveTo(M, y);
-    ctx.lineTo(W - M, y);
+    ctx.moveTo(M, clueY);
+    ctx.lineTo(W - M, clueY);
     ctx.stroke();
+    
     if (idx === 0) {
       ctx.beginPath();
-      ctx.moveTo(M, y + clueH);
-      ctx.lineTo(W - M, y + clueH);
+      ctx.moveTo(M, clueY + clueH);
+      ctx.lineTo(W - M, clueY + clueH);
       ctx.stroke();
     }
 
@@ -366,93 +402,91 @@ function drawPdfSheet(canvas, k, withAnswer) {
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 0.5 * k;
     ctx.beginPath();
-    ctx.arc(M + 9*k, y + clueH/2, 4.5*k, 0, Math.PI*2);
+    ctx.arc(M + 9*k, clueY + clueH/2, 4.5*k, 0, Math.PI*2);
     ctx.stroke();
     
     ctx.fillStyle = '#000000';
     ctx.font = `900 ${11 * 0.3528 * k}px ${FONT}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText((idx + 1).toString(), M + 9*k, y + clueH/2 + 1*k);
+    ctx.fillText((idx + 1).toString(), M + 9*k, clueY + clueH/2 + 1*k);
 
     // Digits (3 boxes)
-    ctx.font = `900 ${22 * 0.3528 * k}px ${FONT}`;
+    const digitsStartX = M + 25*k;
+    const digitSize = 16 * k;
+    const digitGap = 4 * k;
+    
+    ctx.font = `900 ${20 * 0.3528 * k}px ${FONT}`;
     clue.guess.forEach((digit, dIdx) => {
-      const dx = M + 25*k + dIdx * 18*k;
-      const dy = y + clueH/2;
+      const dx = digitsStartX + dIdx * (digitSize + digitGap);
+      const dy = clueY + clueH/2;
       
       // Box
       ctx.strokeStyle = '#000000';
       ctx.lineWidth = 0.8 * k;
-      ctx.strokeRect(dx - 8*k, dy - 8*k, 16*k, 16*k);
+      ctx.strokeRect(dx - digitSize/2, dy - digitSize/2, digitSize, digitSize);
       
       ctx.fillStyle = '#000000';
       ctx.fillText(digit.toString(), dx, dy + 1*k);
     });
 
-    // Hint with symbols
-    const hintX = M + 85*k;
-    const hintY = y + clueH/2;
-    
-    // Draw symbols based on clue
-    let symX = hintX;
-    const syms = [];
-    if (clue.correctPlace > 0) {
-      for (let s = 0; s < clue.correctPlace; s++) syms.push('fill');
-    }
-    if (clue.wrongPlace > 0) {
-      for (let s = 0; s < clue.wrongPlace; s++) syms.push('ring');
-    }
-    if (clue.correctPlace === 0 && clue.wrongPlace === 0) {
-      syms.push('none');
-    }
-
-    syms.forEach((type, sIdx) => {
-      if (type === 'fill') {
-        ctx.fillStyle = '#000000';
-        ctx.beginPath();
-        ctx.arc(symX + sIdx*6*k, hintY, 2.5*k, 0, Math.PI*2);
-        ctx.fill();
-      } else if (type === 'ring') {
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 0.5 * k;
-        ctx.beginPath();
-        ctx.arc(symX + sIdx*6*k, hintY, 2.5*k, 0, Math.PI*2);
-        ctx.stroke();
-      } else if (type === 'none') {
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 0.5 * k;
-        ctx.beginPath();
-        ctx.moveTo(symX - 2*k, hintY - 2*k);
-        ctx.lineTo(symX + 2*k, hintY + 2*k);
-        ctx.moveTo(symX + 2*k, hintY - 2*k);
-        ctx.lineTo(symX - 2*k, hintY + 2*k);
-        ctx.stroke();
-      }
-    });
-
-    // Hint text
-    ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
-    ctx.textAlign = 'left';
-    ctx.fillStyle = '#000000';
-    ctx.fillText(getClueText(clue, lang), hintX + 13*k, hintY + 1*k);
-
-    // Dashed line separator
+    // Dashed vertical separator
+    const sepX = digitsStartX + 3*(digitSize + digitGap) + 10*k;
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 0.3 * k;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
-    ctx.moveTo(hintX, y + 2*k);
-    ctx.lineTo(hintX, y + clueH - 2*k);
+    ctx.moveTo(sepX, clueY + 2*k);
+    ctx.lineTo(sepX, clueY + clueH - 2*k);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    y += clueH + clueGap;
+    // Symbols based on clue
+    const symsX = sepX + 10*k;
+    const symsY = clueY + clueH/2;
+    let symOffset = 0;
+    
+    if (clue.correctPlace > 0) {
+      for (let s = 0; s < clue.correctPlace; s++) {
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(symsX + symOffset, symsY, 2.5*k, 0, Math.PI*2);
+        ctx.fill();
+        symOffset += 6*k;
+      }
+    }
+    if (clue.wrongPlace > 0) {
+      for (let s = 0; s < clue.wrongPlace; s++) {
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 0.5 * k;
+        ctx.beginPath();
+        ctx.arc(symsX + symOffset, symsY, 2.5*k, 0, Math.PI*2);
+        ctx.stroke();
+        symOffset += 6*k;
+      }
+    }
+    if (clue.correctPlace === 0 && clue.wrongPlace === 0) {
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 0.5 * k;
+      ctx.beginPath();
+      ctx.moveTo(symsX - 2.5*k, symsY - 2.5*k);
+      ctx.lineTo(symsX + 2.5*k, symsY + 2.5*k);
+      ctx.moveTo(symsX + 2.5*k, symsY - 2.5*k);
+      ctx.lineTo(symsX - 2.5*k, symsY + 2.5*k);
+      ctx.stroke();
+      symOffset += 6*k;
+    }
+
+    // Hint text
+    ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#000000';
+    ctx.fillText(getClueText(clue, lang), symsX + symOffset + 5*k, symsY);
   });
 
-  y += 20 * k;
+  y += 5 * clueH + 20 * k;
 
-  // 6. Answer Section (KATTA MAYDON - 40mm x 40mm)
+  // 6. Answer Section
   ctx.fillStyle = '#000000';
   ctx.font = `900 ${18 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'center';
@@ -460,7 +494,7 @@ function drawPdfSheet(canvas, k, withAnswer) {
   ctx.fillText(ansTitle, W/2, y);
   y += 12 * k;
 
-  const boxSize = 40 * k; // 40mm
+  const boxSize = 40 * k;
   const boxGap = 12 * k;
   const totalW = state.codeLength * boxSize + (state.codeLength - 1) * boxGap;
   const startX = (W - totalW) / 2;
@@ -511,23 +545,23 @@ function drawPdfSheet(canvas, k, withAnswer) {
   }
 
   // 7. Footer
-  y = H - 13 * k;
+  const footerY = H - 13 * k;
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 0.5 * k;
   ctx.beginPath();
-  ctx.moveTo(M, y);
-  ctx.lineTo(W - M, y);
+  ctx.moveTo(M, footerY);
+  ctx.lineTo(W - M, footerY);
   ctx.stroke();
 
   ctx.fillStyle = '#000000';
   ctx.font = `900 ${13 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'left';
-  ctx.fillText(lang === 'uz' ? 'Topshiriqlar Lab' : (lang === 'ru' ? 'Лаборатория головоломок' : 'Puzzle Lab'), M, y + 8*k);
+  ctx.fillText(lang === 'uz' ? 'Topshiriqlar Lab' : (lang === 'ru' ? 'Лаборатория головоломок' : 'Puzzle Lab'), M, footerY + 8*k);
 
-  ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
+  ctx.font = `700 ${9 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'right';
   const footerText = lang === 'uz' ? 'Kodni topdingmi? Javobingni tekshirib ko\'r!' : (lang === 'ru' ? 'Нашёл код? Проверь свой ответ!' : 'Found the code? Check your answer!');
-  ctx.fillText(footerText, W - M, y + 8*k);
+  ctx.fillText(footerText, W - M, footerY + 8*k);
 }
 
 export function exportPdf(withAnswer) {
