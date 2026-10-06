@@ -1,0 +1,293 @@
+import { CAT_KEYS, CAT_ICONS, generateWordSearch } from './logic.js';
+import { t, getLang } from '../../core/i18n.js';
+import { makePdf, downloadPdf } from '../../core/pdf.js';
+
+let state = {
+  cat: 'school',
+  level: 1,
+  seed: Math.floor(Math.random()*1e9)+1,
+  showSettings: false,
+  showPdfDropdown: false,
+  puzzle: null
+};
+
+const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
+const PALETTE = ['#F3F4F6','#E5E7EB','#D1D5DB','#9CA3AF','#6B7280','#4B5563','#374151'];
+
+export function init(container) {
+  state.seed = Math.floor(Math.random()*1e9)+1;
+  generateAndRender(container);
+}
+
+function generateAndRender(container) {
+  const lang = getLang();
+  state.puzzle = generateWordSearch(state.cat, state.level, state.seed, lang);
+  render(container);
+}
+
+function render(container) {
+  if (state.showSettings) {
+    renderSettingsModal(container);
+    return;
+  }
+
+  const lang = getLang();
+  
+  container.innerHTML = `
+    <div class="card">
+      <div class="game-header">
+        <h2>🔍 ${t('tabWords')}</h2>
+        <p>${t('wordsDefTitle')}</p>
+        <div style="margin-top:8px; font-size:13px; color:var(--text-muted);">
+           ${t('catNames')[state.cat]} | ${t('wordsLevelNames')[state.level]} | 🔢 #${state.seed}
+          <br>📝 ${state.puzzle.total} ta so'z | 📐 ${state.puzzle.N}×${state.puzzle.N}
+        </div>
+      </div>
+
+      <canvas id="wCanvas" style="width:100%; max-width:500px; margin:0 auto; display:block; border-radius:12px; border:2px solid var(--border);"></canvas>
+
+      <div class="action-bar" style="margin-top:16px;">
+        <button id="wNew" class="primary">🔄 Yangi</button>
+        
+        <div class="dropdown-container">
+          <button id="pdfDropdownBtn">📄 ${t('pdfBtn')} ▼</button>
+          <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
+            <button id="pdfTaskBtn">📋 ${t('pdfTask')}</button>
+            <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
+          </div>
+        </div>
+        
+        <button id="settingsBtn">️</button>
+      </div>
+    </div>
+  `;
+
+  draw(container);
+  attachEvents(container);
+}
+
+function renderSettingsModal(container) {
+  const lang = getLang();
+  
+  container.innerHTML = `
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <h3>⚙️ ${t('settingsTitle')}</h3>
+        
+        <label style="display:block; margin-bottom:12px;">
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('wordsCategoryLabel')}</span>
+          <select id="setCat" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
+            ${CAT_KEYS.map(k => `<option value="${k}" ${state.cat === k ? 'selected' : ''}>${CAT_ICONS[k]} ${t('catNames')[k]}</option>`).join('')}
+          </select>
+        </label>
+
+        <label style="display:block; margin-bottom:12px;">
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('wordsLevelLabel')}</span>
+          <select id="setLevel" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
+            ${t('wordsLevelNames').map((name, i) => `<option value="${i}" ${state.level === i ? 'selected' : ''}>${name}</option>`).join('')}
+          </select>
+        </label>
+
+        <label style="display:block; margin-bottom:12px;">
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">🔢 ${t('wordsSeedLabel')}</span>
+          <input type="number" id="setSeed" min="1" value="${state.seed}" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
+        </label>
+
+        <div class="modal-actions">
+          <button id="cancelSettingsBtn">${t('cancel')}</button>
+          <button id="saveSettingsBtn" class="primary">${t('save')}</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  container.querySelector('#modalOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }
+  });
+  container.querySelector('#cancelSettingsBtn').addEventListener('click', () => { state.showSettings = false; render(container); });
+  container.querySelector('#saveSettingsBtn').addEventListener('click', () => {
+    state.cat = container.querySelector('#setCat').value;
+    state.level = parseInt(container.querySelector('#setLevel').value);
+    state.seed = Math.max(1, parseInt(container.querySelector('#setSeed').value) || 1);
+    state.showSettings = false;
+    generateAndRender(container);
+  });
+}
+
+function attachEvents(container) {
+  container.querySelector('#wNew').addEventListener('click', () => {
+    state.seed = Math.floor(Math.random()*1e9)+1;
+    generateAndRender(container);
+  });
+
+  container.querySelector('#settingsBtn').addEventListener('click', () => {
+    state.showSettings = true;
+    render(container);
+  });
+
+  container.querySelector('#pdfDropdownBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.showPdfDropdown = !state.showPdfDropdown;
+    container.querySelector('#pdfDropdown').classList.toggle('show', state.showPdfDropdown);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown-container')) {
+      state.showPdfDropdown = false;
+      const dd = container.querySelector('#pdfDropdown');
+      if (dd) dd.classList.remove('show');
+    }
+  });
+
+  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(false);
+  });
+
+  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(true);
+  });
+}
+
+function drawSheet(canvas, k, showSolution) {
+  if (!state.puzzle) {
+    const lang = getLang();
+    state.puzzle = generateWordSearch(state.cat, state.level, state.seed, lang);
+  }
+  
+  const p = state.puzzle;
+  const N = p.N;
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const lang = getLang();
+  const M = 14 * k;
+  
+  // Title
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const title = lang === 'uz' ? "SO'Z QIDIRUV" : (lang === 'ru' ? 'НАЙДИ СЛОВА' : 'WORD SEARCH');
+  ctx.fillText(title, 105*k, M);
+  
+  // Category and level
+  ctx.font = `${12 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#6B7280';
+  ctx.fillText(`${t('catNames')[state.cat]} | ${t('wordsLevelNames')[state.level]} | #${state.seed}`, 105*k, M + 10*k);
+  
+  // Instruction
+  ctx.font = `${10 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#374151';
+  ctx.textAlign = 'center';
+  ctx.fillText(t('wordsInstruction'), 105*k, M + 18*k);
+
+  // Grid
+  const top = M + 28*k;
+  const availW = 210*k - 2*M;
+  const cellMm = Math.min(availW / N, 13*k);
+  const size = cellMm * N;
+  const gx = 105*k - size/2;
+  const gy = top;
+
+  // Draw solution highlights (for answer PDF)
+  if (showSolution) {
+    p.words.forEach((wd, wi) => {
+      ctx.fillStyle = PALETTE[wi % PALETTE.length];
+      wd.cells.forEach(([r, c]) => {
+        ctx.fillRect(gx + c*cellMm, gy + r*cellMm, cellMm, cellMm);
+      });
+    });
+  }
+
+  // Letters
+  ctx.font = `700 ${cellMm*0.6}px ${FONT}`;
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      ctx.fillText(p.grid[r*N+c], gx + (c+0.5)*cellMm, gy + (r+0.5)*cellMm);
+    }
+  }
+
+  // Grid lines (thin)
+  ctx.strokeStyle = '#D1D5DB';
+  ctx.lineWidth = 0.3 * k;
+  ctx.beginPath();
+  for (let i = 0; i <= N; i++) {
+    ctx.moveTo(gx + i*cellMm, gy);
+    ctx.lineTo(gx + i*cellMm, gy + size);
+    ctx.moveTo(gx, gy + i*cellMm);
+    ctx.lineTo(gx + size, gy + i*cellMm);
+  }
+  ctx.stroke();
+
+  // Outer border (thick)
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = 1.2 * k;
+  ctx.strokeRect(gx, gy, size, size);
+
+  // Words list
+  const listTop = gy + size + 10*k;
+  ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000000';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  const listTitle = lang === 'uz' ? "Topiladigan so'zlar:" : (lang === 'ru' ? 'Найди слова:' : 'Find words:');
+  ctx.fillText(listTitle, M, listTop);
+
+  const wordsSorted = p.words.map(w => w.word).slice().sort();
+  const cols = p.total <= 8 ? 2 : (p.total <= 12 ? 3 : 4);
+  const colW = (210*k - 2*M) / cols;
+  const rowH = 7 * k;
+  
+  ctx.font = `${10 * 0.3528 * k}px ${FONT}`;
+  wordsSorted.forEach((w, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = M + col * colW;
+    const y = listTop + 8*k + row * rowH;
+    
+    // Checkbox
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 0.5 * k;
+    ctx.strokeRect(x, y, 4*k, 4*k);
+    
+    // Word
+    ctx.fillText(w, x + 6*k, y + 0.5*k);
+  });
+
+  // Footer
+  ctx.font = `${8 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#9CA3AF';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'alphabetic';
+  const footer = lang === 'uz' ? 'Topshiriqlar Lab' : (lang === 'ru' ? 'Лаборатория головоломок' : 'Puzzle Lab');
+  ctx.fillText(footer, 210*k - M, 297*k - M);
+}
+
+function draw(container) {
+  const canvas = container.querySelector('#wCanvas');
+  if (!canvas) return;
+  drawSheet(canvas, 1240/210, false);
+}
+
+export function exportPdf(withSolution) {
+  const c = document.createElement('canvas');
+  drawSheet(c, 300/25.4, withSolution);
+  c.toBlob(async blob => {
+    if (!blob) { alert('PDF xatosi'); return; }
+    const jpeg = new Uint8Array(await blob.arrayBuffer());
+    const lang = getLang();
+    const fileName = lang === 'uz' 
+      ? (withSolution ? `So'z qidiruv #${state.seed} (Javob).pdf` : `So'z qidiruv #${state.seed}.pdf`)
+      : (lang === 'ru' ? (withSolution ? `Найди слова №${state.seed} (Ответ).pdf` : `Найди слова №${state.seed}.pdf`)
+      : (withSolution ? `Word Search #${state.seed} (Answer).pdf` : `Word Search #${state.seed}.pdf`));
+    downloadPdf(makePdf(jpeg, c.width, c.height), fileName);
+  }, 'image/jpeg', 0.93);
+}
