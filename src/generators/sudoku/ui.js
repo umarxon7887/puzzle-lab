@@ -8,6 +8,7 @@ let state = {
   seed: Math.floor(Math.random()*1e9)+1,
   showSettings: false,
   showPdfDropdown: false,
+  showSolution: false,
   puzzle: null
 };
 
@@ -30,7 +31,6 @@ function render(container) {
   }
 
   const lang = getLang();
-  const typeKeys = Object.keys(TYPES);
   
   container.innerHTML = `
     <div class="card">
@@ -45,7 +45,8 @@ function render(container) {
       <canvas id="sCanvas" style="width:100%; max-width:500px; margin:0 auto; display:block; border-radius:12px; border:2px solid var(--border);"></canvas>
 
       <div class="action-bar" style="margin-top:16px;">
-        <button id="sNew" class="primary">🔄 Yangi</button>
+        <button id="sNew" class="primary"> Yangi</button>
+        <button id="sSolution">${state.showSolution ? ' Yashirish' : '️ Javobni ko\'rish'}</button>
         
         <div class="dropdown-container">
           <button id="pdfDropdownBtn">📄 ${t('pdfBtn')} ▼</button>
@@ -55,7 +56,7 @@ function render(container) {
           </div>
         </div>
         
-        <button id="settingsBtn">⚙️</button>
+        <button id="settingsBtn">️</button>
       </div>
     </div>
   `;
@@ -71,10 +72,10 @@ function renderSettingsModal(container) {
   container.innerHTML = `
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal">
-        <h3>⚙️ ${t('settingsTitle')}</h3>
+        <h3>️ ${t('settingsTitle')}</h3>
         
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📊 ${t('sudokuTypeLabel')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('sudokuTypeLabel')}</span>
           <select id="setType" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
             ${typeKeys.map(k => `<option value="${k}" ${state.type === k ? 'selected' : ''}>${t('typeNames')[k]}</option>`).join('')}
           </select>
@@ -119,6 +120,14 @@ function attachEvents(container) {
     generateAndRender(container);
   });
 
+  container.querySelector('#sSolution').addEventListener('click', () => {
+    state.showSolution = !state.showSolution;
+    draw(container);
+    // Tugma matnini yangilash
+    const btn = container.querySelector('#sSolution');
+    btn.textContent = state.showSolution ? '🙈 Yashirish' : '👁️ Javobni ko\'rish';
+  });
+
   container.querySelector('#settingsBtn').addEventListener('click', () => {
     state.showSettings = true;
     render(container);
@@ -149,66 +158,13 @@ function attachEvents(container) {
   });
 }
 
-function drawSheet(canvas, k, showSolution) {
-  if (!state.puzzle) state.puzzle = generateSudoku(state.type, state.level, state.seed);
-  const p = state.puzzle;
-  const spec = p.spec, N = spec.N;
-  const ctx = canvas.getContext('2d');
-  canvas.width = Math.round(210*k);
-  canvas.height = Math.round(297*k);
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  const M = 14 * k, areaW = 210 * k - 2*M;
-  const fpx = 24 * 0.3528 * k;
-  ctx.font = `700 ${fpx}px ${FONT}`;
-  ctx.fillStyle = '#000000'; 
-  ctx.textAlign = 'center'; 
-  ctx.textBaseline = 'top';
-  
-  const lang = getLang();
-  const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
-  ctx.fillText(title, 105*k, M);
-  
-  const footH = 7 * k;
-  ctx.font = `${8*0.3528*k}px ${FONT}`;
-  ctx.fillStyle = '#6B7280'; 
-  ctx.textAlign = 'right'; 
-  ctx.textBaseline = 'alphabetic';
-  const footText = lang === 'uz' ? `Sudoku #${state.seed} (${t('typeNames')[state.type]}, ${t('levelNames')[state.level]})` 
-               : (lang === 'ru' ? `Судоку №${state.seed}` : `Sudoku #${state.seed}`);
-  ctx.fillText(footText, 210*k - M, 297*k - M);
-
-  const ruleFont = 11 * 0.3528 * k;
-  ctx.font = `${ruleFont}px ${FONT}`;
-  ctx.textAlign = 'center';
-  const ruleText = t('sudokuRule', N, spec.jig, spec.diag);
-  
-  // Simple text wrapping for rule
-  const words = ruleText.split(' ');
-  let lines = [], currentLine = words[0];
-  for (let i = 1; i < words.length; i++) {
-    if (ctx.measureText(currentLine + ' ' + words[i]).width < areaW - 20*k) {
-      currentLine += ' ' + words[i];
-    } else {
-      lines.push(currentLine);
-      currentLine = words[i];
-    }
-  }
-  lines.push(currentLine);
-  
-  const top = M + 15*k;
-  const ruleH = lines.length * ruleFont * 1.3;
-  lines.forEach((ln, i) => ctx.fillText(ln, 105*k, top + i * ruleFont * 1.3));
-
-  const areaH = (297 * k - M - footH) - (top + ruleH + 8*k);
-  const cellMm = Math.min(areaW / N, 30*k, (areaH) / N);
-  const size = cellMm * N;
-  const gx = 105*k - size/2;
-  const gy = top + ruleH + 12*k;
+function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) {
+  const spec = puzzle.spec, N = spec.N;
+  const cellMm = size / N;
+  const gx = offsetX, gy = offsetY;
   const cx = c => gx + c*cellMm, cy = r => gy + r*cellMm;
 
-  // Diagonal highlight (light gray for B&W print)
+  // Diagonal highlight
   if (spec.diag) {
     ctx.fillStyle = '#F3F4F6';
     for (let i = 0; i < N; i++) {
@@ -217,7 +173,7 @@ function drawSheet(canvas, k, showSolution) {
     }
   }
 
-  // Jigsaw regions (alternating very light gray/white for B&W distinction)
+  // Jigsaw regions
   if (spec.jig) {
     const adj = Array.from({length:N}, () => new Set());
     for (let i = 0; i < N*N; i++) {
@@ -243,12 +199,11 @@ function drawSheet(canvas, k, showSolution) {
   ctx.textAlign = 'center'; 
   ctx.textBaseline = 'middle';
   for (let i = 0; i < N*N; i++) {
-    const given = p.puzzle[i], v = given || (showSolution ? p.sol[i] : 0);
+    const given = puzzle.puzzle[i], v = given || (showSolution ? puzzle.sol[i] : 0);
     if (!v) continue;
     const x = cx(i % N) + cellMm/2, y = cy(Math.floor(i / N)) + cellMm/2;
     ctx.font = `700 ${cellMm*0.55}px ${FONT}`;
-    ctx.fillStyle = given ? '#000000' : '#EF4444'; // Red for solution in preview, black in PDF
-    if (!showSolution || given) ctx.fillStyle = '#000000'; // Force black for PDF
+    ctx.fillStyle = given ? '#000000' : '#EF4444';
     ctx.fillText(String(v), x, y + cellMm*0.04);
   }
 
@@ -281,23 +236,130 @@ function drawSheet(canvas, k, showSolution) {
   ctx.strokeRect(gx, gy, size, size);
 }
 
+function drawSheet(canvas, k, showSolution, fourPerPage = false) {
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const lang = getLang();
+  const M = 10 * k;
+  
+  if (fourPerPage) {
+    // 4 ta sudoku (2×2 grid)
+    const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
+    ctx.font = `700 ${18 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(title, 105*k, M);
+    
+    const footText = lang === 'uz' ? `Seed: ${state.seed} | ${t('typeNames')[state.type]} | ${t('levelNames')[state.level]}` 
+                 : (lang === 'ru' ? `№${state.seed}` : `#${state.seed}`);
+    ctx.font = `${8*0.3528*k}px ${FONT}`;
+    ctx.fillStyle = '#6B7280';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(footText, 210*k - M, 297*k - M);
+
+    const top = M + 12*k;
+    const bottom = 297*k - M - 10*k;
+    const availH = bottom - top;
+    const availW = 210*k - 2*M;
+    
+    const sudokuSize = Math.min(availW/2 - 5*k, availH/2 - 5*k);
+    const gapX = (availW - 2*sudokuSize) / 3;
+    const gapY = (availH - 2*sudokuSize) / 3;
+    
+    const positions = [
+      {x: M + gapX, y: top + gapY},
+      {x: M + gapX + sudokuSize + gapX, y: top + gapY},
+      {x: M + gapX, y: top + gapY + sudokuSize + gapY},
+      {x: M + gapX + sudokuSize + gapX, y: top + gapY + sudokuSize + gapY}
+    ];
+    
+    positions.forEach((pos, idx) => {
+      const puzzleSeed = state.seed + idx * 1000;
+      const puzzle = generateSudoku(state.type, state.level, puzzleSeed);
+      drawSingleSudoku(ctx, k, puzzle, showSolution, pos.x, pos.y, sudokuSize);
+      
+      // Sudoku raqami
+      ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
+      ctx.fillStyle = '#6B7280';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`#${idx + 1}`, pos.x, pos.y - 8*k);
+    });
+  } else {
+    // 1 ta sudoku (ekran uchun)
+    if (!state.puzzle) state.puzzle = generateSudoku(state.type, state.level, state.seed);
+    const p = state.puzzle;
+    const spec = p.spec, N = spec.N;
+    
+    const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
+    ctx.font = `700 ${24 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(title, 105*k, M);
+    
+    const footText = lang === 'uz' ? `Sudoku #${state.seed} (${t('typeNames')[state.type]}, ${t('levelNames')[state.level]})` 
+                 : (lang === 'ru' ? `Судоку №${state.seed}` : `Sudoku #${state.seed}`);
+    ctx.font = `${8*0.3528*k}px ${FONT}`;
+    ctx.fillStyle = '#6B7280';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(footText, 210*k - M, 297*k - M);
+
+    const ruleFont = 11 * 0.3528 * k;
+    ctx.font = `${ruleFont}px ${FONT}`;
+    ctx.textAlign = 'center';
+    const ruleText = t('sudokuRule', N, spec.jig, spec.diag);
+    
+    const words = ruleText.split(' ');
+    let lines = [], currentLine = words[0];
+    for (let i = 1; i < words.length; i++) {
+      if (ctx.measureText(currentLine + ' ' + words[i]).width < 190*k) {
+        currentLine += ' ' + words[i];
+      } else {
+        lines.push(currentLine);
+        currentLine = words[i];
+      }
+    }
+    lines.push(currentLine);
+    
+    const top = M + 15*k;
+    const ruleH = lines.length * ruleFont * 1.3;
+    lines.forEach((ln, i) => ctx.fillText(ln, 105*k, top + i * ruleFont * 1.3));
+
+    const areaH = (297*k - M - 10*k) - (top + ruleH + 8*k);
+    const cellMm = Math.min((190*k) / N, 30*k, areaH / N);
+    const size = cellMm * N;
+    const gx = 105*k - size/2;
+    const gy = top + ruleH + 12*k;
+    
+    drawSingleSudoku(ctx, k, p, showSolution, gx, gy, size);
+  }
+}
+
 function draw(container) {
   const canvas = container.querySelector('#sCanvas');
   if (!canvas) return;
-  drawSheet(canvas, 1240/210, false);
+  drawSheet(canvas, 1240/210, state.showSolution, false);
 }
 
 export function exportPdf(withSolution) {
   const c = document.createElement('canvas');
-  drawSheet(c, 300/25.4, withSolution);
+  drawSheet(c, 300/25.4, withSolution, true); // 4 ta sudoku bir sahifada
   c.toBlob(async blob => {
     if (!blob) { alert('PDF xatosi'); return; }
     const jpeg = new Uint8Array(await blob.arrayBuffer());
     const lang = getLang();
     const fileName = lang === 'uz' 
-      ? (withSolution ? `Sudoku #${state.seed} (Javob).pdf` : `Sudoku #${state.seed}.pdf`)
-      : (lang === 'ru' ? (withSolution ? `Судоку №${state.seed} (Ответ).pdf` : `Судоку №${state.seed}.pdf`)
-      : (withSolution ? `Sudoku #${state.seed} (Answer).pdf` : `Sudoku #${state.seed}.pdf`));
+      ? (withSolution ? `Sudoku #${state.seed} (Javob, 4ta).pdf` : `Sudoku #${state.seed} (4ta).pdf`)
+      : (lang === 'ru' ? (withSolution ? `Судоку №${state.seed} (Ответ, 4шт).pdf` : `Судоку №${state.seed} (4шт).pdf`)
+      : (withSolution ? `Sudoku #${state.seed} (Answer, 4x).pdf` : `Sudoku #${state.seed} (4x).pdf`));
     downloadPdf(makePdf(jpeg, c.width, c.height), fileName);
   }, 'image/jpeg', 0.93);
 }
