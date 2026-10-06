@@ -1,18 +1,19 @@
 import { TYPES, LEVEL_CLUES, generateSudoku } from './logic.js';
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
+import { renderActionBar } from '../../components/ActionBar.js';
 
 let state = {
-  type: '9',
-  level: 1,
-  seed: Math.floor(Math.random()*1e9)+1,
-  showSettings: false,
-  showPdfDropdown: false,
-  showSolution: false,
-  puzzle: null
+  type: '9', level: 1, seed: Math.floor(Math.random()*1e9)+1,
+  showSettings: false, showSolution: false, puzzle: null
 };
 
 const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
+
+function getSudokusPerPage(type) {
+  const N = TYPES[type].N;
+  return N <= 6 ? 4 : 2;
+}
 
 export function init(container) {
   state.seed = Math.floor(Math.random()*1e9)+1;
@@ -25,13 +26,9 @@ function generateAndRender(container) {
 }
 
 function render(container) {
-  if (state.showSettings) {
-    renderSettingsModal(container);
-    return;
-  }
-
+  if (state.showSettings) { renderSettingsModal(container); return; }
   const lang = getLang();
-  
+  const perPage = getSudokusPerPage(state.type);
   container.innerHTML = `
     <div class="card">
       <div class="game-header">
@@ -39,60 +36,51 @@ function render(container) {
         <p>${t('sudokuDefTitle')}</p>
         <div style="margin-top:8px; font-size:13px; color:var(--text-muted);">
           📊 ${t('typeNames')[state.type]} | ${t('levelNames')[state.level]} | 🔢 #${state.seed}
+          <br>📄 PDF da: <strong>${perPage} ta</strong> bir sahifada
         </div>
       </div>
-
       <canvas id="sCanvas" style="width:100%; max-width:500px; margin:0 auto; display:block; border-radius:12px; border:2px solid var(--border);"></canvas>
-
-      <div class="action-bar" style="margin-top:16px;">
-        <button id="sNew" class="primary"> Yangi</button>
-        <button id="sSolution">${state.showSolution ? ' Yashirish' : '️ Javobni ko\'rish'}</button>
-        
-        <div class="dropdown-container">
-          <button id="pdfDropdownBtn">📄 ${t('pdfBtn')} ▼</button>
-          <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
-            <button id="pdfTaskBtn">📋 ${t('pdfTask')}</button>
-            <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
-          </div>
-        </div>
-        
-        <button id="settingsBtn">️</button>
-      </div>
     </div>
   `;
-
+  renderActionBar(container, {
+    primaryText: '🔄 Yangi',
+    primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; generateAndRender(container); },
+    showPdf: true, showSettings: true, showAnswer: true,
+    answerVisible: state.showSolution,
+    onPdfTask: () => exportPdf(false),
+    onPdfAnswer: () => exportPdf(true),
+    onSettings: () => { state.showSettings = true; render(container); },
+    onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
+    i18n: {
+      new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'),
+      settings: 'Sozlamalar', showAnswer: 'Javobni ko\'rish', hideAnswer: 'Javobni yashirish'
+    }
+  });
   draw(container);
-  attachEvents(container);
 }
 
 function renderSettingsModal(container) {
-  const lang = getLang();
   const typeKeys = Object.keys(TYPES);
-  
   container.innerHTML = `
     <div class="modal-overlay" id="modalOverlay">
       <div class="modal">
-        <h3>️ ${t('settingsTitle')}</h3>
-        
+        <h3>⚙️ ${t('settingsTitle')}</h3>
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('sudokuTypeLabel')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📊 ${t('sudokuTypeLabel')}</span>
           <select id="setType" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
             ${typeKeys.map(k => `<option value="${k}" ${state.type === k ? 'selected' : ''}>${t('typeNames')[k]}</option>`).join('')}
           </select>
         </label>
-
         <label style="display:block; margin-bottom:12px;">
-          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">📈 ${t('sudokuLevelLabel')}</span>
+          <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;"> ${t('sudokuLevelLabel')}</span>
           <select id="setLevel" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
             ${t('levelNames').map((name, i) => `<option value="${i}" ${state.level === i ? 'selected' : ''}>${name}</option>`).join('')}
           </select>
         </label>
-
         <label style="display:block; margin-bottom:12px;">
           <span style="font-size:13px; font-weight:700; display:block; margin-bottom:4px;">🔢 ${t('sudokuSeedLabel')}</span>
           <input type="number" id="setSeed" min="1" value="${state.seed}" style="width:100%; padding:10px; border-radius:8px; border:2px solid var(--border); font-family:inherit;">
         </label>
-
         <div class="modal-actions">
           <button id="cancelSettingsBtn">${t('cancel')}</button>
           <button id="saveSettingsBtn" class="primary">${t('save')}</button>
@@ -100,10 +88,7 @@ function renderSettingsModal(container) {
       </div>
     </div>
   `;
-
-  container.querySelector('#modalOverlay').addEventListener('click', (e) => {
-    if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }
-  });
+  container.querySelector('#modalOverlay').addEventListener('click', (e) => { if (e.target.id === 'modalOverlay') { state.showSettings = false; render(container); }});
   container.querySelector('#cancelSettingsBtn').addEventListener('click', () => { state.showSettings = false; render(container); });
   container.querySelector('#saveSettingsBtn').addEventListener('click', () => {
     state.type = container.querySelector('#setType').value;
@@ -114,57 +99,11 @@ function renderSettingsModal(container) {
   });
 }
 
-function attachEvents(container) {
-  container.querySelector('#sNew').addEventListener('click', () => {
-    state.seed = Math.floor(Math.random()*1e9)+1;
-    generateAndRender(container);
-  });
-
-  container.querySelector('#sSolution').addEventListener('click', () => {
-    state.showSolution = !state.showSolution;
-    draw(container);
-    // Tugma matnini yangilash
-    const btn = container.querySelector('#sSolution');
-    btn.textContent = state.showSolution ? '🙈 Yashirish' : '👁️ Javobni ko\'rish';
-  });
-
-  container.querySelector('#settingsBtn').addEventListener('click', () => {
-    state.showSettings = true;
-    render(container);
-  });
-
-  container.querySelector('#pdfDropdownBtn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    state.showPdfDropdown = !state.showPdfDropdown;
-    container.querySelector('#pdfDropdown').classList.toggle('show', state.showPdfDropdown);
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.dropdown-container')) {
-      state.showPdfDropdown = false;
-      const dd = container.querySelector('#pdfDropdown');
-      if (dd) dd.classList.remove('show');
-    }
-  });
-
-  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(false);
-  });
-
-  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(true);
-  });
-}
-
 function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) {
   const spec = puzzle.spec, N = spec.N;
   const cellMm = size / N;
   const gx = offsetX, gy = offsetY;
   const cx = c => gx + c*cellMm, cy = r => gy + r*cellMm;
-
-  // Diagonal highlight
   if (spec.diag) {
     ctx.fillStyle = '#F3F4F6';
     for (let i = 0; i < N; i++) {
@@ -172,8 +111,6 @@ function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) 
       if (i !== N-1-i) ctx.fillRect(cx(N-1-i), cy(i), cellMm, cellMm);
     }
   }
-
-  // Jigsaw regions
   if (spec.jig) {
     const adj = Array.from({length:N}, () => new Set());
     for (let i = 0; i < N*N; i++) {
@@ -194,10 +131,7 @@ function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) 
       }
     }
   }
-
-  // Numbers
-  ctx.textAlign = 'center'; 
-  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (let i = 0; i < N*N; i++) {
     const given = puzzle.puzzle[i], v = given || (showSolution ? puzzle.sol[i] : 0);
     if (!v) continue;
@@ -206,20 +140,14 @@ function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) 
     ctx.fillStyle = given ? '#000000' : '#EF4444';
     ctx.fillText(String(v), x, y + cellMm*0.04);
   }
-
-  // Grid lines (thin)
-  ctx.strokeStyle = '#9CA3AF'; 
-  ctx.lineWidth = 0.3 * k;
+  ctx.strokeStyle = '#9CA3AF'; ctx.lineWidth = 0.3 * k;
   ctx.beginPath();
   for (let i = 0; i <= N; i++) {
     ctx.moveTo(cx(i), cy(0)); ctx.lineTo(cx(i), cy(N));
     ctx.moveTo(cx(0), cy(i)); ctx.lineTo(cx(N), cy(i));
   }
   ctx.stroke();
-
-  // Region borders (thick)
-  ctx.strokeStyle = '#000000'; 
-  ctx.lineWidth = 1.2 * k;
+  ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.2 * k;
   ctx.beginPath();
   for (let r = 0; r < N; r++) {
     for (let c = 0; c < N; c++) {
@@ -231,114 +159,114 @@ function drawSingleSudoku(ctx, k, puzzle, showSolution, offsetX, offsetY, size) 
     }
   }
   ctx.stroke();
-  
-  // Outer border
   ctx.strokeRect(gx, gy, size, size);
 }
 
-function drawSheet(canvas, k, showSolution, fourPerPage = false) {
+function drawSheet(canvas, k, showSolution, forPdf = false) {
   const ctx = canvas.getContext('2d');
   canvas.width = Math.round(210*k);
   canvas.height = Math.round(297*k);
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   const lang = getLang();
   const M = 10 * k;
-  
-  if (fourPerPage) {
-    // 4 ta sudoku (2×2 grid)
+  const perPage = forPdf ? getSudokusPerPage(state.type) : 1;
+  if (forPdf && perPage === 4) {
     const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
     ctx.font = `700 ${18 * 0.3528 * k}px ${FONT}`;
     ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     ctx.fillText(title, 105*k, M);
-    
-    const footText = lang === 'uz' ? `Seed: ${state.seed} | ${t('typeNames')[state.type]} | ${t('levelNames')[state.level]}` 
-                 : (lang === 'ru' ? `№${state.seed}` : `#${state.seed}`);
+    const footText = lang === 'uz' ? `Seed: ${state.seed} | ${t('typeNames')[state.type]} | ${t('levelNames')[state.level]}` : (lang === 'ru' ? `№${state.seed}` : `#${state.seed}`);
     ctx.font = `${8*0.3528*k}px ${FONT}`;
     ctx.fillStyle = '#6B7280';
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
     ctx.fillText(footText, 210*k - M, 297*k - M);
-
     const top = M + 12*k;
     const bottom = 297*k - M - 10*k;
     const availH = bottom - top;
     const availW = 210*k - 2*M;
-    
     const sudokuSize = Math.min(availW/2 - 5*k, availH/2 - 5*k);
     const gapX = (availW - 2*sudokuSize) / 3;
     const gapY = (availH - 2*sudokuSize) / 3;
-    
     const positions = [
       {x: M + gapX, y: top + gapY},
       {x: M + gapX + sudokuSize + gapX, y: top + gapY},
       {x: M + gapX, y: top + gapY + sudokuSize + gapY},
       {x: M + gapX + sudokuSize + gapX, y: top + gapY + sudokuSize + gapY}
     ];
-    
     positions.forEach((pos, idx) => {
       const puzzleSeed = state.seed + idx * 1000;
       const puzzle = generateSudoku(state.type, state.level, puzzleSeed);
       drawSingleSudoku(ctx, k, puzzle, showSolution, pos.x, pos.y, sudokuSize);
-      
-      // Sudoku raqami
       ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
       ctx.fillStyle = '#6B7280';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillText(`#${idx + 1}`, pos.x, pos.y - 8*k);
+    });
+  } else if (forPdf && perPage === 2) {
+    const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
+    ctx.font = `700 ${18 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillText(title, 105*k, M);
+    const footText = lang === 'uz' ? `Seed: ${state.seed} | ${t('typeNames')[state.type]} | ${t('levelNames')[state.level]}` : (lang === 'ru' ? `№${state.seed}` : `#${state.seed}`);
+    ctx.font = `${8*0.3528*k}px ${FONT}`;
+    ctx.fillStyle = '#6B7280';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
+    ctx.fillText(footText, 210*k - M, 297*k - M);
+    const top = M + 15*k;
+    const bottom = 297*k - M - 10*k;
+    const availH = bottom - top;
+    const availW = 210*k - 2*M;
+    const sudokuSize = Math.min(availW - 10*k, availH/2 - 10*k);
+    const gapY = (availH - 2*sudokuSize) / 3;
+    const positions = [
+      {x: (210*k - sudokuSize)/2, y: top + gapY},
+      {x: (210*k - sudokuSize)/2, y: top + gapY + sudokuSize + gapY}
+    ];
+    positions.forEach((pos, idx) => {
+      const puzzleSeed = state.seed + idx * 1000;
+      const puzzle = generateSudoku(state.type, state.level, puzzleSeed);
+      drawSingleSudoku(ctx, k, puzzle, showSolution, pos.x, pos.y, sudokuSize);
+      ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
+      ctx.fillStyle = '#6B7280';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
       ctx.fillText(`#${idx + 1}`, pos.x, pos.y - 8*k);
     });
   } else {
-    // 1 ta sudoku (ekran uchun)
     if (!state.puzzle) state.puzzle = generateSudoku(state.type, state.level, state.seed);
     const p = state.puzzle;
     const spec = p.spec, N = spec.N;
-    
     const title = lang === 'uz' ? 'SUDOKU' : (lang === 'ru' ? 'СУДОКУ' : 'SUDOKU');
     ctx.font = `700 ${24 * 0.3528 * k}px ${FONT}`;
     ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     ctx.fillText(title, 105*k, M);
-    
-    const footText = lang === 'uz' ? `Sudoku #${state.seed} (${t('typeNames')[state.type]}, ${t('levelNames')[state.level]})` 
-                 : (lang === 'ru' ? `Судоку №${state.seed}` : `Sudoku #${state.seed}`);
+    const footText = lang === 'uz' ? `Sudoku #${state.seed} (${t('typeNames')[state.type]}, ${t('levelNames')[state.level]})` : (lang === 'ru' ? `Судоку №${state.seed}` : `Sudoku #${state.seed}`);
     ctx.font = `${8*0.3528*k}px ${FONT}`;
     ctx.fillStyle = '#6B7280';
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
     ctx.fillText(footText, 210*k - M, 297*k - M);
-
     const ruleFont = 11 * 0.3528 * k;
     ctx.font = `${ruleFont}px ${FONT}`;
     ctx.textAlign = 'center';
     const ruleText = t('sudokuRule', N, spec.jig, spec.diag);
-    
     const words = ruleText.split(' ');
     let lines = [], currentLine = words[0];
     for (let i = 1; i < words.length; i++) {
-      if (ctx.measureText(currentLine + ' ' + words[i]).width < 190*k) {
-        currentLine += ' ' + words[i];
-      } else {
-        lines.push(currentLine);
-        currentLine = words[i];
-      }
+      if (ctx.measureText(currentLine + ' ' + words[i]).width < 190*k) { currentLine += ' ' + words[i]; }
+      else { lines.push(currentLine); currentLine = words[i]; }
     }
     lines.push(currentLine);
-    
     const top = M + 15*k;
     const ruleH = lines.length * ruleFont * 1.3;
     lines.forEach((ln, i) => ctx.fillText(ln, 105*k, top + i * ruleFont * 1.3));
-
     const areaH = (297*k - M - 10*k) - (top + ruleH + 8*k);
     const cellMm = Math.min((190*k) / N, 30*k, areaH / N);
     const size = cellMm * N;
     const gx = 105*k - size/2;
     const gy = top + ruleH + 12*k;
-    
     drawSingleSudoku(ctx, k, p, showSolution, gx, gy, size);
   }
 }
@@ -351,15 +279,16 @@ function draw(container) {
 
 export function exportPdf(withSolution) {
   const c = document.createElement('canvas');
-  drawSheet(c, 300/25.4, withSolution, true); // 4 ta sudoku bir sahifada
+  drawSheet(c, 300/25.4, withSolution, true);
   c.toBlob(async blob => {
     if (!blob) { alert('PDF xatosi'); return; }
     const jpeg = new Uint8Array(await blob.arrayBuffer());
     const lang = getLang();
+    const perPage = getSudokusPerPage(state.type);
     const fileName = lang === 'uz' 
-      ? (withSolution ? `Sudoku #${state.seed} (Javob, 4ta).pdf` : `Sudoku #${state.seed} (4ta).pdf`)
-      : (lang === 'ru' ? (withSolution ? `Судоку №${state.seed} (Ответ, 4шт).pdf` : `Судоку №${state.seed} (4шт).pdf`)
-      : (withSolution ? `Sudoku #${state.seed} (Answer, 4x).pdf` : `Sudoku #${state.seed} (4x).pdf`));
+      ? (withSolution ? `Sudoku #${state.seed} (Javob, ${perPage}ta).pdf` : `Sudoku #${state.seed} (${perPage}ta).pdf`)
+      : (lang === 'ru' ? (withSolution ? `Судоку №${state.seed} (Ответ, ${perPage}шт).pdf` : `Судоку №${state.seed} (${perPage}шт).pdf`)
+      : (withSolution ? `Sudoku #${state.seed} (Answer, ${perPage}x).pdf` : `Sudoku #${state.seed} (${perPage}x).pdf`));
     downloadPdf(makePdf(jpeg, c.width, c.height), fileName);
   }, 'image/jpeg', 0.93);
 }

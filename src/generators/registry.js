@@ -8,7 +8,7 @@ export const GENERATORS = [
     id: 'maze',
     nameKey: 'tabMaze',
     descriptionKey: 'mazeDesc',
-    cover: '',
+    cover: '🌀',
     coverGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     init: Maze.init,
     exportPDF: Maze.exportPDF
