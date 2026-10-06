@@ -1071,3 +1071,144 @@ button.primary:hover {
     text-align: left;
   }
 }
+
+/* ===== KODNI TOPISH - INPUTLAR KICHIKROQ (5 xonali sig'ishi uchun) ===== */
+.answer-input {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+
+.answer-input input {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--primary);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.answer-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.answer-input input.correct {
+  background: #D1FAE5;
+  border-color: #10B981;
+  color: #065F46;
+}
+
+/* ===== ACTION BAR - ICHCHAMROQ (Instagram/YouTube kabi) ===== */
+.action-bar {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+  position: relative;
+  align-items: center;
+}
+
+.action-bar button {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 36px;
+}
+
+.action-bar button.primary {
+  flex: 2;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.action-bar .dropdown-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.action-bar .dropdown-container button {
+  width: 100%;
+  font-size: 12px;
+  padding: 8px 8px;
+}
+
+.action-bar #settingsBtn {
+  padding: 8px 10px;
+  font-size: 16px;
+  min-width: 36px;
+}
+
+/* ===== MOBIL UCHUN YANADA ICHCHAM ===== */
+@media (max-width: 600px) {
+  .answer-input {
+    gap: 6px;
+  }
+  
+  .answer-input input {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+  
+  .action-bar {
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  
+  .action-bar button {
+    padding: 7px 10px;
+    font-size: 12px;
+    min-height: 34px;
+  }
+  
+  .action-bar button.primary {
+    flex: 1 1 100%;
+    order: -1;
+    padding: 10px 14px;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .action-bar #settingsBtn {
+    font-size: 18px;
+    padding: 7px 10px;
+  }
+  
+  .action-bar #newGameBtn,
+  .action-bar #mNew,
+  .action-bar #sNew,
+  .action-bar #sSolution {
+    font-size: 11px;
+    padding: 7px 8px;
+  }
+  
+  /* Dropdown menyu kichikroq */
+  .dropdown-menu button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* ===== 5 XONALI KOD UCHUN MAXSUS ===== */
+@media (max-width: 400px) {
+  .answer-input input {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+  
+  .answer-input {
+    gap: 4px;
+  }
+}
