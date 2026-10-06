@@ -35,6 +35,11 @@ function render(container) {
     return;
   }
 
+  // Array.from yordamida to'g'ri massiv yaratamiz
+  const inputsHtml = Array.from({ length: state.codeLength }).map((_, i) => 
+    `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
+  ).join('');
+
   container.innerHTML = `
     <div class="card">
       <div class="game-header">
@@ -55,9 +60,7 @@ function render(container) {
         ${t('yourAnswer')}
       </div>
       <div class="answer-input" id="answerInput">
-        ${state.codeLength.map((_, i) => 
-          `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
-        ).join('')}
+        ${inputsHtml}
       </div>
       
       <div class="action-bar">
@@ -131,7 +134,6 @@ function renderSettingsModal(container) {
 }
 
 function attachEvents(container) {
-  // Javobni tekshirish
   container.querySelector('#checkAnswerBtn').addEventListener('click', () => {
     const answer = [];
     for (let i = 0; i < state.codeLength; i++) {
@@ -166,41 +168,40 @@ function attachEvents(container) {
     e.stopPropagation();
     state.showPdfDropdown = !state.showPdfDropdown;
     const dropdown = container.querySelector('#pdfDropdown');
-    dropdown.classList.toggle('show', state.showPdfDropdown);
+    if (dropdown) dropdown.classList.toggle('show', state.showPdfDropdown);
   });
 
-  // Dropdown tashqarisiga bosilganda yopish
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.dropdown-container')) {
       state.showPdfDropdown = false;
-      const dropdown = container.querySelector('#pdfDropdown');
+      const dropdown = document.querySelector('#pdfDropdown');
       if (dropdown) dropdown.classList.remove('show');
     }
   });
 
-  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(false);
-  });
+  const taskBtn = container.querySelector('#pdfTaskBtn');
+  const ansBtn = container.querySelector('#pdfAnswerBtn');
+  if (taskBtn) taskBtn.addEventListener('click', () => { state.showPdfDropdown = false; exportPdf(false); });
+  if (ansBtn) ansBtn.addEventListener('click', () => { state.showPdfDropdown = false; exportPdf(true); });
 
-  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
-    state.showPdfDropdown = false;
-    exportPdf(true);
-  });
-
-  // Inputlar orasida avtomatik o'tish
   for (let i = 0; i < state.codeLength; i++) {
     const input = container.querySelector(`#ans${i}`);
+    if (!input) continue;
     input.addEventListener('input', (e) => {
       state.userAnswer[i] = e.target.value;
       if (e.target.value.length === 1 && i < state.codeLength - 1) {
-        container.querySelector(`#ans${i+1}`).focus();
+        const next = container.querySelector(`#ans${i+1}`);
+        if (next) next.focus();
       }
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (i < state.codeLength - 1) container.querySelector(`#ans${i+1}`).focus();
-        else container.querySelector('#checkAnswerBtn').click();
+        if (i < state.codeLength - 1) {
+          const next = container.querySelector(`#ans${i+1}`);
+          if (next) next.focus();
+        } else {
+          container.querySelector('#checkAnswerBtn').click();
+        }
       }
     });
   }
@@ -209,15 +210,14 @@ function attachEvents(container) {
 function revealAnswer(container) {
   for (let i = 0; i < state.codeLength; i++) {
     const input = container.querySelector(`#ans${i}`);
-    input.value = state.secretCode[i];
-    input.classList.add('correct');
-    input.disabled = true;
+    if (input) {
+      input.value = state.secretCode[i];
+      input.classList.add('correct');
+      input.disabled = true;
+    }
   }
 }
 
-// ==========================================
-// CANVAS PDF GENERATION (Professional Design)
-// ==========================================
 function drawPdfSheet(canvas, k, withAnswer) {
   const lang = getLang();
   const ctx = canvas.getContext('2d');
@@ -225,22 +225,23 @@ function drawPdfSheet(canvas, k, withAnswer) {
   canvas.width = W;
   canvas.height = H;
 
-  // 1. Background (White)
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, W, H);
 
-  const M = 20 * k; // Margin
+  const M = 20 * k;
   let y = M;
 
-  // 2. Header (Gradient)
   const headerH = 44 * k;
   const grad = ctx.createLinearGradient(0, y, W, y + headerH);
   grad.addColorStop(0, '#4F46E5');
   grad.addColorStop(1, '#7C3AED');
   ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.roundRect(M, y, W - 2*M, headerH, 12);
-  ctx.fill();
+  
+  if (ctx.roundRect) {
+    ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, headerH, 12); ctx.fill();
+  } else {
+    ctx.fillRect(M, y, W - 2*M, headerH);
+  }
 
   ctx.fillStyle = '#FFFFFF';
   ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
@@ -256,15 +257,15 @@ function drawPdfSheet(canvas, k, withAnswer) {
 
   y += headerH + 15 * k;
 
-  // 3. Instructions Box
   const instH = 35 * k;
   ctx.fillStyle = '#E0EDFF';
   ctx.strokeStyle = '#B6D2FF';
   ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.roundRect(M, y, W - 2*M, instH, 12);
-  ctx.fill();
-  ctx.stroke();
+  if (ctx.roundRect) {
+    ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, instH, 12); ctx.fill(); ctx.stroke();
+  } else {
+    ctx.fillRect(M, y, W - 2*M, instH); ctx.strokeRect(M, y, W - 2*M, instH);
+  }
 
   ctx.fillStyle = '#1E3A8A';
   ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
@@ -274,7 +275,6 @@ function drawPdfSheet(canvas, k, withAnswer) {
 
   y += instH + 15 * k;
 
-  // 4. Clues
   const clueH = 24 * k;
   const clueGap = 4 * k;
   
@@ -283,23 +283,20 @@ function drawPdfSheet(canvas, k, withAnswer) {
     ctx.fillStyle = isOdd ? '#F5F3FF' : '#FFFFFF';
     ctx.strokeStyle = '#E5E7EB';
     ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(M, y, W - 2*M, clueH, 12);
-    ctx.fill();
-    ctx.stroke();
+    if (ctx.roundRect) {
+      ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, clueH, 12); ctx.fill(); ctx.stroke();
+    } else {
+      ctx.fillRect(M, y, W - 2*M, clueH); ctx.strokeRect(M, y, W - 2*M, clueH);
+    }
 
-    // Clue Number
     ctx.fillStyle = '#4F46E5';
-    ctx.beginPath();
-    ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#FFFFFF';
     ctx.font = `900 ${11 * 0.3528 * k}px ${FONT}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText((idx + 1).toString(), M + 15*k, y + clueH/2 + 1*k);
 
-    // Digits
     ctx.font = `900 ${20 * 0.3528 * k}px ${FONT}`;
     ctx.fillStyle = '#4F46E5';
     ctx.textAlign = 'center';
@@ -308,7 +305,7 @@ function drawPdfSheet(canvas, k, withAnswer) {
       const dy = y + clueH/2;
       ctx.fillStyle = '#FFFFFF';
       ctx.beginPath();
-      ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4);
+      if (ctx.roundRect) { ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4); } else { ctx.rect(dx - 8*k, dy - 9*k, 16*k, 18*k); }
       ctx.fill();
       ctx.strokeStyle = '#4F46E5';
       ctx.lineWidth = 1.5;
@@ -317,14 +314,12 @@ function drawPdfSheet(canvas, k, withAnswer) {
       ctx.fillText(digit.toString(), dx, dy + 1*k);
     });
 
-    // Hint Text & Dot
     ctx.textAlign = 'left';
     ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
     ctx.fillStyle = '#4B5563';
     const hintX = M + 100*k;
     ctx.fillText(getClueText(clue, lang), hintX + 12*k, y + clueH/2 + 1*k);
 
-    // Dot (Green, Orange, Red) with B&W safe icons
     const dotX = hintX;
     const dotY = y + clueH/2;
     if (clue.correctPlace > 0 && clue.wrongPlace === 0) {
@@ -350,7 +345,6 @@ function drawPdfSheet(canvas, k, withAnswer) {
 
   y += 15 * k;
 
-  // 5. Answer Section
   ctx.fillStyle = '#7C3AED';
   ctx.font = `900 ${18 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'center';
@@ -366,16 +360,13 @@ function drawPdfSheet(canvas, k, withAnswer) {
   for (let i = 0; i < state.codeLength; i++) {
     const bx = startX + i * (boxSize + boxGap);
     
-    // Box
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = '#4F46E5';
     ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(bx, y, boxSize, boxSize, 12);
+    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, y, boxSize, boxSize, 12); } else { ctx.rect(bx, y, boxSize, boxSize); }
     ctx.fill();
     ctx.stroke();
 
-    // Dashed lines inside
     ctx.strokeStyle = '#A5B4FC';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 4]);
@@ -383,7 +374,6 @@ function drawPdfSheet(canvas, k, withAnswer) {
     ctx.beginPath(); ctx.moveTo(bx + 10*k, y + boxSize - 12*k); ctx.lineTo(bx + boxSize - 10*k, y + boxSize - 12*k); ctx.stroke();
     ctx.setLineDash([]);
 
-    // If answer is included, draw it
     if (withAnswer) {
       ctx.fillStyle = '#10B981';
       ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
@@ -392,17 +382,13 @@ function drawPdfSheet(canvas, k, withAnswer) {
       ctx.fillText(state.secretCode[i].toString(), bx + boxSize/2, y + boxSize/2 + 2*k);
     }
 
-    // Label (1, 2, 3)
     ctx.fillStyle = '#F59E0B';
-    ctx.beginPath();
-    ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2);
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2); ctx.fill();
     ctx.fillStyle = '#FFFFFF';
     ctx.font = `900 ${12 * 0.3528 * k}px ${FONT}`;
     ctx.fillText((i + 1).toString(), bx + boxSize/2, y + boxSize + 11*k);
   }
 
-  // 6. Footer
   y = H - 20 * k;
   ctx.fillStyle = '#6B7280';
   ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
@@ -413,7 +399,7 @@ function drawPdfSheet(canvas, k, withAnswer) {
 
 export function exportPdf(withAnswer) {
   const c = document.createElement('canvas');
-  drawPdfSheet(c, 300 / 25.4, withAnswer); // 300 DPI
+  drawPdfSheet(c, 300 / 25.4, withAnswer);
   
   c.toBlob(async blob => {
     if (!blob) {
