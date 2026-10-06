@@ -1340,3 +1340,150 @@ button.primary:hover {
   .icon-btn { width: 42px; height: 42px; min-width: 42px; min-height: 42px; }
   .icon-btn svg { width: 20px; height: 20px; }
 }
+
+/* KODNI TOPISH - JAVOB KATAKLARI YONMA-YON */
+.answer-input {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 24px 0 !important;
+  flex-wrap: nowrap !important;
+}
+
+.answer-input input {
+  width: 50px !important;
+  height: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--primary);
+  transition: all 0.2s;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+}
+
+.answer-input input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.answer-input input.correct {
+  background: #D1FAE5;
+  border-color: #10B981;
+  color: #065F46;
+}
+
+/* 5 xonali kod uchun kichikroq */
+@media (max-width: 400px) {
+  .answer-input {
+    gap: 6px !important;
+  }
+  .answer-input input {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    font-size: 20px;
+  }
+}
+
+/* PACK GENERATOR STYLES */
+.pack-types {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pack-type-card {
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  transition: all 0.2s;
+}
+
+.pack-type-card:hover {
+  border-color: var(--primary);
+}
+
+.pack-type-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pack-type-body {
+  transition: opacity 0.2s;
+}
+
+.pack-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 16px;
+}
+
+.pack-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #F9FAFB;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.pack-item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.pack-item-icon {
+  font-size: 24px;
+}
+
+.pack-item-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn-small {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid var(--border);
+  color: #4B5563;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.icon-btn-small:hover {
+  background: #EEF2FF;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.icon-btn-small[data-action="remove"]:hover {
+  background: #FEE2E2;
+  border-color: #EF4444;
+  color: #EF4444;
+}
