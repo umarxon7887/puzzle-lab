@@ -35,7 +35,6 @@ function render(container) {
     return;
   }
 
-  // FIX: Array.from ishlatildi, chunki codeLength son
   const inputsHtml = Array.from({length: state.codeLength}, (_, i) => 
     `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
   ).join('');
@@ -68,9 +67,9 @@ function render(container) {
         <button id="newGameBtn">🔄 Yangi</button>
         
         <div class="dropdown-container">
-          <button id="pdfDropdownBtn">${t('pdfBtn')} ▼</button>
+          <button id="pdfDropdownBtn"> ${t('pdfBtn')} ▼</button>
           <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
-            <button id="pdfTaskBtn"> ${t('pdfTask')}</button>
+            <button id="pdfTaskBtn">📋 ${t('pdfTask')}</button>
             <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
           </div>
         </div>
@@ -215,6 +214,9 @@ function revealAnswer(container) {
   }
 }
 
+// ==========================================
+// YANGI PDF DIZAYNI (Oq-qora + Katta Javob)
+// ==========================================
 function drawPdfSheet(canvas, k, withAnswer) {
   const lang = getLang();
   const ctx = canvas.getContext('2d');
@@ -222,176 +224,174 @@ function drawPdfSheet(canvas, k, withAnswer) {
   canvas.width = W;
   canvas.height = H;
 
+  // 1. Background (White - siyohni tejaydi)
   ctx.fillStyle = '#FFFFFF';
   ctx.fillRect(0, 0, W, H);
 
-  const M = 20 * k;
+  const M = 15 * k;
   let y = M;
 
-  const headerH = 44 * k;
-  const grad = ctx.createLinearGradient(0, y, W, y + headerH);
-  grad.addColorStop(0, '#4F46E5');
-  grad.addColorStop(1, '#7C3AED');
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.roundRect(M, y, W - 2*M, headerH, 12);
-  ctx.fill();
-
+  // 2. Header (Qora-chiziqli, oq-qora uchun)
+  const headerH = 35 * k;
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(M, y, W - 2*M, headerH);
+  
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
-  ctx.textAlign = 'left';
+  ctx.font = `900 ${24 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  const title = lang === 'uz' ? ' KODNI TOPING!' : (lang === 'ru' ? '🔐 УГАДАЙТЕ КОД!' : '🔐 CRACK THE CODE!');
-  ctx.fillText(title, M + 10*k, y + headerH * 0.35);
-
-  ctx.font = `700 ${14 * 0.3528 * k}px ${FONT}`;
-  ctx.fillStyle = '#FDE68A';
-  const subtitle = lang === 'uz' ? 'Ipuclardan foydalanib, maxfiy kodni toping' : (lang === 'ru' ? 'Используйте подсказки ниже' : 'Use the clues below');
-  ctx.fillText(subtitle, M + 10*k, y + headerH * 0.75);
-
+  const title = lang === 'uz' ? 'KODNI TOPING!' : (lang === 'ru' ? 'УГАДАЙТЕ КОД!' : 'CRACK THE CODE!');
+  ctx.fillText(title, W/2, y + headerH/2);
+  
   y += headerH + 15 * k;
 
-  const instH = 35 * k;
-  ctx.fillStyle = '#E0EDFF';
-  ctx.strokeStyle = '#B6D2FF';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.roundRect(M, y, W - 2*M, instH, 12);
-  ctx.fill();
-  ctx.stroke();
+  // 3. Instructions (oq-qora)
+  const instH = 30 * k;
+  ctx.fillStyle = '#F3F4F6';
+  ctx.fillRect(M, y, W - 2*M, instH);
+  ctx.strokeStyle = '#9CA3AF';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(M, y, W - 2*M, instH);
 
-  ctx.fillStyle = '#1E3A8A';
-  ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
-  ctx.textAlign = 'left';
-  const instText = lang === 'uz' ? 'Har bir qatorda raqamlar bor. Yonidagi yozuv shu raqamlarning qanchasi to\'g\'ri ekanligini aytadi.' : (lang === 'ru' ? 'В каждой строке есть цифры. Текст рядом говорит, сколько из них верно.' : 'Each row has digits. The text tells how many are correct.');
-  ctx.fillText(instText, M + 10*k, y + 15 * k);
+  ctx.fillStyle = '#111827';
+  ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'center';
+  const instText = lang === 'uz' ? 'Har bir qatorda raqamlar bor. Yonidagi yozuv shu raqamlarning qanchasi to\'g\'ri ekanligini aytadi.' : (lang === 'ru' ? 'В каждой строке есть цифры. Текст говорит, сколько из них верно.' : 'Each row has digits. The text tells how many are correct.');
+  ctx.fillText(instText, W/2, y + instH/2);
 
   y += instH + 15 * k;
 
-  const clueH = 24 * k;
+  // 4. Clues (Oq-qora, chiziqli)
+  const clueH = 22 * k;
   const clueGap = 4 * k;
   
   state.clues.forEach((clue, idx) => {
-    const isOdd = idx % 2 === 0;
-    ctx.fillStyle = isOdd ? '#F5F3FF' : '#FFFFFF';
-    ctx.strokeStyle = '#E5E7EB';
+    // Alternating backgrounds for readability
+    ctx.fillStyle = idx % 2 === 0 ? '#FFFFFF' : '#F9FAFB';
+    ctx.fillRect(M, y, W - 2*M, clueH);
+    
+    ctx.strokeStyle = '#D1D5DB';
     ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(M, y, W - 2*M, clueH, 12);
-    ctx.fill();
-    ctx.stroke();
+    ctx.strokeRect(M + 1*k, y + 1*k, W - 2*M - 2*k, clueH - 2*k);
 
-    ctx.fillStyle = '#4F46E5';
+    // Clue Number (circle)
+    ctx.fillStyle = '#000000';
     ctx.beginPath();
-    ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2);
+    ctx.arc(M + 12*k, y + clueH/2, 7*k, 0, Math.PI * 2);
     ctx.fill();
+    
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = `900 ${11 * 0.3528 * k}px ${FONT}`;
+    ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText((idx + 1).toString(), M + 15*k, y + clueH/2 + 1*k);
+    ctx.fillText((idx + 1).toString(), M + 12*k, y + clueH/2 + 1*k);
 
-    ctx.font = `900 ${20 * 0.3528 * k}px ${FONT}`;
-    ctx.fillStyle = '#4F46E5';
-    ctx.textAlign = 'center';
+    // Digits (boxes)
+    ctx.font = `900 ${18 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#000000';
     clue.guess.forEach((digit, dIdx) => {
-      const dx = M + 35*k + dIdx * 18*k;
+      const dx = M + 30*k + dIdx * 16*k;
       const dy = y + clueH/2;
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath();
-      ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4);
-      ctx.fill();
-      ctx.strokeStyle = '#4F46E5';
+      
+      // Box
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.fillStyle = '#4F46E5';
+      ctx.strokeRect(dx - 7*k, dy - 8*k, 14*k, 16*k);
+      
       ctx.fillText(digit.toString(), dx, dy + 1*k);
     });
 
+    // Hint Text with ICONS (oq-qora uchun belgilar)
     ctx.textAlign = 'left';
-    ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
-    ctx.fillStyle = '#4B5563';
-    const hintX = M + 100*k;
-    ctx.fillText(getClueText(clue, lang), hintX + 12*k, y + clueH/2 + 1*k);
+    ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
+    ctx.fillStyle = '#374151';
+    const hintX = M + 85*k;
+    ctx.fillText(getClueText(clue, lang), hintX + 10*k, y + clueH/2 + 1*k);
 
-    const dotX = hintX;
-    const dotY = y + clueH/2;
+    // ICON (oq-qora uchun)
+    const iconX = hintX;
+    const iconY = y + clueH/2;
+    ctx.font = `900 ${12 * 0.3528 * k}px ${FONT}`;
+    
     if (clue.correctPlace > 0 && clue.wrongPlace === 0) {
-      ctx.fillStyle = '#10B981';
-      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#FFFFFF'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('✓', dotX, dotY + 1*k);
+      ctx.fillStyle = '#000000';
+      ctx.fillText('✓', iconX, iconY + 1*k);
     } else if (clue.correctPlace === 0 && clue.wrongPlace > 0) {
-      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#F59E0B'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('↻', dotX, dotY + 1*k);
+      ctx.fillStyle = '#000000';
+      ctx.fillText('↻', iconX, iconY + 1*k);
     } else if (clue.correctPlace === 0 && clue.wrongPlace === 0) {
-      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#EF4444'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#EF4444'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('✕', dotX, dotY + 1*k);
+      ctx.fillStyle = '#000000';
+      ctx.fillText('✕', iconX, iconY + 1*k);
     } else {
-      ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#F59E0B'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(dotX, dotY, 6*k, 0, Math.PI*2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#F59E0B'; ctx.font = `900 ${10 * 0.3528 * k}px ${FONT}`; ctx.fillText('↻', dotX, dotY + 1*k);
+      ctx.fillStyle = '#000000';
+      ctx.fillText('↻', iconX, iconY + 1*k);
     }
 
     y += clueH + clueGap;
   });
 
-  y += 15 * k;
+  y += 20 * k;
 
-  ctx.fillStyle = '#7C3AED';
-  ctx.font = `900 ${18 * 0.3528 * k}px ${FONT}`;
+  // 5. Answer Section (KATTA MAYDON)
+  ctx.fillStyle = '#000000';
+  ctx.font = `900 ${16 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'center';
   const ansTitle = lang === 'uz' ? 'JAVOB:' : (lang === 'ru' ? 'ОТВЕТ:' : 'ANSWER:');
   ctx.fillText(ansTitle, W/2, y);
-  y += 10 * k;
+  y += 12 * k;
 
-  const boxSize = 50 * k;
-  const boxGap = 15 * k;
+  // KATTA javob katakchalari (60mm x 60mm)
+  const boxSize = 60 * k; // KATTAROQ!
+  const boxGap = 20 * k;
   const totalW = state.codeLength * boxSize + (state.codeLength - 1) * boxGap;
   const startX = (W - totalW) / 2;
 
   for (let i = 0; i < state.codeLength; i++) {
     const bx = startX + i * (boxSize + boxGap);
     
+    // Box (qora chiziq)
     ctx.fillStyle = '#FFFFFF';
-    ctx.strokeStyle = '#4F46E5';
+    ctx.strokeStyle = '#000000';
     ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(bx, y, boxSize, boxSize, 12);
-    ctx.fill();
-    ctx.stroke();
+    ctx.strokeRect(bx, y, boxSize, boxSize);
 
-    ctx.strokeStyle = '#A5B4FC';
+    // Dashed lines (yozish uchun yo'l)
+    ctx.strokeStyle = '#9CA3AF';
     ctx.lineWidth = 1;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath(); ctx.moveTo(bx + 10*k, y + 12*k); ctx.lineTo(bx + boxSize - 10*k, y + 12*k); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(bx + 10*k, y + boxSize - 12*k); ctx.lineTo(bx + boxSize - 10*k, y + boxSize - 12*k); ctx.stroke();
+    ctx.setLineDash([6, 6]);
+    
+    // 3 ta chiziq
+    for (let line = 1; line <= 3; line++) {
+      const lineY = y + (boxSize * line / 4);
+      ctx.beginPath();
+      ctx.moveTo(bx + 8*k, lineY);
+      ctx.lineTo(bx + boxSize - 8*k, lineY);
+      ctx.stroke();
+    }
     ctx.setLineDash([]);
 
+    // If answer is included
     if (withAnswer) {
-      ctx.fillStyle = '#10B981';
-      ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
+      ctx.fillStyle = '#000000';
+      ctx.font = `900 ${36 * 0.3528 * k}px ${FONT}`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(state.secretCode[i].toString(), bx + boxSize/2, y + boxSize/2 + 2*k);
+      ctx.fillText(state.secretCode[i].toString(), bx + boxSize/2, y + boxSize/2);
     }
 
-    ctx.fillStyle = '#F59E0B';
-    ctx.beginPath();
-    ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2);
-    ctx.fill();
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = `900 ${12 * 0.3528 * k}px ${FONT}`;
-    ctx.fillText((i + 1).toString(), bx + boxSize/2, y + boxSize + 11*k);
+    // Label (1, 2, 3)
+    ctx.fillStyle = '#000000';
+    ctx.font = `700 ${11 * 0.3528 * k}px ${FONT}`;
+    ctx.fillText((i + 1).toString(), bx + boxSize/2, y + boxSize + 8*k);
   }
 
-  y = H - 20 * k;
+  // 6. Footer
+  y = H - 15 * k;
   ctx.fillStyle = '#6B7280';
-  ctx.font = `700 ${10 * 0.3528 * k}px ${FONT}`;
-  ctx.textAlign = 'right';
+  ctx.font = `700 ${9 * 0.3528 * k}px ${FONT}`;
+  ctx.textAlign = 'center';
   const footer = lang === 'uz' ? 'Topshiriqlar Lab' : (lang === 'ru' ? 'Лаборатория головоломок' : 'Puzzle Lab');
-  ctx.fillText(footer, W - M, y);
+  ctx.fillText(footer, W/2, y);
 }
 
 export function exportPdf(withAnswer) {
