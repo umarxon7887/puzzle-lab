@@ -1045,3 +1045,29 @@ button.primary:hover {
 
 /* ===== PDF KATAKCHALARINI KATTALASHTIRISH (Canvas ichida) ===== */
 /* Bu CSS emas, lekin Canvas kodida boxSize 50mm ga o'zgartiriladi */
+
+/* 5 xonali kod uchun ixchamroq joylashuv */
+.clue-guess {
+  letter-spacing: 1px !important; /* 3px dan 1px ga kamaytirildi */
+  font-size: 18px !important; /* 20px dan 18px ga */
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Mobil uchun yanada ixcham */
+@media (max-width: 600px) {
+  .clue-guess {
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+  }
+  .clue-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+  }
+  .clue-text {
+    max-width: 100%;
+    text-align: left;
+  }
+}

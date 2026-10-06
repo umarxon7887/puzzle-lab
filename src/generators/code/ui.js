@@ -49,7 +49,7 @@ function render(container) {
       <div class="clues-container">
         ${state.clues.map((clue, idx) => `
           <div class="clue-item">
-            <div class="clue-guess">${clue.guess.join(' ')}</div>
+            <div class="clue-guess">${clue.guess.join('')}</div>
             <div class="clue-text">${getClueText(clue, lang)}</div>
           </div>
         `).join('')}
