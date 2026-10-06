@@ -1,19 +1,19 @@
 import * as Code from './code/ui.js';
-// import * as Maze from './maze/ui.js'; // Kelajakda shu yerda ochiladi
+import * as Maze from './maze/ui.js';
 
 export const GENERATORS = [
+  {
+    id: 'maze',
+    nameKey: 'tabMaze',
+    init: Maze.init,
+    exportPDF: Maze.exportPDF
+  },
   {
     id: 'code',
     nameKey: 'tabCode',
     init: Code.init,
     exportPDF: Code.exportPDF
   }
-  // {
-  //   id: 'maze',
-  //   nameKey: 'tabMaze',
-  //   init: Maze.init,
-  //   exportPDF: Maze.exportPDF
-  // }
 ];
 
 export function getGenerator(id) {

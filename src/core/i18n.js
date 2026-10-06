@@ -4,74 +4,63 @@ export const translations = {
     tabCode: "🔐 Kodni top",
     tabMaze: "🌀 Labirint",
     tabSudoku: "🔢 Sudoku",
-    gameTitle: "Maxfiy kodni toping!",
-    gameDesc: "3 ta raqamli maxfiy kodni toping. Har bir urinishdan keyin maslahat olasiz.",
-    yourGuess: "Sizning taxminingiz",
-    checkBtn: "Tekshirish",
-    newGameBtn: "Yangi kod",
-    revealBtn: "Kodni ko'rsatish",
-    attempts: "Urinishlar tarixi",
-    enterAll: "Barcha raqamlarni kiriting!",
-    win: "🎉 Tabriklaymiz! Kodni topdingiz!",
-    gameOver: "O'yin tugadi. To'g'ri kod: ",
-    clueCorrect: "✅ To'g'ri raqam, to'g'ri joyda",
-    clueWrongPlace: "⚠️ To'g'ri raqam, noto'g'ri joyda",
-    clueWrong: "❌ Noto'g'ri raqam"
+    mazeTitleLabel: "Topshiriq matni",
+    fsLabel: "Matn o'lchami:",
+    width: "Eni", height: "Bo'yi", seed: "Raqami",
+    difficulty: "Qiyinlik", shape: "Shakl", hero: "Qahramon", goal: "Manzil",
+    showSolution: "Ekranda to'g'ri yo'lni ko'rsatish",
+    newMaze: "Yangi labirint", downloadPdf: "PDF yuklab olish", downloadAns: "Javobni yuklab olish",
+    mazeDefTitle: "Qahramonga uyiga yo'l topishga yordam ber!",
+    gameTitle: "Maxfiy kodni toping!", gameDesc: "3 ta raqamli maxfiy kodni toping.",
+    yourGuess: "Sizning taxminingiz", checkBtn: "Tekshirish", newGameBtn: "Yangi kod",
+    revealBtn: "Kodni ko'rsatish", attempts: "Urinishlar", enterAll: "Barcha raqamlarni kiriting!",
+    win: "🎉 Tabriklaymiz! Kodni topdingiz!", gameOver: "O'yin tugadi. To'g'ri kod: ",
+    clueCorrect: "✅ To'g'ri raqam, to'g'ri joyda", clueWrongPlace: "⚠️ To'g'ri raqam, noto'g'ri joyda", clueWrong: "❌ Noto'g'ri raqam"
   },
   ru: {
     title: "Лаборатория головоломок",
     tabCode: "🔐 Угадай код",
     tabMaze: "🌀 Лабиринт",
     tabSudoku: "🔢 Судоку",
-    gameTitle: "Угадайте секретный код!",
-    gameDesc: "Найдите секретный код из 3 цифр. После каждой попытки вы получите подсказку.",
-    yourGuess: "Ваша догадка",
-    checkBtn: "Проверить",
-    newGameBtn: "Новый код",
-    revealBtn: "Показать код",
-    attempts: "История попыток",
-    enterAll: "Введите все цифры!",
-    win: "🎉 Поздравляем! Вы угадали код!",
-    gameOver: "Игра окончена. Правильный код: ",
-    clueCorrect: "✅ Правильная цифра, на своём месте",
-    clueWrongPlace: "⚠️ Правильная цифра, но не на своём месте",
-    clueWrong: "❌ Неправильная цифра"
+    mazeTitleLabel: "Текст задания",
+    fsLabel: "Размер текста:",
+    width: "Ширина", height: "Высота", seed: "Номер",
+    difficulty: "Сложность", shape: "Форма", hero: "Герой", goal: "Цель",
+    showSolution: "Показать правильный путь",
+    newMaze: "Новый лабиринт", downloadPdf: "Скачать PDF", downloadAns: "Скачать ответ",
+    mazeDefTitle: "Помоги герою найти дорогу домой!",
+    gameTitle: "Угадайте секретный код!", gameDesc: "Найдите секретный код из 3 цифр.",
+    yourGuess: "Ваша догадка", checkBtn: "Проверить", newGameBtn: "Новый код",
+    revealBtn: "Показать код", attempts: "Попытки", enterAll: "Введите все цифры!",
+    win: "🎉 Поздравляем! Вы угадали код!", gameOver: "Игра окончена. Правильный код: ",
+    clueCorrect: "✅ Правильная цифра, на своём месте", clueWrongPlace: "⚠️ Правильная цифра, но не на своём месте", clueWrong: "❌ Неправильная цифра"
   },
   en: {
     title: "Puzzle Lab",
     tabCode: "🔐 Code Breaker",
     tabMaze: "🌀 Maze",
     tabSudoku: "🔢 Sudoku",
-    gameTitle: "Crack the Secret Code!",
-    gameDesc: "Find the secret 3-digit code. You'll get clues after each guess.",
-    yourGuess: "Your Guess",
-    checkBtn: "Check",
-    newGameBtn: "New Code",
-    revealBtn: "Reveal Code",
-    attempts: "Attempt History",
-    enterAll: "Enter all digits!",
-    win: "🎉 Congratulations! You cracked the code!",
-    gameOver: "Game over. The correct code was: ",
-    clueCorrect: "✅ Correct number, correct place",
-    clueWrongPlace: "⚠️ Correct number, wrong place",
-    clueWrong: "❌ Incorrect number"
+    mazeTitleLabel: "Task Text",
+    fsLabel: "Font Size:",
+    width: "Width", height: "Height", seed: "Seed",
+    difficulty: "Difficulty", shape: "Shape", hero: "Hero", goal: "Goal",
+    showSolution: "Show solution on screen",
+    newMaze: "New Maze", downloadPdf: "Download PDF", downloadAns: "Download Answer",
+    mazeDefTitle: "Help the hero find the way home!",
+    gameTitle: "Crack the Secret Code!", gameDesc: "Find the secret 3-digit code.",
+    yourGuess: "Your Guess", checkBtn: "Check", newGameBtn: "New Code",
+    revealBtn: "Reveal Code", attempts: "Attempts", enterAll: "Enter all digits!",
+    win: "🎉 Congratulations! You cracked the code!", gameOver: "Game over. The correct code was: ",
+    clueCorrect: "✅ Correct number, correct place", clueWrongPlace: "⚠️ Correct number, wrong place", clueWrong: "❌ Incorrect number"
   }
 };
 
 let currentLang = localStorage.getItem('puzzle_lang') || 'uz';
-
-export function t(key) {
-  return translations[currentLang][key] || key;
-}
-
+export function t(key) { return translations[currentLang][key] || key; }
 export function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('puzzle_lang', lang);
   document.documentElement.lang = lang;
-  // Sahifani qayta yuklaymiz, til o'zgarganini ko'rsatish uchun
   window.location.reload(); 
 }
-
-export function getLang() {
-  return currentLang;
-}
+export function getLang() { return currentLang; }
