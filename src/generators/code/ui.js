@@ -35,8 +35,8 @@ function render(container) {
     return;
   }
 
-  // Array.from yordamida to'g'ri massiv yaratamiz
-  const inputsHtml = Array.from({ length: state.codeLength }).map((_, i) => 
+  // FIX: Array.from ishlatildi, chunki codeLength son
+  const inputsHtml = Array.from({length: state.codeLength}, (_, i) => 
     `<input type="number" id="ans${i}" min="0" max="9" placeholder="?" maxlength="1" value="${state.userAnswer[i] || ''}">`
   ).join('');
 
@@ -65,12 +65,12 @@ function render(container) {
       
       <div class="action-bar">
         <button id="checkAnswerBtn" class="primary">✓ ${t('checkAnswer')}</button>
-        <button id="newGameBtn">🔄 ${t('newGameBtn')}</button>
+        <button id="newGameBtn">🔄 Yangi</button>
         
         <div class="dropdown-container">
           <button id="pdfDropdownBtn">${t('pdfBtn')} ▼</button>
           <div class="dropdown-menu ${state.showPdfDropdown ? 'show' : ''}" id="pdfDropdown">
-            <button id="pdfTaskBtn">📋 ${t('pdfTask')}</button>
+            <button id="pdfTaskBtn"> ${t('pdfTask')}</button>
             <button id="pdfAnswerBtn">✅ ${t('pdfAnswer')}</button>
           </div>
         </div>
@@ -168,40 +168,39 @@ function attachEvents(container) {
     e.stopPropagation();
     state.showPdfDropdown = !state.showPdfDropdown;
     const dropdown = container.querySelector('#pdfDropdown');
-    if (dropdown) dropdown.classList.toggle('show', state.showPdfDropdown);
+    dropdown.classList.toggle('show', state.showPdfDropdown);
   });
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.dropdown-container')) {
       state.showPdfDropdown = false;
-      const dropdown = document.querySelector('#pdfDropdown');
+      const dropdown = container.querySelector('#pdfDropdown');
       if (dropdown) dropdown.classList.remove('show');
     }
   });
 
-  const taskBtn = container.querySelector('#pdfTaskBtn');
-  const ansBtn = container.querySelector('#pdfAnswerBtn');
-  if (taskBtn) taskBtn.addEventListener('click', () => { state.showPdfDropdown = false; exportPdf(false); });
-  if (ansBtn) ansBtn.addEventListener('click', () => { state.showPdfDropdown = false; exportPdf(true); });
+  container.querySelector('#pdfTaskBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(false);
+  });
+
+  container.querySelector('#pdfAnswerBtn').addEventListener('click', () => {
+    state.showPdfDropdown = false;
+    exportPdf(true);
+  });
 
   for (let i = 0; i < state.codeLength; i++) {
     const input = container.querySelector(`#ans${i}`);
-    if (!input) continue;
     input.addEventListener('input', (e) => {
       state.userAnswer[i] = e.target.value;
       if (e.target.value.length === 1 && i < state.codeLength - 1) {
-        const next = container.querySelector(`#ans${i+1}`);
-        if (next) next.focus();
+        container.querySelector(`#ans${i+1}`).focus();
       }
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (i < state.codeLength - 1) {
-          const next = container.querySelector(`#ans${i+1}`);
-          if (next) next.focus();
-        } else {
-          container.querySelector('#checkAnswerBtn').click();
-        }
+        if (i < state.codeLength - 1) container.querySelector(`#ans${i+1}`).focus();
+        else container.querySelector('#checkAnswerBtn').click();
       }
     });
   }
@@ -210,11 +209,9 @@ function attachEvents(container) {
 function revealAnswer(container) {
   for (let i = 0; i < state.codeLength; i++) {
     const input = container.querySelector(`#ans${i}`);
-    if (input) {
-      input.value = state.secretCode[i];
-      input.classList.add('correct');
-      input.disabled = true;
-    }
+    input.value = state.secretCode[i];
+    input.classList.add('correct');
+    input.disabled = true;
   }
 }
 
@@ -236,18 +233,15 @@ function drawPdfSheet(canvas, k, withAnswer) {
   grad.addColorStop(0, '#4F46E5');
   grad.addColorStop(1, '#7C3AED');
   ctx.fillStyle = grad;
-  
-  if (ctx.roundRect) {
-    ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, headerH, 12); ctx.fill();
-  } else {
-    ctx.fillRect(M, y, W - 2*M, headerH);
-  }
+  ctx.beginPath();
+  ctx.roundRect(M, y, W - 2*M, headerH, 12);
+  ctx.fill();
 
   ctx.fillStyle = '#FFFFFF';
   ctx.font = `900 ${28 * 0.3528 * k}px ${FONT}`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  const title = lang === 'uz' ? '🔐 KODNI TOPING!' : (lang === 'ru' ? '🔐 УГАДАЙТЕ КОД!' : '🔐 CRACK THE CODE!');
+  const title = lang === 'uz' ? ' KODNI TOPING!' : (lang === 'ru' ? '🔐 УГАДАЙТЕ КОД!' : '🔐 CRACK THE CODE!');
   ctx.fillText(title, M + 10*k, y + headerH * 0.35);
 
   ctx.font = `700 ${14 * 0.3528 * k}px ${FONT}`;
@@ -261,11 +255,10 @@ function drawPdfSheet(canvas, k, withAnswer) {
   ctx.fillStyle = '#E0EDFF';
   ctx.strokeStyle = '#B6D2FF';
   ctx.lineWidth = 1.5;
-  if (ctx.roundRect) {
-    ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, instH, 12); ctx.fill(); ctx.stroke();
-  } else {
-    ctx.fillRect(M, y, W - 2*M, instH); ctx.strokeRect(M, y, W - 2*M, instH);
-  }
+  ctx.beginPath();
+  ctx.roundRect(M, y, W - 2*M, instH, 12);
+  ctx.fill();
+  ctx.stroke();
 
   ctx.fillStyle = '#1E3A8A';
   ctx.font = `700 ${12 * 0.3528 * k}px ${FONT}`;
@@ -283,14 +276,15 @@ function drawPdfSheet(canvas, k, withAnswer) {
     ctx.fillStyle = isOdd ? '#F5F3FF' : '#FFFFFF';
     ctx.strokeStyle = '#E5E7EB';
     ctx.lineWidth = 1;
-    if (ctx.roundRect) {
-      ctx.beginPath(); ctx.roundRect(M, y, W - 2*M, clueH, 12); ctx.fill(); ctx.stroke();
-    } else {
-      ctx.fillRect(M, y, W - 2*M, clueH); ctx.strokeRect(M, y, W - 2*M, clueH);
-    }
+    ctx.beginPath();
+    ctx.roundRect(M, y, W - 2*M, clueH, 12);
+    ctx.fill();
+    ctx.stroke();
 
     ctx.fillStyle = '#4F46E5';
-    ctx.beginPath(); ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.arc(M + 15*k, y + clueH/2, 8*k, 0, Math.PI * 2);
+    ctx.fill();
     ctx.fillStyle = '#FFFFFF';
     ctx.font = `900 ${11 * 0.3528 * k}px ${FONT}`;
     ctx.textAlign = 'center';
@@ -305,7 +299,7 @@ function drawPdfSheet(canvas, k, withAnswer) {
       const dy = y + clueH/2;
       ctx.fillStyle = '#FFFFFF';
       ctx.beginPath();
-      if (ctx.roundRect) { ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4); } else { ctx.rect(dx - 8*k, dy - 9*k, 16*k, 18*k); }
+      ctx.roundRect(dx - 8*k, dy - 9*k, 16*k, 18*k, 4);
       ctx.fill();
       ctx.strokeStyle = '#4F46E5';
       ctx.lineWidth = 1.5;
@@ -363,7 +357,8 @@ function drawPdfSheet(canvas, k, withAnswer) {
     ctx.fillStyle = '#FFFFFF';
     ctx.strokeStyle = '#4F46E5';
     ctx.lineWidth = 3;
-    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(bx, y, boxSize, boxSize, 12); } else { ctx.rect(bx, y, boxSize, boxSize); }
+    ctx.beginPath();
+    ctx.roundRect(bx, y, boxSize, boxSize, 12);
     ctx.fill();
     ctx.stroke();
 
@@ -383,7 +378,9 @@ function drawPdfSheet(canvas, k, withAnswer) {
     }
 
     ctx.fillStyle = '#F59E0B';
-    ctx.beginPath(); ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath();
+    ctx.arc(bx + boxSize/2, y + boxSize + 10*k, 8*k, 0, Math.PI*2);
+    ctx.fill();
     ctx.fillStyle = '#FFFFFF';
     ctx.font = `900 ${12 * 0.3528 * k}px ${FONT}`;
     ctx.fillText((i + 1).toString(), bx + boxSize/2, y + boxSize + 11*k);
