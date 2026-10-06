@@ -1,18 +1,16 @@
 import { generateSecretCode, checkGuess } from './logic.js';
-import { t } from '../../core/i18n.js';
+import { t, getLang } from '../../core/i18n.js';
 
-let secretCode = [];
-let attempts = [];
+let state = {
+  codeLength: 3,
+  secretCode: [],
+  attempts: []
+};
 
 export function init(container) {
-  startNewGame();
+  state.secretCode = generateSecretCode(state.codeLength);
+  state.attempts = [];
   render(container);
-}
-
-function startNewGame() {
-  secretCode = generateSecretCode();
-  attempts = [];
-  console.log("Debug - Secret Code:", secretCode); // O'chirib tashlash mumkin
 }
 
 function render(container) {
@@ -21,16 +19,23 @@ function render(container) {
       <h2>${t('gameTitle')}</h2>
       <p style="color:#6B7280; margin-bottom:16px;">${t('gameDesc')}</p>
       
+      <div style="margin-bottom:16px;">
+        <span class="section-label">Kod uzunligi</span>
+        <div class="level-grid" id="codeLengthPicker">
+          <button data-length="3" class="${state.codeLength === 3 ? 'selected' : ''}">3 xonali</button>
+          <button data-length="4" class="${state.codeLength === 4 ? 'selected' : ''}">4 xonali</button>
+          <button data-length="5" class="${state.codeLength === 5 ? 'selected' : ''}">5 xonali</button>
+        </div>
+      </div>
+      
       <div class="code-display" id="codeDisplay">
-        <div class="code-box hidden">?</div>
-        <div class="code-box hidden">?</div>
-        <div class="code-box hidden">?</div>
+        ${Array(state.codeLength).fill('<div class="code-box hidden">?</div>').join('')}
       </div>
 
-      <div class="guess-input">
-        <input type="number" id="d1" min="0" max="9" placeholder="0">
-        <input type="number" id="d2" min="0" max="9" placeholder="0">
-        <input type="number" id="d3" min="0" max="9" placeholder="0">
+      <div class="guess-input" id="guessInput">
+        ${Array(state.codeLength).fill('').map((_, i) => 
+          `<input type="number" id="d${i+1}" min="0" max="9" placeholder="0" maxlength="1">`
+        ).join('')}
       </div>
       
       <div class="buttons" style="margin-top:16px;">
@@ -50,6 +55,17 @@ function render(container) {
 }
 
 function attachEvents(container) {
+  // Kod uzunligini tanlash
+  container.querySelectorAll('#codeLengthPicker button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.codeLength = parseInt(btn.dataset.length);
+      container.querySelectorAll('#codeLengthPicker button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      startNewGame();
+      render(container);
+    });
+  });
+
   container.querySelector('#newGameBtn').addEventListener('click', () => {
     startNewGame();
     render(container);
@@ -60,50 +76,59 @@ function attachEvents(container) {
   });
 
   container.querySelector('#checkBtn').addEventListener('click', () => {
-    const d1 = container.querySelector('#d1').value;
-    const d2 = container.querySelector('#d2').value;
-    const d3 = container.querySelector('#d3').value;
-    
-    if (d1 === '' || d2 === '' || d3 === '') {
-      alert(t('enterAll'));
-      return;
+    const guess = [];
+    for (let i = 1; i <= state.codeLength; i++) {
+      const val = container.querySelector(`#d${i}`).value;
+      if (val === '') {
+        alert(t('enterAll'));
+        return;
+      }
+      guess.push(parseInt(val));
     }
 
-    const guess = [parseInt(d1), parseInt(d2), parseInt(d3)];
-    const result = checkGuess(secretCode, guess);
-    attempts.push({ guess, result });
+    const result = checkGuess(state.secretCode, guess);
+    state.attempts.push({ guess, result });
     
     renderAttempts(container);
     
-    if (result.correctPlace === 3) {
+    if (result.correctPlace === state.codeLength) {
       setTimeout(() => {
         alert(t('win'));
         revealCode(container);
       }, 100);
     }
 
-    // Inputlarni tozalash va fokusni birinchisiga qaytarish
-    container.querySelector('#d1').value = '';
-    container.querySelector('#d2').value = '';
-    container.querySelector('#d3').value = '';
+    // Inputlarni tozalash
+    for (let i = 1; i <= state.codeLength; i++) {
+      container.querySelector(`#d${i}`).value = '';
+    }
     container.querySelector('#d1').focus();
   });
 
   // Inputlar orasida avtomatik o'tish
-  ['d1', 'd2', 'd3'].forEach((id, idx) => {
-    const input = container.querySelector(`#${id}`);
+  for (let i = 1; i <= state.codeLength; i++) {
+    const input = container.querySelector(`#d${i}`);
     input.addEventListener('input', (e) => {
-      if (e.target.value.length === 1 && idx < 2) {
-        container.querySelector(`#d${idx + 2}`).focus();
+      if (e.target.value.length === 1 && i < state.codeLength) {
+        container.querySelector(`#d${i+1}`).focus();
       }
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        if (idx < 2) container.querySelector(`#d${idx + 2}`).focus();
-        else container.querySelector('#checkBtn').click();
+        if (i < state.codeLength) {
+          container.querySelector(`#d${i+1}`).focus();
+        } else {
+          container.querySelector('#checkBtn').click();
+        }
       }
     });
-  });
+  }
+}
+
+function startNewGame() {
+  state.secretCode = generateSecretCode(state.codeLength);
+  state.attempts = [];
+  console.log("Debug - Secret Code:", state.secretCode);
 }
 
 function renderAttempts(container) {
@@ -112,14 +137,14 @@ function renderAttempts(container) {
   card.style.display = 'block';
   list.innerHTML = '';
 
-  attempts.forEach((att, idx) => {
+  state.attempts.forEach((att, idx) => {
     const div = document.createElement('div');
     div.className = 'attempt-item';
     
     let clueText = '';
     let clueClass = '';
     
-    if (att.result.correctPlace === 3) {
+    if (att.result.correctPlace === state.codeLength) {
       clueText = t('win');
       clueClass = 'correct';
     } else if (att.result.total === 0) {
@@ -147,15 +172,17 @@ function renderAttempts(container) {
 function revealCode(container) {
   const boxes = container.querySelectorAll('.code-box');
   boxes.forEach((box, i) => {
-    box.textContent = secretCode[i];
-    box.classList.remove('hidden');
-    box.classList.add('correct');
+    if (i < state.secretCode.length) {
+      box.textContent = state.secretCode[i];
+      box.classList.remove('hidden');
+      box.classList.add('correct');
+    }
   });
   
   const hintBox = document.createElement('div');
   hintBox.className = 'clue wrong';
   hintBox.style.marginTop = '16px';
-  hintBox.innerHTML = `<strong>${t('gameOver')}</strong> ${secretCode.join(' - ')}`;
+  hintBox.innerHTML = `<strong>${t('gameOver')}</strong> ${state.secretCode.join(' - ')}`;
   container.querySelector('.card').appendChild(hintBox);
 }
 

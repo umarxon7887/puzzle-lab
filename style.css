@@ -566,3 +566,77 @@ button.primary:hover {
     font-size: 72px;
   }
 }
+
+/* SVG shakl ikonkalari uchun */
+.shape-svg {
+  width: 32px;
+  height: 32px;
+  color: currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shape-svg svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Stikerlar uchun yaxshilangan stil */
+.sticker-grid button {
+  font-size: 28px;
+  padding: 8px 4px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.sticker-grid button:hover {
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.sticker-grid button.selected {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Shakl tugmalari uchun */
+.shape-grid button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  min-height: 75px;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.shape-grid button:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.shape-grid button.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+}
+
+.shape-grid button.selected .shape-svg {
+  color: white;
+}

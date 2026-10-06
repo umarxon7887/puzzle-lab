@@ -15,21 +15,11 @@ export const GENERATORS = [
     id: 'code',
     nameKey: 'tabCode',
     descriptionKey: 'codeDesc',
-    cover: '',
+    cover: '🔐',
     coverGradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     init: Code.init,
     exportPDF: Code.exportPDF
   }
-  // Kelajakda qo'shiladi:
-  // {
-  //   id: 'sudoku',
-  //   nameKey: 'tabSudoku',
-  //   descriptionKey: 'sudokuDesc',
-  //   cover: '🔢',
-  //   coverGradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-  //   init: Sudoku.init,
-  //   exportPDF: Sudoku.exportPDF
-  // }
 ];
 
 export function getGenerator(id) {

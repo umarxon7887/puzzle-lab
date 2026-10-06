@@ -1,4 +1,4 @@
-import { buildMaze, SHAPES, HEROES, GOALS, LEVELS } from './logic.js';
+import { buildMaze, SHAPES, HEROES, GOALS, LEVELS, DIRS } from './logic.js';
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
 
@@ -10,9 +10,16 @@ let state = {
 
 const FONT = '"Nunito","Trebuchet MS","DejaVu Sans",Arial,sans-serif';
 
-const SHAPE_ICONS = {
-  rect: '▭', circle: '●', star: '★', heart: '♥',
-  triangle: '▲', diamond: '◆', house: '⌂', hexagon: ''
+// SVG shakl ikonkalari
+const SHAPE_SVG = {
+  rect: '<svg viewBox="0 0 40 40"><rect x="8" y="8" width="24" height="24" fill="currentColor" rx="2"/></svg>',
+  circle: '<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" fill="currentColor"/></svg>',
+  star: '<svg viewBox="0 0 40 40"><polygon points="20,4 25,15 37,15 27,22 31,34 20,27 9,34 13,22 3,15 15,15" fill="currentColor"/></svg>',
+  heart: '<svg viewBox="0 0 40 40"><path d="M20 35 C10 25, 2 18, 2 11 C2 6, 6 2, 11 2 C15 2, 18 5, 20 8 C22 5, 25 2, 29 2 C34 2, 38 6, 38 11 C38 18, 30 25, 20 35 Z" fill="currentColor"/></svg>',
+  triangle: '<svg viewBox="0 0 40 40"><polygon points="20,6 36,34 4,34" fill="currentColor"/></svg>',
+  diamond: '<svg viewBox="0 0 40 40"><polygon points="20,4 36,20 20,36 4,20" fill="currentColor"/></svg>',
+  house: '<svg viewBox="0 0 40 40"><polygon points="20,4 36,18 32,18 32,36 8,36 8,18 4,18" fill="currentColor"/></svg>',
+  hexagon: '<svg viewBox="0 0 40 40"><polygon points="20,4 34,12 34,28 20,36 6,28 6,12" fill="currentColor"/></svg>'
 };
 
 export function init(container) {
@@ -94,7 +101,7 @@ function render(container) {
     lvlBox.appendChild(b);
   });
 
-  // Shape buttons with icons
+  // Shape buttons with SVG icons
   const shpBox = container.querySelector('#mShapes');
   const shpNames = lang === 'uz' 
     ? {rect:"To'rtburchak", circle:"Doira", star:"Yulduz", heart:"Yurak", triangle:"Uchburchak", diamond:"Romb", house:"Uy", hexagon:"Oltiburchak"} 
@@ -104,22 +111,14 @@ function render(container) {
   
   shapeKeys.forEach(key => {
     const b = document.createElement('button');
-    b.innerHTML = `<span class="shape-icon">${SHAPE_ICONS[key]}</span><span>${shpNames[key]}</span>`;
+    b.innerHTML = `<div class="shape-svg">${SHAPE_SVG[key]}</div><span>${shpNames[key]}</span>`;
     if (key === state.shape) {
-      b.style.background = 'var(--primary)';
-      b.style.color = 'white';
-      b.style.borderColor = 'var(--primary)';
+      b.classList.add('selected');
     }
     b.addEventListener('click', () => {
       state.shape = key;
-      shpBox.querySelectorAll('button').forEach(x => { 
-        x.style.background = 'white'; 
-        x.style.color = 'var(--text)'; 
-        x.style.borderColor = 'var(--border)'; 
-      });
-      b.style.background = 'var(--primary)'; 
-      b.style.color = 'white'; 
-      b.style.borderColor = 'var(--primary)';
+      shpBox.querySelectorAll('button').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
       draw(container);
     });
     shpBox.appendChild(b);
@@ -178,8 +177,12 @@ function render(container) {
     container.querySelector('#mSeed').value = state.seed;
     draw(container);
   });
-  container.querySelector('#mPdf').addEventListener('click', () => exportPdf(container, false));
-  container.querySelector('#mAns').addEventListener('click', () => exportPdf(container, true));
+  container.querySelector('#mPdf').addEventListener('click', () => {
+    try { exportPdf(false); } catch(e) { alert('PDF xatosi: ' + e.message); }
+  });
+  container.querySelector('#mAns').addEventListener('click', () => {
+    try { exportPdf(true); } catch(e) { alert('PDF xatosi: ' + e.message); }
+  });
 
   draw(container);
 }
@@ -201,9 +204,29 @@ function wrapLines(ctx, text, maxW) {
 }
 
 function drawMarker(ctx, emoji, cx, cy, size, k) {
-  ctx.font = `${size*0.85*k}px "Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif`;
+  // Emoji'ni bir necha font bilan urinib ko'ramiz
+  const fonts = [
+    `${size*0.85*k}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`,
+    `${size*0.85*k}px "Segoe UI Emoji","Noto Color Emoji",sans-serif`,
+    `${size*0.85*k}px sans-serif`
+  ];
+  
   ctx.textAlign = 'center'; 
   ctx.textBaseline = 'middle';
+  
+  // Har bir fontni sinab ko'ramiz
+  for (const font of fonts) {
+    ctx.font = font;
+    const metrics = ctx.measureText(emoji);
+    if (metrics.width > 0) {
+      ctx.fillStyle = '#1f2a44';
+      ctx.fillText(emoji, cx*k, cy*k);
+      return;
+    }
+  }
+  
+  // Agar hech biri ishlamasa, oxirgisini ishlatamiz
+  ctx.font = fonts[0];
   ctx.fillStyle = '#1f2a44';
   ctx.fillText(emoji, cx*k, cy*k);
 }
@@ -253,9 +276,7 @@ function drawSheet(canvas, k, showSolution) {
 
   const gate = (x, y, d) => (x === m.start[0] && y === m.start[1] && d === m.sDir) || (x === m.end[0] && y === m.end[1] && d === m.eDir);
   ctx.strokeStyle = '#1f2a44';
-  
-  // YANGILANGAN: Qalinroq chiziqlar (professional jurnal sifatida)
-  ctx.lineWidth = Math.min(1.2, Math.max(0.6, cell*0.12)) * k;
+  ctx.lineWidth = Math.min(0.9, Math.max(0.3, cell*0.09)) * k;
   ctx.lineCap = 'round'; 
   ctx.lineJoin = 'round';
   ctx.beginPath();
@@ -275,11 +296,14 @@ function drawSheet(canvas, k, showSolution) {
   const outside = (c, d) => { const [cx, cy] = ctr(c), off = cell/2 + S/2 + 0.5; return [cx + DIRS[d][0]*off, cy + DIRS[d][1]*off]; };
   const sp = outside(m.start, m.sDir), ep = outside(m.end, m.eDir);
 
+  // To'g'ri yo'lni chizish (showSolution parametri bilan)
   if (showSolution) {
     ctx.strokeStyle = 'rgba(229,72,77,.85)';
-    ctx.lineWidth = Math.min(2.5, Math.max(1.0, cell * 0.25)) * k;
+    ctx.lineWidth = Math.min(2, Math.max(0.5, cell * 0.22)) * k;
     ctx.beginPath();
-    [sp, ...m.path.map(ctr), ep].forEach(([px, py], i) => { i ? ctx.lineTo(px*k, py*k) : ctx.moveTo(px*k, py*k); });
+    [sp, ...m.path.map(ctr), ep].forEach(([px, py], i) => { 
+      i ? ctx.lineTo(px*k, py*k) : ctx.moveTo(px*k, py*k); 
+    });
     ctx.stroke();
   }
 
@@ -290,13 +314,18 @@ function drawSheet(canvas, k, showSolution) {
 
 function draw(container) {
   const canvas = container.querySelector('#mCanvas');
+  if (!canvas) return;
   drawSheet(canvas, 1240/210, state.showSolution);
 }
 
-export function exportPdf(container, withSolution) {
+export function exportPdf(withSolution) {
   const c = document.createElement('canvas');
   drawSheet(c, 300/25.4, withSolution);
   c.toBlob(async blob => {
+    if (!blob) {
+      alert('PDF yaratishda xatolik yuz berdi');
+      return;
+    }
     const jpeg = new Uint8Array(await blob.arrayBuffer());
     const lang = getLang();
     const fileName = lang === 'uz' 
