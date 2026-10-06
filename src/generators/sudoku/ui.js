@@ -286,3 +286,18 @@ export function exportPdf(withSolution) {
     downloadPdf(makePdf(jpeg, c.width, c.height), fileName);
   }, 'image/jpeg', 0.93);
 }
+
+// Pack uchun export qilinadigan funksiya
+export function drawSudokuForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.type = config.type || '9';
+  state.level = config.level || 1;
+  state.showSolution = showSolution;
+  state.puzzle = generateSudoku(state.type, state.level, state.seed);
+  
+  // Pack da har sahifada 1 ta sudoku
+  drawSheet(canvas, k, showSolution, false);
+  
+  Object.assign(state, savedState);
+}

@@ -197,3 +197,17 @@ export function exportPdf(withSolution) {
     downloadPdf(makePdf(jpeg, c.width, c.height), fileName);
   }, 'image/jpeg', 0.93);
 }
+
+// Pack uchun export qilinadigan funksiya
+export function drawWordsForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.cat = config.cat || 'school';
+  state.level = config.level || 1;
+  const lang = getLang();
+  state.puzzle = generateWordSearch(state.cat, state.level, state.seed, lang);
+  
+  drawSheet(canvas, k, showSolution);
+  
+  Object.assign(state, savedState);
+}

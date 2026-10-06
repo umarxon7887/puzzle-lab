@@ -262,3 +262,16 @@ export function exportPdf(withAnswer) {
     downloadPdf(pdf, fileName);
   }, 'image/jpeg', 0.93);
 }
+
+// Pack uchun export qilinadigan funksiya
+export function drawCodeForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.codeLength = config.codeLength || 3;
+  state.secretCode = generateSecretCode(state.codeLength);
+  state.clues = generateClues(state.secretCode, 5);
+  
+  drawPdfSheet(canvas, k, showSolution);
+  
+  Object.assign(state, savedState);
+}
