@@ -23,9 +23,11 @@ let state = {
 
 const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡' };
 const SUDOKU_TYPES = { '4': '4×4', '5': '5×5', '6': '6×6', '7': '7×7', '8': '8×8', '9': '9×9', '9x': '9×9 X' };
-const WORD_CATS = { school: '🏫', autumn: '', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '' };
+const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
 
-export function init(container) { render(container); }
+export function init(container) {
+  render(container);
+}
 
 export async function exportPack(withAnswer) {
   state.generating = true;
@@ -33,13 +35,16 @@ export async function exportPack(withAnswer) {
   state.progress = 0;
   const containerEl = document.querySelector('.card')?.parentElement || document.getElementById('app-container');
   renderProgress(containerEl);
+  
   const pages = [];
   const canvas = document.createElement('canvas');
   const k = 300 / 25.4;
+  
   for (let i = 0; i < state.items.length; i++) {
     state.progress = i + 1;
     renderProgress(containerEl);
     await new Promise(r => setTimeout(r, 50));
+    
     const item = state.items[i];
     try {
       if (item.type === 'maze') drawMazeForPack(canvas, k, item.seed, item.config, withAnswer);
@@ -47,16 +52,30 @@ export async function exportPack(withAnswer) {
       else if (item.type === 'sudoku') drawSudokuForPack(canvas, k, item.seed, item.config, withAnswer);
       else if (item.type === 'words') drawWordsForPack(canvas, k, item.seed, item.config, withAnswer);
       else if (item.type === 'cross') drawCrossForPack(canvas, k, item.seed, item.config, withAnswer);
+      
       const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
       if (!blob) throw new Error('Canvas to blob failed');
       const jpeg = new Uint8Array(await blob.arrayBuffer());
       pages.push({ buf: jpeg, w: canvas.width, h: canvas.height });
-    } catch (err) { console.error('Error:', err); }
+    } catch (err) {
+      console.error('Error:', err);
+    }
   }
-  if (pages.length === 0) { alert('Xatolik yuz berdi'); state.generating = false; render(containerEl); return; }
+  
+  if (pages.length === 0) {
+    alert('Xatolik yuz berdi');
+    state.generating = false;
+    render(containerEl);
+    return;
+  }
+  
   const pdf = buildMultiPagePdf(pages);
   const lang = getLang();
-  const fileName = lang === 'uz' ? (withAnswer ? 'Toplam (Javoblar).pdf' : 'Toplam.pdf') : (lang === 'ru' ? (withAnswer ? 'Набор (Ответы).pdf' : 'Набор.pdf') : (withAnswer ? 'Pack (Answers).pdf' : 'Pack.pdf'));
+  const fileName = lang === 'uz' 
+    ? (withAnswer ? 'Toplam (Javoblar).pdf' : 'Toplam.pdf')
+    : (lang === 'ru' ? (withAnswer ? 'Набор (Ответы).pdf' : 'Набор.pdf')
+    : (withAnswer ? 'Pack (Answers).pdf' : 'Pack.pdf'));
+  
   downloadPdf(pdf, fileName);
   state.generating = false;
   render(containerEl);
@@ -70,23 +89,39 @@ function buildMultiPagePdf(pages) {
   const push = d => { const b = typeof d === 'string' ? enc.encode(d) : d; parts.push(b); len += b.length; };
   const PW = 595.28, PH = 841.89;
   const N = pages.length;
+  
   push('%PDF-1.4\n');
-  offsets[1] = len; push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  offsets[1] = len; 
+  push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  
   const kids = Array.from({length:N}, (_, i) => (3+3*i) + ' 0 R').join(' ');
-  offsets[2] = len; push('2 0 obj\n<< /Type /Pages /Kids [' + kids + '] /Count ' + N + ' >>\nendobj\n');
+  offsets[2] = len; 
+  push('2 0 obj\n<< /Type /Pages /Kids [' + kids + '] /Count ' + N + ' >>\nendobj\n');
+  
   pages.forEach((p, i) => {
     const pageNum = 3+3*i, imgNum = 4+3*i, contentNum = 5+3*i;
     const content = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
-    offsets[pageNum] = len; push(pageNum + ' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + imgNum + ' 0 R >> >> /Contents ' + contentNum + ' 0 R >>\nendobj\n');
-    offsets[imgNum] = len; push(imgNum + ' 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + p.w + ' /Height ' + p.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + p.buf.length + ' >>\nstream\n');
-    push(p.buf); push('\nendstream\nendobj\n');
-    offsets[contentNum] = len; push(contentNum + ' 0 obj\n<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream\nendobj\n');
+    
+    offsets[pageNum] = len; 
+    push(pageNum + ' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + imgNum + ' 0 R >> >> /Contents ' + contentNum + ' 0 R >>\nendobj\n');
+    
+    offsets[imgNum] = len; 
+    push(imgNum + ' 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + p.w + ' /Height ' + p.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + p.buf.length + ' >>\nstream\n');
+    push(p.buf); 
+    push('\nendstream\nendobj\n');
+    
+    offsets[contentNum] = len; 
+    push(contentNum + ' 0 obj\n<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream\nendobj\n');
   });
+  
   const xrefStart = len;
   const maxObj = 2 + 3*N;
   let xref = 'xref\n0 ' + (maxObj+1) + '\n0000000000 65535 f \n';
-  for (let i = 1; i <= maxObj; i++) xref += String(offsets[i] || 0).padStart(10, '0') + ' 00000 n \n';
+  for (let i = 1; i <= maxObj; i++) {
+    xref += String(offsets[i] || 0).padStart(10, '0') + ' 00000 n \n';
+  }
   push(xref + 'trailer\n<< /Size ' + (maxObj+1) + ' /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF');
+  
   return new Blob(parts, { type: 'application/pdf' });
 }
 
@@ -99,30 +134,149 @@ function render(container) {
 function renderConfig(container) {
   const c = state.config;
   const levelNames = t('levelNames');
-  container.innerHTML = '<div class="card"><div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packSubtitle') + '</p></div><div class="pack-types">' + renderMazeConfig(c.maze, levelNames) + renderCodeConfig(c.code, levelNames) + renderSudokuConfig(c.sudoku, levelNames) + renderWordsConfig(c.words, levelNames) + renderCrossConfig(c.cross, levelNames) + '</div><button class="primary-action" id="buildBtn" style="margin-top:16px;">' + t('packBuildBtn') + '</button></div>';
+  
+  let html = '<div class="card">';
+  html += '<div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packSubtitle') + '</p></div>';
+  html += '<div class="pack-types">';
+  html += renderMazeConfig(c.maze, levelNames);
+  html += renderCodeConfig(c.code, levelNames);
+  html += renderSudokuConfig(c.sudoku, levelNames);
+  html += renderWordsConfig(c.words, levelNames);
+  html += renderCrossConfig(c.cross, levelNames);
+  html += '</div>';
+  html += '<button class="primary-action" id="buildBtn" style="margin-top:16px;">' + t('packBuildBtn') + '</button>';
+  html += '</div>';
+  
+  container.innerHTML = html;
   attachConfigEvents(container);
 }
 
 function renderMazeConfig(config, levelNames) {
-  return '<div class="pack-type-card" id="pack_maze"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_maze_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🌀</span><span style="font-weight:700;">' + t('tabMaze') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_maze_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span><select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + Object.keys(SHAPES).map(k => '<option value="' + k + '"' + (config.shape === k ? ' selected' : '') + '>' + SHAPES[k] + ' ' + k + '</option>').join('') + '</select></label></div></div>';
+  let html = '<div class="pack-type-card" id="pack_maze">';
+  html += '<div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;">';
+  html += '<input type="checkbox" id="cfg_maze_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;">';
+  html += '<span style="font-size:24px;">🌀</span>';
+  html += '<span style="font-weight:700;">' + t('tabMaze') + '</span>';
+  html += '</label></div>';
+  html += '<div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span>';
+  html += '<input type="number" id="cfg_maze_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span>';
+  html += '<select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  levelNames.forEach((n, i) => {
+    html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>';
+  });
+  html += '</select></label></div>';
+  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span>';
+  html += '<select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  Object.keys(SHAPES).forEach(k => {
+    html += '<option value="' + k + '"' + (config.shape === k ? ' selected' : '') + '>' + SHAPES[k] + ' ' + k + '</option>';
+  });
+  html += '</select></label></div></div>';
+  return html;
 }
 
 function renderCodeConfig(config, levelNames) {
-  return '<div class="pack-type-card" id="pack_code"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_code_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🔐</span><span style="font-weight:700;">' + t('tabCode') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_code_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packCodeLength') + '</span><select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"><option value="3"' + (config.codeLength === 3 ? ' selected' : '') + '>3</option><option value="4"' + (config.codeLength === 4 ? ' selected' : '') + '>4</option><option value="5"' + (config.codeLength === 5 ? ' selected' : '') + '>5</option></select></label></div></div>';
+  let html = '<div class="pack-type-card" id="pack_code">';
+  html += '<div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;">';
+  html += '<input type="checkbox" id="cfg_code_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;">';
+  html += '<span style="font-size:24px;">🔐</span>';
+  html += '<span style="font-weight:700;">' + t('tabCode') + '</span>';
+  html += '</label></div>';
+  html += '<div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span>';
+  html += '<input type="number" id="cfg_code_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span>';
+  html += '<select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  levelNames.forEach((n, i) => {
+    html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>';
+  });
+  html += '</select></label></div>';
+  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packCodeLength') + '</span>';
+  html += '<select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  [3, 4, 5].forEach(v => {
+    html += '<option value="' + v + '"' + (config.codeLength === v ? ' selected' : '') + '>' + v + '</option>';
+  });
+  html += '</select></label></div></div>';
+  return html;
 }
 
 function renderSudokuConfig(config, levelNames) {
-  return '<div class="pack-type-card" id="pack_sudoku"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_sudoku_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🔢</span><span style="font-weight:700;">' + t('tabSudoku') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_sudoku_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packSudokuType') + '</span><select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + Object.keys(SUDOKU_TYPES).map(k => '<option value="' + k + '"' + (config.type === k ? ' selected' : '') + '>' + SUDOKU_TYPES[k] + '</option>').join('') + '</select></label></div></div>';
+  let html = '<div class="pack-type-card" id="pack_sudoku">';
+  html += '<div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;">';
+  html += '<input type="checkbox" id="cfg_sudoku_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;">';
+  html += '<span style="font-size:24px;">🔢</span>';
+  html += '<span style="font-weight:700;">' + t('tabSudoku') + '</span>';
+  html += '</label></div>';
+  html += '<div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span>';
+  html += '<input type="number" id="cfg_sudoku_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span>';
+  html += '<select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  levelNames.forEach((n, i) => {
+    html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>';
+  });
+  html += '</select></label></div>';
+  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packSudokuType') + '</span>';
+  html += '<select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  Object.keys(SUDOKU_TYPES).forEach(k => {
+    html += '<option value="' + k + '"' + (config.type === k ? ' selected' : '') + '>' + SUDOKU_TYPES[k] + '</option>';
+  });
+  html += '</select></label></div></div>';
+  return html;
 }
 
 function renderWordsConfig(config, levelNames) {
   const lang = getLang();
   const catNames = t('catNames');
-  return '<div class="pack-type-card" id="pack_words"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_words_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;"></span><span style="font-weight:700;">' + t('tabWords') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_words_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + t('wordsLevelNames').map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packWordsCat') + '</span><select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"><option value="mixed"' + (config.category === 'mixed' ? ' selected' : '') + '>🎲 ' + (lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')) + '</option>' + Object.keys(catNames).map(k => '<option value="' + k + '"' + (config.category === k ? ' selected' : '') + '>' + (WORD_CATS[k] || '') + ' ' + catNames[k] + '</option>').join('') + '</select></label></div></div>';
+  let html = '<div class="pack-type-card" id="pack_words">';
+  html += '<div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;">';
+  html += '<input type="checkbox" id="cfg_words_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;">';
+  html += '<span style="font-size:24px;"></span>';
+  html += '<span style="font-weight:700;">' + t('tabWords') + '</span>';
+  html += '</label></div>';
+  html += '<div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span>';
+  html += '<input type="number" id="cfg_words_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span>';
+  html += '<select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  t('wordsLevelNames').forEach((n, i) => {
+    html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>';
+  });
+  html += '</select></label></div>';
+  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packWordsCat') + '</span>';
+  html += '<select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  const mixedLabel = lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed');
+  html += '<option value="mixed"' + (config.category === 'mixed' ? ' selected' : '') + '>🎲 ' + mixedLabel + '</option>';
+  Object.keys(catNames).forEach(k => {
+    html += '<option value="' + k + '"' + (config.category === k ? ' selected' : '') + '>' + (WORD_CATS[k] || '') + ' ' + catNames[k] + '</option>';
+  });
+  html += '</select></label></div></div>';
+  return html;
 }
 
 function renderCrossConfig(config, levelNames) {
-  return '<div class="pack-type-card" id="pack_cross"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_cross_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">➗</span><span style="font-weight:700;">' + t('tabCross') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_cross_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + t('crossLevelNames').map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div></div></div>';
+  let html = '<div class="pack-type-card" id="pack_cross">';
+  html += '<div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;">';
+  html += '<input type="checkbox" id="cfg_cross_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;">';
+  html += '<span style="font-size:24px;">➗</span>';
+  html += '<span style="font-weight:700;">' + t('tabCross') + '</span>';
+  html += '</label></div>';
+  html += '<div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span>';
+  html += '<input type="number" id="cfg_cross_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
+  html += '<label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span>';
+  html += '<select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
+  t('crossLevelNames').forEach((n, i) => {
+    html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>';
+  });
+  html += '</select></label></div></div></div>';
+  return html;
 }
 
 function attachConfigEvents(container) {
@@ -135,9 +289,9 @@ function attachConfigEvents(container) {
       body.style.pointerEvents = e.target.checked ? 'auto' : 'none';
     });
     const countInput = container.querySelector('#cfg_' + itemType + '_count');
-    countInput.addEventListener('change', (e) => { state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0)); });
+    if (countInput) countInput.addEventListener('change', (e) => { state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0)); });
     const levelSelect = container.querySelector('#cfg_' + itemType + '_level');
-    levelSelect.addEventListener('change', (e) => { state.config[itemType].level = parseInt(e.target.value); });
+    if (levelSelect) levelSelect.addEventListener('change', (e) => { state.config[itemType].level = parseInt(e.target.value); });
     const shape = container.querySelector('#cfg_' + itemType + '_shape');
     if (shape) shape.addEventListener('change', (e) => { state.config[itemType].shape = e.target.value; });
     const codeLength = container.querySelector('#cfg_' + itemType + '_codeLength');
@@ -167,7 +321,29 @@ function buildPack(container) {
 }
 
 function renderPreview(container) {
-  container.innerHTML = '<div class="card"><div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packTotal')(state.items.length) + '</p></div><div class="pack-preview-list" id="previewList">' + state.items.map((item, idx) => '<div class="pack-item" data-idx="' + idx + '"><div class="pack-item-info"><span class="pack-item-icon">' + getTypeIcon(item.type) + '</span><div><div style="font-weight:700; font-size:14px;">' + getTypeName(item.type) + ' #' + item.index + '</div><div style="font-size:12px; color:var(--text-muted);">' + getItemDetails(item) + '</div></div></div><div class="pack-item-actions"><button class="icon-btn-small" data-action="refresh" data-idx="' + idx + '" title="' + t('packNew') + '">🔄</button><button class="icon-btn-small" data-action="remove" data-idx="' + idx + '" title="' + t('packRemove') + '">✕</button></div></div>').join('') + '</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;"><button class="primary-action" id="downloadTaskBtn"> ' + t('packTask') + '</button><button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;"> ' + t('packAnswer') + '</button></div><button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ' + t('backBtn') + '</button></div>';
+  let html = '<div class="card">';
+  html += '<div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packTotal')(state.items.length) + '</p></div>';
+  html += '<div class="pack-preview-list" id="previewList">';
+  state.items.forEach((item, idx) => {
+    html += '<div class="pack-item" data-idx="' + idx + '">';
+    html += '<div class="pack-item-info">';
+    html += '<span class="pack-item-icon">' + getTypeIcon(item.type) + '</span>';
+    html += '<div><div style="font-weight:700; font-size:14px;">' + getTypeName(item.type) + ' #' + item.index + '</div>';
+    html += '<div style="font-size:12px; color:var(--text-muted);">' + getItemDetails(item) + '</div></div>';
+    html += '</div>';
+    html += '<div class="pack-item-actions">';
+    html += '<button class="icon-btn-small" data-action="refresh" data-idx="' + idx + '" title="' + t('packNew') + '">🔄</button>';
+    html += '<button class="icon-btn-small" data-action="remove" data-idx="' + idx + '" title="' + t('packRemove') + '">✕</button>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">';
+  html += '<button class="primary-action" id="downloadTaskBtn">📥 ' + t('packTask') + '</button>';
+  html += '<button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">📥 ' + t('packAnswer') + '</button>';
+  html += '</div>';
+  html += '<button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ' + t('backBtn') + '</button>';
+  html += '</div>';
+  container.innerHTML = html;
   attachPreviewEvents(container);
 }
 
@@ -192,8 +368,13 @@ function attachPreviewEvents(container) {
   container.querySelector('#backToConfigBtn').addEventListener('click', () => { state.showPreview = false; render(container); });
 }
 
-function getTypeIcon(type) { return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '', cross: '➗' }[type]; }
-function getTypeName(type) { return { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') }[type]; }
+function getTypeIcon(type) { 
+  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type]; 
+}
+
+function getTypeName(type) { 
+  return { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') }[type]; 
+}
 
 function getItemDetails(item) {
   const c = item.config;
@@ -207,5 +388,11 @@ function getItemDetails(item) {
 
 function renderProgress(container) {
   const pct = state.total > 0 ? Math.round(state.progress / state.total * 100) : 0;
-  container.innerHTML = '<div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;"></div><h3 style="margin-bottom:8px;">' + t('packGenerating')(state.progress, state.total) + '</h3><div style="background:#E5E7EB; border-radius:8px; height:8px; overflow:hidden; margin-top:16px;"><div style="background:#4F46E5; height:100%; width:' + pct + '%; transition:width 0.3s;"></div></div></div>';
+  let html = '<div class="card" style="text-align:center; padding:40px 20px;">';
+  html += '<div style="font-size:48px; margin-bottom:16px;">⏳</div>';
+  html += '<h3 style="margin-bottom:8px;">' + t('packGenerating')(state.progress, state.total) + '</h3>';
+  html += '<div style="background:#E5E7EB; border-radius:8px; height:8px; overflow:hidden; margin-top:16px;">';
+  html += '<div style="background:#4F46E5; height:100%; width:' + pct + '%; transition:width 0.3s;"></div>';
+  html += '</div></div>';
+  container.innerHTML = html;
 }
