@@ -5,6 +5,7 @@ import { drawCodeForPack } from '../code/ui.js';
 import { drawSudokuForPack } from '../sudoku/ui.js';
 import { drawWordsForPack } from '../wordsearch/ui.js';
 import { drawCrossForPack } from '../crossword/ui.js';
+import { isAuthenticated } from '../../auth.js';
 
 let state = {
   config: {
@@ -17,18 +18,27 @@ let state = {
   items: [],
   showPreview: false,
   generating: false,
-  activeSettings: null
+  activeSettings: null,
+  mainContainer: null
 };
 
-const SHAPES = { rect: '▭', circle: '○', star: '★', heart: '♥', triangle: '△' };
+const SHAPES = { rect: 'To\'rtburchak', circle: 'Doira', star: 'Yulduz', heart: 'Yurak', triangle: 'Uchburchak' };
 const SUDOKU_TYPES = { '4': '4×4', '6': '6×6', '9': '9×9' };
-const WORD_CATS = { school: '', animals: '🦁', food: '🍎', sport: '⚽', space: '' };
+const WORD_CATS = { school: 'Maktab', animals: 'Hayvonlar', food: 'Ovqat', sport: 'Sport', space: 'Fazo' };
 
-export function init(container) { render(container); }
+export function init(container) {
+  state.mainContainer = container;
+  render(container);
+}
 
 export async function exportPDF(withAnswer) {
+  if (!isAuthenticated()) {
+    alert("PDF yuklab olish uchun tizimga kiring yoki ro'yxatdan o'ting!");
+    return;
+  }
+  
   state.generating = true;
-  render(document.querySelector('.card').parentElement);
+  render(state.mainContainer);
   
   const pages = [];
   const canvas = document.createElement('canvas');
@@ -59,7 +69,7 @@ export async function exportPDF(withAnswer) {
   }
   
   state.generating = false;
-  render(document.querySelector('.card').parentElement);
+  render(state.mainContainer);
 }
 
 function buildPdf(pages) {
@@ -92,6 +102,7 @@ function buildPdf(pages) {
 }
 
 function render(container) {
+  state.mainContainer = container;
   if (state.generating) { container.innerHTML = '<div class="card" style="text-align:center;padding:40px;"><h3>Yaratilmoqda...</h3></div>'; return; }
   if (state.showPreview) { renderPreview(container); return; }
   if (state.activeSettings) { renderSettingsModal(container); return; }
@@ -106,8 +117,8 @@ function renderConfig(container) {
     { id: 'maze', name: 'Labirint', icon: '🌀' },
     { id: 'code', name: 'Kodni top', icon: '🔐' },
     { id: 'sudoku', name: 'Sudoku', icon: '🔢' },
-    { id: 'words', name: 'So\'z qidiruv', icon: '' },
-    { id: 'cross', name: 'Krossvord', icon: '' }
+    { id: 'words', name: 'So\'z qidiruv', icon: '🔍' },
+    { id: 'cross', name: 'Krossvord', icon: '➗' }
   ];
   
   types.forEach(type => {
@@ -132,7 +143,7 @@ function renderConfig(container) {
       render(container);
     });
   });
-  document.getElementById('buildBtn').addEventListener('click', buildPack);
+  document.getElementById('buildBtn').addEventListener('click', () => buildPack(container));
 }
 
 function renderSettingsModal(container) {
@@ -152,7 +163,6 @@ function renderSettingsModal(container) {
   
   html += '</h3>';
   
-  // Daraja
   html += '<div style="margin-bottom:15px;">';
   html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Daraja:</label>';
   html += '<select id="setting_level" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
@@ -161,13 +171,12 @@ function renderSettingsModal(container) {
   });
   html += '</select></div>';
   
-  // Qo'shimcha sozlamalar
   if (type === 'maze') {
     html += '<div style="margin-bottom:15px;">';
     html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Shakl:</label>';
     html += '<select id="setting_shape" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
     Object.keys(SHAPES).forEach(key => {
-      html += '<option value="' + key + '"' + (c.shape === key ? ' selected' : '') + '>' + SHAPES[key] + ' ' + key + '</option>';
+      html += '<option value="' + key + '"' + (c.shape === key ? ' selected' : '') + '>' + SHAPES[key] + '</option>';
     });
     html += '</select></div>';
   } else if (type === 'code') {
@@ -191,7 +200,7 @@ function renderSettingsModal(container) {
     html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Mavzu:</label>';
     html += '<select id="setting_category" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
     Object.keys(WORD_CATS).forEach(key => {
-      html += '<option value="' + key + '"' + (c.category === key ? ' selected' : '') + '>' + WORD_CATS[key] + ' ' + key + '</option>';
+      html += '<option value="' + key + '"' + (c.category === key ? ' selected' : '') + '>' + WORD_CATS[key] + '</option>';
     });
     html += '</select></div>';
   }
@@ -219,7 +228,7 @@ function renderSettingsModal(container) {
   });
 }
 
-function buildPack() {
+function buildPack(container) {
   state.items = [];
   const types = ['maze', 'code', 'sudoku', 'words', 'cross'];
   types.forEach(type => {
@@ -232,24 +241,28 @@ function buildPack() {
   });
   if (state.items.length === 0) { alert('Kamida bitta tur tanlang!'); return; }
   state.showPreview = true;
-  render(document.querySelector('.card').parentElement);
+  render(container);
 }
 
 function renderPreview(container) {
+  const typeNames = { maze: 'Labirint', code: 'Kodni top', sudoku: 'Sudoku', words: 'So\'z qidiruv', cross: 'Krossvord' };
   let html = '<div class="card"><div class="game-header"><h2>To\'plam tayyor</h2><p>Jami: ' + state.items.length + ' ta topshiriq</p></div>';
   html += '<div style="max-height:300px;overflow-y:auto;margin:15px 0;">';
   state.items.forEach((item, i) => {
-    html += '<div style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">' + (i+1) + '. ' + item.type + ' (Seed: ' + item.seed + ')</div>';
+    html += '<div style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">' + (i+1) + '. ' + typeNames[item.type] + ' (Seed: ' + item.seed + ')</div>';
   });
   html += '</div>';
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
   html += '<button class="primary-action" id="dlTask">Topshiriq PDF</button>';
   html += '<button class="primary-action" id="dlAns" style="background:#10B981;">Javoblar PDF</button>';
   html += '</div>';
-  html += '<button id="backBtn" style="margin-top:10px;width:100%;padding:10px;background:#eee;border:none;border-radius:8px;">Orqaga</button></div>';
+  html += '<button id="backBtn" style="margin-top:10px;width:100%;padding:10px;background:#eee;border:none;border-radius:8px;cursor:pointer;">Orqaga</button></div>';
   container.innerHTML = html;
   
   document.getElementById('dlTask').addEventListener('click', () => exportPDF(false));
   document.getElementById('dlAns').addEventListener('click', () => exportPDF(true));
-  document.getElementById('backBtn').addEventListener('click', () => { state.showPreview = false; render(container); });
+  document.getElementById('backBtn').addEventListener('click', () => { 
+    state.showPreview = false; 
+    render(container); 
+  });
 }
