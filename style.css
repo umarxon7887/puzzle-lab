@@ -1728,3 +1728,14 @@ button.primary:hover {
   background: #5a67d8;
   transform: scale(1.1);
 }
+
+#lang-switch {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 5px !important;
+}
+
+#lang-switch button {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
