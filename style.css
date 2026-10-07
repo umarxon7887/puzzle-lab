@@ -1494,3 +1494,20 @@ button.primary:hover {
   height: 80px;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
 }
+
+/* Kartochka ikonkalari kattalashtirish */
+.generator-card .card-cover svg {
+  width: 120px !important;
+  height: 120px !important;
+  max-width: 120px !important;
+  max-height: 120px !important;
+  filter: drop-shadow(0 4px 12px rgba(255,255,255,0.3));
+}
+
+.generator-card .card-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 20px;
+}
