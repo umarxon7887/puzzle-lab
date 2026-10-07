@@ -274,3 +274,12 @@ export function drawCodeForPack(canvas, k, seed, config, showSolution) {
   drawPdfSheet(canvas, k, showSolution);
   Object.assign(state, savedState);
 }
+
+export function drawCodeForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.codeLength = config.codeLength || 3;
+  state.secretCode = generateSecretCode(state.codeLength);
+  state.clues = generateClues(state.secretCode, 5);
+  drawPdfSheet(canvas, k, showSolution);
+  Object.assign(state, savedState);
+}

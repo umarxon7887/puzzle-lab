@@ -262,3 +262,20 @@ export function drawMazeForPack(canvas, k, seed, config, showSolution) {
   drawSheet(canvas, k, showSolution);
   Object.assign(state, savedState);
 }
+
+export function drawMazeForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.W = config.W || 10;
+  state.H = config.H || 14;
+  state.shape = config.shape || 'rect';
+  state.hero = HEROES[0];
+  state.goal = GOALS[0];
+  state.title = '';
+  state.fontPt = 28;
+  state.showSolution = showSolution;
+  state.level = config.level || 0;
+  state.manualSize = true;
+  drawSheet(canvas, k, showSolution);
+  Object.assign(state, savedState);
+}

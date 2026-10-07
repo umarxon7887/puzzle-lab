@@ -203,3 +203,12 @@ export function drawCrossForPack(canvas, k, seed, config, showSolution) {
   drawSheet(canvas, k, showSolution);
   Object.assign(state, savedState);
 }
+
+export function drawCrossForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.level = config.level || 1;
+  state.puzzle = buildCrossword(state.level, state.seed);
+  drawSheet(canvas, k, showSolution);
+  Object.assign(state, savedState);
+}

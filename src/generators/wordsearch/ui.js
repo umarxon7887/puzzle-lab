@@ -211,3 +211,14 @@ export function drawWordsForPack(canvas, k, seed, config, showSolution) {
   drawSheet(canvas, k, showSolution);
   Object.assign(state, savedState);
 }
+
+export function drawWordsForPack(canvas, k, seed, config, showSolution) {
+  const savedState = { ...state };
+  state.seed = seed;
+  state.cat = config.category || config.cat || 'school';
+  state.level = config.level || 1;
+  const lang = getLang();
+  state.puzzle = generateWordSearch(state.cat, state.level, state.seed, lang);
+  drawSheet(canvas, k, showSolution);
+  Object.assign(state, savedState);
+}
