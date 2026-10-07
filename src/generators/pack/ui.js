@@ -23,7 +23,7 @@ let state = {
 
 const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡' };
 const SUDOKU_TYPES = { '4': '4×4', '5': '5×5', '6': '6×6', '7': '7×7', '8': '8×8', '9': '9×9', '9x': '9×9 X' };
-const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
+const WORD_CATS = { school: '🏫', autumn: '', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '' };
 
 export function init(container) { render(container); }
 
@@ -33,11 +33,9 @@ export async function exportPack(withAnswer) {
   state.progress = 0;
   const containerEl = document.querySelector('.card')?.parentElement || document.getElementById('app-container');
   renderProgress(containerEl);
-  
   const pages = [];
   const canvas = document.createElement('canvas');
   const k = 300 / 25.4;
-  
   for (let i = 0; i < state.items.length; i++) {
     state.progress = i + 1;
     renderProgress(containerEl);
@@ -55,7 +53,6 @@ export async function exportPack(withAnswer) {
       pages.push({ buf: jpeg, w: canvas.width, h: canvas.height });
     } catch (err) { console.error('Error:', err); }
   }
-  
   if (pages.length === 0) { alert('Xatolik yuz berdi'); state.generating = false; render(containerEl); return; }
   const pdf = buildMultiPagePdf(pages);
   const lang = getLang();
@@ -75,21 +72,21 @@ function buildMultiPagePdf(pages) {
   const N = pages.length;
   push('%PDF-1.4\n');
   offsets[1] = len; push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
-  const kids = Array.from({length:N}, (_, i) => `${3+3*i} 0 R`).join(' ');
-  offsets[2] = len; push(`2 0 obj\n<< /Type /Pages /Kids [${kids}] /Count ${N} >>\nendobj\n`);
+  const kids = Array.from({length:N}, (_, i) => (3+3*i) + ' 0 R').join(' ');
+  offsets[2] = len; push('2 0 obj\n<< /Type /Pages /Kids [' + kids + '] /Count ' + N + ' >>\nendobj\n');
   pages.forEach((p, i) => {
     const pageNum = 3+3*i, imgNum = 4+3*i, contentNum = 5+3*i;
-    const content = `q ${PW} 0 0 ${PH} 0 0 cm /Im0 Do Q`;
-    offsets[pageNum] = len; push(`${pageNum} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PH}] /Resources << /XObject << /Im0 ${imgNum} 0 R >> >> /Contents ${contentNum} 0 R >>\nendobj\n`);
-    offsets[imgNum] = len; push(`${imgNum} 0 obj\n<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.buf.length} >>\nstream\n`);
+    const content = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
+    offsets[pageNum] = len; push(pageNum + ' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + imgNum + ' 0 R >> >> /Contents ' + contentNum + ' 0 R >>\nendobj\n');
+    offsets[imgNum] = len; push(imgNum + ' 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + p.w + ' /Height ' + p.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + p.buf.length + ' >>\nstream\n');
     push(p.buf); push('\nendstream\nendobj\n');
-    offsets[contentNum] = len; push(`${contentNum} 0 obj\n<< /Length ${content.length} >>\nstream\n${content}\nendstream\nendobj\n`);
+    offsets[contentNum] = len; push(contentNum + ' 0 obj\n<< /Length ' + content.length + ' >>\nstream\n' + content + '\nendstream\nendobj\n');
   });
   const xrefStart = len;
   const maxObj = 2 + 3*N;
-  let xref = `xref\n0 ${maxObj+1}\n0000000000 65535 f \n`;
+  let xref = 'xref\n0 ' + (maxObj+1) + '\n0000000000 65535 f \n';
   for (let i = 1; i <= maxObj; i++) xref += String(offsets[i] || 0).padStart(10, '0') + ' 00000 n \n';
-  push(xref + `trailer\n<< /Size ${maxObj+1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`);
+  push(xref + 'trailer\n<< /Size ' + (maxObj+1) + ' /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF');
   return new Blob(parts, { type: 'application/pdf' });
 }
 
@@ -102,200 +99,52 @@ function render(container) {
 function renderConfig(container) {
   const c = state.config;
   const levelNames = t('levelNames');
-  container.innerHTML = `
-    <div class="card">
-      <div class="game-header">
-        <h2>📦 ${t('packTitle')}</h2>
-        <p>${t('packSubtitle')}</p>
-      </div>
-      <div class="pack-types">
-        ${renderMazeConfig(c.maze, levelNames)}
-        ${renderCodeConfig(c.code, levelNames)}
-        ${renderSudokuConfig(c.sudoku, levelNames)}
-        ${renderWordsConfig(c.words, levelNames)}
-        ${renderCrossConfig(c.cross, levelNames)}
-      </div>
-      <button class="primary-action" id="buildBtn" style="margin-top:16px;">${t('packBuildBtn')}</button>
-    </div>
-  `;
+  container.innerHTML = '<div class="card"><div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packSubtitle') + '</p></div><div class="pack-types">' + renderMazeConfig(c.maze, levelNames) + renderCodeConfig(c.code, levelNames) + renderSudokuConfig(c.sudoku, levelNames) + renderWordsConfig(c.words, levelNames) + renderCrossConfig(c.cross, levelNames) + '</div><button class="primary-action" id="buildBtn" style="margin-top:16px;">' + t('packBuildBtn') + '</button></div>';
   attachConfigEvents(container);
 }
 
 function renderMazeConfig(config, levelNames) {
-  return `
-    <div class="pack-type-card" id="pack_maze">
-      <div class="pack-type-header">
-        <label style="display:flex; align-items:center; gap:8px; flex:1;">
-          <input type="checkbox" id="cfg_maze_enabled" ${config.enabled ? 'checked' : ''} style="width:18px; height:18px;">
-          <span style="font-size:24px;">🌀</span>
-          <span style="font-weight:700;">${t('tabMaze')}</span>
-        </label>
-      </div>
-      <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
-            <input type="number" id="cfg_maze_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-          </label>
-          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
-            <select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-              ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
-            </select>
-          </label>
-        </div>
-        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span>
-          <select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-            ${Object.keys(SHAPES).map(k => `<option value="${k}" ${config.shape === k ? 'selected' : ''}>${SHAPES[k]} ${k}</option>`).join('')}
-          </select>
-        </label>
-      </div>
-    </div>
-  `;
+  return '<div class="pack-type-card" id="pack_maze"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_maze_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🌀</span><span style="font-weight:700;">' + t('tabMaze') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_maze_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span><select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + Object.keys(SHAPES).map(k => '<option value="' + k + '"' + (config.shape === k ? ' selected' : '') + '>' + SHAPES[k] + ' ' + k + '</option>').join('') + '</select></label></div></div>';
 }
 
 function renderCodeConfig(config, levelNames) {
-  return `
-    <div class="pack-type-card" id="pack_code">
-      <div class="pack-type-header">
-        <label style="display:flex; align-items:center; gap:8px; flex:1;">
-          <input type="checkbox" id="cfg_code_enabled" ${config.enabled ? 'checked' : ''} style="width:18px; height:18px;">
-          <span style="font-size:24px;">🔐</span>
-          <span style="font-weight:700;">${t('tabCode')}</span>
-        </label>
-      </div>
-      <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
-            <input type="number" id="cfg_code_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-          </label>
-          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
-            <select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-              ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
-            </select>
-          </label>
-        </div>
-        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packCodeLength')}</span>
-          <select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-            <option value="3" ${config.codeLength === 3 ? 'selected' : ''}>3</option>
-            <option value="4" ${config.codeLength === 4 ? 'selected' : ''}>4</option>
-            <option value="5" ${config.codeLength === 5 ? 'selected' : ''}>5</option>
-          </select>
-        </label>
-      </div>
-    </div>
-  `;
+  return '<div class="pack-type-card" id="pack_code"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_code_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🔐</span><span style="font-weight:700;">' + t('tabCode') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_code_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packCodeLength') + '</span><select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"><option value="3"' + (config.codeLength === 3 ? ' selected' : '') + '>3</option><option value="4"' + (config.codeLength === 4 ? ' selected' : '') + '>4</option><option value="5"' + (config.codeLength === 5 ? ' selected' : '') + '>5</option></select></label></div></div>';
 }
 
 function renderSudokuConfig(config, levelNames) {
-  return `
-    <div class="pack-type-card" id="pack_sudoku">
-      <div class="pack-type-header">
-        <label style="display:flex; align-items:center; gap:8px; flex:1;">
-          <input type="checkbox" id="cfg_sudoku_enabled" ${config.enabled ? 'checked' : ''} style="width:18px; height:18px;">
-          <span style="font-size:24px;">🔢</span>
-          <span style="font-weight:700;">${t('tabSudoku')}</span>
-        </label>
-      </div>
-      <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
-            <input type="number" id="cfg_sudoku_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-          </label>
-          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
-            <select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-              ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
-            </select>
-          </label>
-        </div>
-        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packSudokuType')}</span>
-          <select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-            ${Object.keys(SUDOKU_TYPES).map(k => `<option value="${k}" ${config.type === k ? 'selected' : ''}>${SUDOKU_TYPES[k]}</option>`).join('')}
-          </select>
-        </label>
-      </div>
-    </div>
-  `;
+  return '<div class="pack-type-card" id="pack_sudoku"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_sudoku_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">🔢</span><span style="font-weight:700;">' + t('tabSudoku') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_sudoku_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + levelNames.map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packSudokuType') + '</span><select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + Object.keys(SUDOKU_TYPES).map(k => '<option value="' + k + '"' + (config.type === k ? ' selected' : '') + '>' + SUDOKU_TYPES[k] + '</option>').join('') + '</select></label></div></div>';
 }
 
 function renderWordsConfig(config, levelNames) {
   const lang = getLang();
   const catNames = t('catNames');
-  return `
-    <div class="pack-type-card" id="pack_words">
-      <div class="pack-type-header">
-        <label style="display:flex; align-items:center; gap:8px; flex:1;">
-          <input type="checkbox" id="cfg_words_enabled" ${config.enabled ? 'checked' : ''} style="width:18px; height:18px;">
-          <span style="font-size:24px;">🔍</span>
-          <span style="font-weight:700;">${t('tabWords')}</span>
-        </label>
-      </div>
-      <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
-            <input type="number" id="cfg_words_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-          </label>
-          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
-            <select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-              ${t('wordsLevelNames').map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
-            </select>
-          </label>
-        </div>
-        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packWordsCat')}</span>
-          <select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-            <option value="mixed" ${config.category === 'mixed' ? 'selected' : ''}>🎲 ${lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')}</option>
-            ${Object.keys(catNames).map(k => `<option value="${k}" ${config.category === k ? 'selected' : ''}>${WORD_CATS[k] || ''} ${catNames[k]}</option>`).join('')}
-          </select>
-        </label>
-      </div>
-    </div>
-  `;
+  return '<div class="pack-type-card" id="pack_words"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_words_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;"></span><span style="font-weight:700;">' + t('tabWords') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_words_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + t('wordsLevelNames').map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div><label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">' + t('packWordsCat') + '</span><select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"><option value="mixed"' + (config.category === 'mixed' ? ' selected' : '') + '>🎲 ' + (lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')) + '</option>' + Object.keys(catNames).map(k => '<option value="' + k + '"' + (config.category === k ? ' selected' : '') + '>' + (WORD_CATS[k] || '') + ' ' + catNames[k] + '</option>').join('') + '</select></label></div></div>';
 }
 
 function renderCrossConfig(config, levelNames) {
-  return `
-    <div class="pack-type-card" id="pack_cross">
-      <div class="pack-type-header">
-        <label style="display:flex; align-items:center; gap:8px; flex:1;">
-          <input type="checkbox" id="cfg_cross_enabled" ${config.enabled ? 'checked' : ''} style="width:18px; height:18px;">
-          <span style="font-size:24px;">➗</span>
-          <span style="font-weight:700;">${t('tabCross')}</span>
-        </label>
-      </div>
-      <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
-            <input type="number" id="cfg_cross_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-          </label>
-          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
-            <select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-              ${t('crossLevelNames').map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
-            </select>
-          </label>
-        </div>
-      </div>
-    </div>
-  `;
+  return '<div class="pack-type-card" id="pack_cross"><div class="pack-type-header"><label style="display:flex; align-items:center; gap:8px; flex:1;"><input type="checkbox" id="cfg_cross_enabled" ' + (config.enabled ? 'checked' : '') + ' style="width:18px; height:18px;"><span style="font-size:24px;">➗</span><span style="font-weight:700;">' + t('tabCross') + '</span></label></div><div class="pack-type-body" ' + (!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : '') + '><div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"><label><span style="font-size:11px; font-weight:700;">' + t('packCount') + '</span><input type="number" id="cfg_cross_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label><label><span style="font-size:11px; font-weight:700;">' + t('packLevel') + '</span><select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">' + t('crossLevelNames').map((n, i) => '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label></div></div></div>';
 }
 
 function attachConfigEvents(container) {
   ['maze', 'code', 'sudoku', 'words', 'cross'].forEach(itemType => {
-    const enabledCb = container.querySelector(`#cfg_${itemType}_enabled`);
-    const body = container.querySelector(`#pack_${itemType} .pack-type-body`);
+    const enabledCb = container.querySelector('#cfg_' + itemType + '_enabled');
+    const body = container.querySelector('#pack_' + itemType + ' .pack-type-body');
     enabledCb.addEventListener('change', (e) => {
       state.config[itemType].enabled = e.target.checked;
       body.style.opacity = e.target.checked ? '1' : '0.5';
       body.style.pointerEvents = e.target.checked ? 'auto' : 'none';
     });
-    const countInput = container.querySelector(`#cfg_${itemType}_count`);
+    const countInput = container.querySelector('#cfg_' + itemType + '_count');
     countInput.addEventListener('change', (e) => { state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0)); });
-    const levelSelect = container.querySelector(`#cfg_${itemType}_level`);
+    const levelSelect = container.querySelector('#cfg_' + itemType + '_level');
     levelSelect.addEventListener('change', (e) => { state.config[itemType].level = parseInt(e.target.value); });
-    const shape = container.querySelector(`#cfg_${itemType}_shape`);
+    const shape = container.querySelector('#cfg_' + itemType + '_shape');
     if (shape) shape.addEventListener('change', (e) => { state.config[itemType].shape = e.target.value; });
-    const codeLength = container.querySelector(`#cfg_${itemType}_codeLength`);
+    const codeLength = container.querySelector('#cfg_' + itemType + '_codeLength');
     if (codeLength) codeLength.addEventListener('change', (e) => { state.config[itemType].codeLength = parseInt(e.target.value); });
-    const typeSelect = container.querySelector(`#cfg_${itemType}_type`);
+    const typeSelect = container.querySelector('#cfg_' + itemType + '_type');
     if (typeSelect) typeSelect.addEventListener('change', (e) => { state.config[itemType].type = e.target.value; });
-    const categorySelect = container.querySelector(`#cfg_${itemType}_category`);
+    const categorySelect = container.querySelector('#cfg_' + itemType + '_category');
     if (categorySelect) categorySelect.addEventListener('change', (e) => { state.config[itemType].category = e.target.value; });
   });
   container.querySelector('#buildBtn').addEventListener('click', () => buildPack(container));
@@ -318,36 +167,7 @@ function buildPack(container) {
 }
 
 function renderPreview(container) {
-  container.innerHTML = `
-    <div class="card">
-      <div class="game-header">
-        <h2>📦 ${t('packTitle')}</h2>
-        <p>${t('packTotal')(state.items.length)}</p>
-      </div>
-      <div class="pack-preview-list" id="previewList">
-        ${state.items.map((item, idx) => `
-          <div class="pack-item" data-idx="${idx}">
-            <div class="pack-item-info">
-              <span class="pack-item-icon">${getTypeIcon(item.type)}</span>
-              <div>
-                <div style="font-weight:700; font-size:14px;">${getTypeName(item.type)} #${item.index}</div>
-                <div style="font-size:12px; color:var(--text-muted);">${getItemDetails(item)}</div>
-              </div>
-            </div>
-            <div class="pack-item-actions">
-              <button class="icon-btn-small" data-action="refresh" data-idx="${idx}" title="${t('packNew')}">🔄</button>
-              <button class="icon-btn-small" data-action="remove" data-idx="${idx}" title="${t('packRemove')}">✕</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
-        <button class="primary-action" id="downloadTaskBtn">📥 ${t('packTask')}</button>
-        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">📥 ${t('packAnswer')}</button>
-      </div>
-      <button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ${t('backBtn')}</button>
-    </div>
-  `;
+  container.innerHTML = '<div class="card"><div class="game-header"><h2>📦 ' + t('packTitle') + '</h2><p>' + t('packTotal')(state.items.length) + '</p></div><div class="pack-preview-list" id="previewList">' + state.items.map((item, idx) => '<div class="pack-item" data-idx="' + idx + '"><div class="pack-item-info"><span class="pack-item-icon">' + getTypeIcon(item.type) + '</span><div><div style="font-weight:700; font-size:14px;">' + getTypeName(item.type) + ' #' + item.index + '</div><div style="font-size:12px; color:var(--text-muted);">' + getItemDetails(item) + '</div></div></div><div class="pack-item-actions"><button class="icon-btn-small" data-action="refresh" data-idx="' + idx + '" title="' + t('packNew') + '">🔄</button><button class="icon-btn-small" data-action="remove" data-idx="' + idx + '" title="' + t('packRemove') + '">✕</button></div></div>').join('') + '</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;"><button class="primary-action" id="downloadTaskBtn"> ' + t('packTask') + '</button><button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;"> ' + t('packAnswer') + '</button></div><button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ' + t('backBtn') + '</button></div>';
   attachPreviewEvents(container);
 }
 
@@ -372,28 +192,20 @@ function attachPreviewEvents(container) {
   container.querySelector('#backToConfigBtn').addEventListener('click', () => { state.showPreview = false; render(container); });
 }
 
-function getTypeIcon(type) { return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '' }[type]; }
+function getTypeIcon(type) { return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '', cross: '➗' }[type]; }
 function getTypeName(type) { return { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') }[type]; }
 
 function getItemDetails(item) {
   const c = item.config;
-  if (item.type === 'maze') return `${t('levelNames')[c.level]} | ${SHAPES[c.shape] || c.shape}`;
-  if (item.type === 'code') return `${c.codeLength} ${t('digits')} | ${t('levelNames')[c.level]}`;
-  if (item.type === 'sudoku') return `${SUDOKU_TYPES[c.type] || c.type} | ${t('levelNames')[c.level]}`;
-  if (item.type === 'words') return `${t('catNames')[c.category] || c.category} | ${t('wordsLevelNames')[c.level]}`;
+  if (item.type === 'maze') return t('levelNames')[c.level] + ' | ' + (SHAPES[c.shape] || c.shape);
+  if (item.type === 'code') return c.codeLength + ' ' + t('digits') + ' | ' + t('levelNames')[c.level];
+  if (item.type === 'sudoku') return (SUDOKU_TYPES[c.type] || c.type) + ' | ' + t('levelNames')[c.level];
+  if (item.type === 'words') return (t('catNames')[c.category] || c.category) + ' | ' + t('wordsLevelNames')[c.level];
   if (item.type === 'cross') return t('crossLevelNames')[c.level];
   return '';
 }
 
 function renderProgress(container) {
   const pct = state.total > 0 ? Math.round(state.progress / state.total * 100) : 0;
-  container.innerHTML = `
-    <div class="card" style="text-align:center; padding:40px 20px;">
-      <div style="font-size:48px; margin-bottom:16px;">⏳</div>
-      <h3 style="margin-bottom:8px;">${t('packGenerating')(state.progress, state.total)}</h3>
-      <div style="background:#E5E7EB; border-radius:8px; height:8px; overflow:hidden; margin-top:16px;">
-        <div style="background:#4F46E5; height:100%; width:${pct}%; transition:width 0.3s;"></div>
-      </div>
-    </div>
-  `;
+  container.innerHTML = '<div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;"></div><h3 style="margin-bottom:8px;">' + t('packGenerating')(state.progress, state.total) + '</h3><div style="background:#E5E7EB; border-radius:8px; height:8px; overflow:hidden; margin-top:16px;"><div style="background:#4F46E5; height:100%; width:' + pct + '%; transition:width 0.3s;"></div></div></div>';
 }
