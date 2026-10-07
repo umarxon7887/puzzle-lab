@@ -21,9 +21,36 @@ var state = {
   total: 0
 };
 
-var SHAPES = { rect: 'To\'rtburchak', circle: 'Doira', star: 'Yulduz', heart: 'Yurak', triangle: 'Uchburchak', diamond: 'Romb', house: 'Uy', hexagon: 'Oltiburchak' };
-var SUDOKU_TYPES = { '4': '4x4', '5': '5x5', '6': '6x6', '7': '7x7', '8': '8x8', '9': '9x9', '9x': '9x9 Diagonal' };
-var WORD_CATS = { school: 'Maktab', autumn: 'Kuz', animals: 'Hayvonlar', food: 'Ovqat', sport: 'Sport', space: 'Fazo', mixed: 'Aralash' };
+var SHAPES = {
+  rect: 'To\'rtburchak',
+  circle: 'Doira',
+  star: 'Yulduz',
+  heart: 'Yurak',
+  triangle: 'Uchburchak',
+  diamond: 'Romb',
+  house: 'Uy',
+  hexagon: 'Oltiburchak'
+};
+
+var SUDOKU_TYPES = {
+  '4': '4x4',
+  '5': '5x5',
+  '6': '6x6',
+  '7': '7x7',
+  '8': '8x8',
+  '9': '9x9',
+  '9x': '9x9 Diagonal'
+};
+
+var WORD_CATS = {
+  school: 'Maktab',
+  autumn: 'Kuz',
+  animals: 'Hayvonlar',
+  food: 'Ovqat',
+  sport: 'Sport',
+  space: 'Fazo',
+  mixed: 'Aralash'
+};
 
 export function init(container) {
   render(container);
@@ -42,7 +69,8 @@ export async function exportPack(withAnswer) {
   var canvas = document.createElement('canvas');
   var k = 300 / 25.4;
   
-  for (var i = 0; i < state.items.length; i++) {
+  var i;
+  for (i = 0; i < state.items.length; i++) {
     state.progress = i + 1;
     renderProgress(containerEl);
     await new Promise(function(r) { setTimeout(r, 50); });
@@ -104,14 +132,15 @@ function buildMultiPagePdf(pages) {
   push('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
   
   var kids = '';
-  for (var i = 0; i < N; i++) {
+  var i;
+  for (i = 0; i < N; i++) {
     if (i > 0) kids += ' ';
     kids += (3 + 3*i) + ' 0 R';
   }
   offsets[2] = len;
   push('2 0 obj\n<< /Type /Pages /Kids [' + kids + '] /Count ' + N + ' >>\nendobj\n');
   
-  for (var i = 0; i < N; i++) {
+  for (i = 0; i < N; i++) {
     var pageNum = 3 + 3*i;
     var imgNum = 4 + 3*i;
     var contentNum = 5 + 3*i;
@@ -133,7 +162,7 @@ function buildMultiPagePdf(pages) {
   var xrefStart = len;
   var maxObj = 2 + 3*N;
   var xref = 'xref\n0 ' + (maxObj+1) + '\n0000000000 65535 f \n';
-  for (var i = 1; i <= maxObj; i++) {
+  for (i = 1; i <= maxObj; i++) {
     xref += String(offsets[i] || 0).padStart(10, '0') + ' 00000 n \n';
   }
   push(xref + 'trailer\n<< /Size ' + (maxObj+1) + ' /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF');
@@ -177,14 +206,15 @@ function renderMazeConfig(config, levelNames) {
   html += '<input type="number" id="cfg_maze_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
   html += '<label><span style="font-size:11px; font-weight:700;">Daraja</span>';
   html += '<select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  for (var i = 0; i < levelNames.length; i++) {
+  var i;
+  for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
   html += '</select></label></div>';
   html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span>';
   html += '<select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
   var keys = Object.keys(SHAPES);
-  for (var i = 0; i < keys.length; i++) {
+  for (i = 0; i < keys.length; i++) {
     var k = keys[i];
     html += '<option value="' + k + '"' + (config.shape === k ? ' selected' : '') + '>' + SHAPES[k] + '</option>';
   }
@@ -204,14 +234,15 @@ function renderCodeConfig(config, levelNames) {
   html += '<input type="number" id="cfg_code_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
   html += '<label><span style="font-size:11px; font-weight:700;">Daraja</span>';
   html += '<select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  for (var i = 0; i < levelNames.length; i++) {
+  var i;
+  for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
   html += '</select></label></div>';
   html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Kod uzunligi</span>';
   html += '<select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
   var lengths = [3, 4, 5];
-  for (var i = 0; i < lengths.length; i++) {
+  for (i = 0; i < lengths.length; i++) {
     var v = lengths[i];
     html += '<option value="' + v + '"' + (config.codeLength === v ? ' selected' : '') + '>' + v + '</option>';
   }
@@ -231,14 +262,15 @@ function renderSudokuConfig(config, levelNames) {
   html += '<input type="number" id="cfg_sudoku_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
   html += '<label><span style="font-size:11px; font-weight:700;">Daraja</span>';
   html += '<select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  for (var i = 0; i < levelNames.length; i++) {
+  var i;
+  for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
   html += '</select></label></div>';
   html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Sudoku turi</span>';
   html += '<select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
   var keys = Object.keys(SUDOKU_TYPES);
-  for (var i = 0; i < keys.length; i++) {
+  for (i = 0; i < keys.length; i++) {
     var k = keys[i];
     html += '<option value="' + k + '"' + (config.type === k ? ' selected' : '') + '>' + SUDOKU_TYPES[k] + '</option>';
   }
@@ -261,7 +293,8 @@ function renderWordsConfig(config, levelNames) {
   html += '<input type="number" id="cfg_words_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
   html += '<label><span style="font-size:11px; font-weight:700;">Daraja</span>';
   html += '<select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  for (var i = 0; i < wordsLevelNames.length; i++) {
+  var i;
+  for (i = 0; i < wordsLevelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + wordsLevelNames[i] + '</option>';
   }
   html += '</select></label></div>';
@@ -269,7 +302,7 @@ function renderWordsConfig(config, levelNames) {
   html += '<select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
   html += '<option value="mixed"' + (config.category === 'mixed' ? ' selected' : '') + '>Aralash</option>';
   var keys = Object.keys(catNames);
-  for (var i = 0; i < keys.length; i++) {
+  for (i = 0; i < keys.length; i++) {
     var k = keys[i];
     html += '<option value="' + k + '"' + (config.category === k ? ' selected' : '') + '>' + catNames[k] + '</option>';
   }
@@ -290,7 +323,8 @@ function renderCrossConfig(config, levelNames) {
   html += '<input type="number" id="cfg_cross_count" min="0" max="20" value="' + config.count + '" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;"></label>';
   html += '<label><span style="font-size:11px; font-weight:700;">Daraja</span>';
   html += '<select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  for (var i = 0; i < crossLevelNames.length; i++) {
+  var i;
+  for (i = 0; i < crossLevelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + crossLevelNames[i] + '</option>';
   }
   html += '</select></label></div></div></div>';
@@ -299,54 +333,67 @@ function renderCrossConfig(config, levelNames) {
 
 function attachConfigEvents(container) {
   var types = ['maze', 'code', 'sudoku', 'words', 'cross'];
-  for (var t = 0; t < types.length; t++) {
+  var t;
+  for (t = 0; t < types.length; t++) {
     var itemType = types[t];
     var enabledCb = container.querySelector('#cfg_' + itemType + '_enabled');
     var body = container.querySelector('#pack_' + itemType + ' .pack-type-body');
     if (enabledCb && body) {
-      enabledCb.addEventListener('change', (function(type, b) {
-        return function(e) {
+      (function(type, b) {
+        enabledCb.addEventListener('change', function(e) {
           state.config[type].enabled = e.target.checked;
           b.style.opacity = e.target.checked ? '1' : '0.5';
           b.style.pointerEvents = e.target.checked ? 'auto' : 'none';
-        };
-      })(itemType, body));
+        });
+      })(itemType, body);
     }
     var countInput = container.querySelector('#cfg_' + itemType + '_count');
     if (countInput) {
-      countInput.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0)); };
-      })(itemType));
+      (function(type) {
+        countInput.addEventListener('change', function(e) {
+          state.config[type].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0));
+        });
+      })(itemType);
     }
     var levelSelect = container.querySelector('#cfg_' + itemType + '_level');
     if (levelSelect) {
-      levelSelect.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].level = parseInt(e.target.value); };
-      })(itemType));
+      (function(type) {
+        levelSelect.addEventListener('change', function(e) {
+          state.config[type].level = parseInt(e.target.value);
+        });
+      })(itemType);
     }
     var shape = container.querySelector('#cfg_' + itemType + '_shape');
     if (shape) {
-      shape.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].shape = e.target.value; };
-      })(itemType));
+      (function(type) {
+        shape.addEventListener('change', function(e) {
+          state.config[type].shape = e.target.value;
+        });
+      })(itemType);
     }
     var codeLength = container.querySelector('#cfg_' + itemType + '_codeLength');
     if (codeLength) {
-      codeLength.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].codeLength = parseInt(e.target.value); };
-      })(itemType));
+      (function(type) {
+        codeLength.addEventListener('change', function(e) {
+          state.config[type].codeLength = parseInt(e.target.value);
+        });
+      })(itemType);
     }
     var typeSelect = container.querySelector('#cfg_' + itemType + '_type');
     if (typeSelect) {
-      typeSelect.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].type = e.target.value; };
-      })(itemType));
+      (function(type) {
+        typeSelect.addEventListener('change', function(e) {
+          state.config[type].type = e.target.value;
+        });
+      })(itemType);
     }
     var categorySelect = container.querySelector('#cfg_' + itemType + '_category');
     if (categorySelect) {
-      categorySelect.addEventListener('change', (function(type) {
-        return function(e) { state.config[type].category = e.target.value; };
-      })(itemType));
+      (function(type) {
+        categorySelect.addEventListener('change', function(e) {
+          state.config[type].category = e.target.value;
+        });
+      })(itemType);
     }
   }
   var buildBtn = container.querySelector('#buildBtn');
@@ -359,10 +406,11 @@ function buildPack(container) {
   var c = state.config;
   var items = [];
   var types = ['maze', 'code', 'sudoku', 'words', 'cross'];
-  for (var t = 0; t < types.length; t++) {
+  var t, i;
+  for (t = 0; t < types.length; t++) {
     var itemType = types[t];
     if (!c[itemType].enabled || c[itemType].count <= 0) continue;
-    for (var i = 0; i < c[itemType].count; i++) {
+    for (i = 0; i < c[itemType].count; i++) {
       var seed = Math.floor(Math.random() * 1e9) + 1;
       items.push({ type: itemType, seed: seed, config: Object.assign({}, c[itemType]), index: i + 1 });
     }
@@ -377,7 +425,8 @@ function renderPreview(container) {
   var html = '<div class="card">';
   html += '<div class="game-header"><h2>Toplam</h2><p>Jami: ' + state.items.length + ' ta topshiriq</p></div>';
   html += '<div class="pack-preview-list" id="previewList">';
-  for (var i = 0; i < state.items.length; i++) {
+  var i;
+  for (i = 0; i < state.items.length; i++) {
     var item = state.items[i];
     html += '<div class="pack-item" data-idx="' + i + '">';
     html += '<div class="pack-item-info">';
@@ -403,23 +452,24 @@ function renderPreview(container) {
 
 function attachPreviewEvents(container) {
   var refreshBtns = container.querySelectorAll('[data-action="refresh"]');
-  for (var i = 0; i < refreshBtns.length; i++) {
-    refreshBtns[i].addEventListener('click', (function(idx) {
-      return function() {
+  var i;
+  for (i = 0; i < refreshBtns.length; i++) {
+    (function(idx) {
+      refreshBtns[idx].addEventListener('click', function() {
         state.items[idx].seed = Math.floor(Math.random() * 1e9) + 1;
         render(container);
-      };
-    })(parseInt(refreshBtns[i].dataset.idx)));
+      });
+    })(parseInt(refreshBtns[i].dataset.idx));
   }
   var removeBtns = container.querySelectorAll('[data-action="remove"]');
-  for (var i = 0; i < removeBtns.length; i++) {
-    removeBtns[i].addEventListener('click', (function(idx) {
-      return function() {
+  for (i = 0; i < removeBtns.length; i++) {
+    (function(idx) {
+      removeBtns[idx].addEventListener('click', function() {
         state.items.splice(idx, 1);
         if (state.items.length === 0) state.showPreview = false;
         render(container);
-      };
-    })(parseInt(removeBtns[i].dataset.idx)));
+      });
+    })(parseInt(removeBtns[i].dataset.idx));
   }
   var taskBtn = container.querySelector('#downloadTaskBtn');
   if (taskBtn) taskBtn.addEventListener('click', function() { exportPack(false); });
