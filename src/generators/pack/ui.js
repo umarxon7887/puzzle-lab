@@ -1,14 +1,14 @@
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
-import { drawMazeForPack } from '../maze/ui.js';
-import { drawCodeForPack } from '../code/ui.js';
-import { drawSudokuForPack } from '../sudoku/ui.js';
-import { drawWordsForPack } from '../wordsearch/ui.js';
-import { drawCrossForPack } from '../crossword/ui.js';
+import { buildMaze } from '../maze/logic.js';
+import { generateSecretCode, generateClues } from '../code/logic.js';
+import { generateSudoku } from '../sudoku/logic.js';
+import { generateWordSearch } from '../wordsearch/logic.js';
+import { buildCrossword } from '../crossword/logic.js';
 
 let state = {
   config: {
-    maze: { enabled: true, count: 2, level: 0, W: 10, H: 14, shape: 'rect' },
+    maze: { enabled: true, count: 2, level: 0 },
     code: { enabled: true, count: 2, level: 1, codeLength: 3 },
     sudoku: { enabled: true, count: 2, level: 1, type: '9' },
     words: { enabled: true, count: 2, level: 1, cat: 'school' },
@@ -50,9 +50,9 @@ function renderConfig(container) {
       <div class="pack-types">
         ${renderTypeConfig('maze', '🌀', t('tabMaze'), c.maze, ['level'])}
         ${renderTypeConfig('code', '🔐', t('tabCode'), c.code, ['level', 'codeLength'])}
-        ${renderTypeConfig('sudoku', '', t('tabSudoku'), c.sudoku, ['level', 'type'])}
+        ${renderTypeConfig('sudoku', '🔢', t('tabSudoku'), c.sudoku, ['level', 'type'])}
         ${renderTypeConfig('words', '🔍', t('tabWords'), c.words, ['level', 'cat'])}
-        ${renderTypeConfig('cross', '', t('tabCross'), c.cross, ['level'])}
+        ${renderTypeConfig('cross', '➗', t('tabCross'), c.cross, ['level'])}
       </div>
       <button class="primary-action" id="buildBtn" style="margin-top:16px;">${t('packBuildBtn')}</button>
     </div>
@@ -202,7 +202,7 @@ function renderPreview(container) {
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
         <button class="primary-action" id="downloadTaskBtn">📥 ${t('packTask')}</button>
-        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;"> ${t('packAnswer')}</button>
+        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">📥 ${t('packAnswer')}</button>
       </div>
       <button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ${t('backBtn')}</button>
     </div>
@@ -232,7 +232,7 @@ function attachPreviewEvents(container) {
 }
 
 function getTypeIcon(type) {
-  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '', cross: '➗' }[type];
+  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type];
 }
 
 function getTypeName(type) {
@@ -241,7 +241,7 @@ function getTypeName(type) {
 
 function getItemDetails(item) {
   const c = item.config;
-  if (item.type === 'maze') return `${t('levelNames')[c.level]} | ${c.W}×${c.H}`;
+  if (item.type === 'maze') return `${t('levelNames')[c.level]}`;
   if (item.type === 'code') return `${c.codeLength} ${t('digits')}`;
   if (item.type === 'sudoku') return `${t('typeNames')[c.type] || c.type} | ${t('levelNames')[c.level]}`;
   if (item.type === 'words') return `${t('catNames')[c.cat] || c.cat} | ${t('wordsLevelNames')[c.level]}`;
@@ -253,7 +253,7 @@ function renderProgress(container) {
   const pct = state.total > 0 ? Math.round(state.progress / state.total * 100) : 0;
   container.innerHTML = `
     <div class="card" style="text-align:center; padding:40px 20px;">
-      <div style="font-size:48px; margin-bottom:16px;">⏳</div>
+      <div style="font-size:48px; margin-bottom:16px;"></div>
       <h3 style="margin-bottom:8px;">${t('packGenerating')(state.progress, state.total)}</h3>
       <div style="background:#E5E7EB; border-radius:8px; height:8px; overflow:hidden; margin-top:16px;">
         <div style="background:#4F46E5; height:100%; width:${pct}%; transition:width 0.3s;"></div>
@@ -280,11 +280,11 @@ async function exportPack(withAnswer) {
     
     const item = state.items[i];
     try {
-      if (item.type === 'maze') drawMazeForPack(canvas, k, item.seed, item.config, withAnswer);
-      else if (item.type === 'code') drawCodeForPack(canvas, k, item.seed, item.config, withAnswer);
-      else if (item.type === 'sudoku') drawSudokuForPack(canvas, k, item.seed, item.config, withAnswer);
-      else if (item.type === 'words') drawWordsForPack(canvas, k, item.seed, item.config, withAnswer);
-      else if (item.type === 'cross') drawCrossForPack(canvas, k, item.seed, item.config, withAnswer);
+      if (item.type === 'maze') drawMazePack(canvas, k, item.seed, item.config, withAnswer);
+      else if (item.type === 'code') drawCodePack(canvas, k, item.seed, item.config, withAnswer);
+      else if (item.type === 'sudoku') drawSudokuPack(canvas, k, item.seed, item.config, withAnswer);
+      else if (item.type === 'words') drawWordsPack(canvas, k, item.seed, item.config, withAnswer);
+      else if (item.type === 'cross') drawCrossPack(canvas, k, item.seed, item.config, withAnswer);
       
       const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
       const jpeg = new Uint8Array(await blob.arrayBuffer());
@@ -341,10 +341,76 @@ function buildMultiPagePdf(pages) {
   return new Blob(parts, { type: 'application/pdf' });
 }
 
-export function exportPack(withAnswer) {
-  exportPackInternal(withAnswer);
+// Har bir tur uchun chizish funksiyalari
+function drawMazePack(canvas, k, seed, config, showSolution) {
+  const m = buildMaze(10, 14, seed, 'rect');
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('Labirint #' + seed, canvas.width/2, canvas.height/2);
 }
 
-async function exportPackInternal(withAnswer) {
-  await exportPack.call({withAnswer}, withAnswer);
+function drawCodePack(canvas, k, seed, config, withAnswer) {
+  const codeLength = config.codeLength || 3;
+  const secretCode = generateSecretCode(codeLength);
+  const clues = generateClues(secretCode, 5);
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('Kodni topish #' + seed, canvas.width/2, canvas.height/2);
+}
+
+function drawSudokuPack(canvas, k, seed, config, withAnswer) {
+  const type = config.type || '9';
+  const level = config.level || 1;
+  const puzzle = generateSudoku(type, level, seed);
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('Sudoku #' + seed, canvas.width/2, canvas.height/2);
+}
+
+function drawWordsPack(canvas, k, seed, config, withAnswer) {
+  const cat = config.cat || 'school';
+  const level = config.level || 1;
+  const lang = getLang();
+  const puzzle = generateWordSearch(cat, level, seed, lang);
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText("So'z qidiruv #" + seed, canvas.width/2, canvas.height/2);
+}
+
+function drawCrossPack(canvas, k, seed, config, withAnswer) {
+  const level = config.level || 1;
+  const puzzle = buildCrossword(level, seed);
+  const ctx = canvas.getContext('2d');
+  canvas.width = Math.round(210*k);
+  canvas.height = Math.round(297*k);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `700 ${20 * 0.3528 * k}px ${FONT}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('Krossvord #' + seed, canvas.width/2, canvas.height/2);
 }
