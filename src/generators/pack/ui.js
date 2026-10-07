@@ -1,5 +1,5 @@
 import { t, getLang } from '../../core/i18n.js';
-import { makePdf, downloadPdf } from '../../core/pdf.js';
+import { downloadPdf } from '../../core/pdf.js';
 import { drawMazeForPack } from '../maze/ui.js';
 import { drawCodeForPack } from '../code/ui.js';
 import { drawSudokuForPack } from '../sudoku/ui.js';
@@ -19,37 +19,6 @@ var state = {
   generating: false,
   progress: 0,
   total: 0
-};
-
-var SHAPES = {
-  rect: 'To\'rtburchak',
-  circle: 'Doira',
-  star: 'Yulduz',
-  heart: 'Yurak',
-  triangle: 'Uchburchak',
-  diamond: 'Romb',
-  house: 'Uy',
-  hexagon: 'Oltiburchak'
-};
-
-var SUDOKU_TYPES = {
-  '4': '4x4',
-  '5': '5x5',
-  '6': '6x6',
-  '7': '7x7',
-  '8': '8x8',
-  '9': '9x9',
-  '9x': '9x9 Diagonal'
-};
-
-var WORD_CATS = {
-  school: 'Maktab',
-  autumn: 'Kuz',
-  animals: 'Hayvonlar',
-  food: 'Ovqat',
-  sport: 'Sport',
-  space: 'Fazo',
-  mixed: 'Aralash'
 };
 
 export function init(container) {
@@ -208,15 +177,7 @@ function renderMazeConfig(config, levelNames) {
   for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
-  html += '</select></label></div>';
-  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span>';
-  html += '<select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  var keys = Object.keys(SHAPES);
-  for (i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    html += '<option value="' + k + '"' + (config.shape === k ? ' selected' : '') + '>' + SHAPES[k] + '</option>';
-  }
-  html += '</select></label></div></div>';
+  html += '</select></label></div></div></div>';
   return html;
 }
 
@@ -236,15 +197,7 @@ function renderCodeConfig(config, levelNames) {
   for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
-  html += '</select></label></div>';
-  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Kod uzunligi</span>';
-  html += '<select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  var lengths = [3, 4, 5];
-  for (i = 0; i < lengths.length; i++) {
-    var v = lengths[i];
-    html += '<option value="' + v + '"' + (config.codeLength === v ? ' selected' : '') + '>' + v + '</option>';
-  }
-  html += '</select></label></div></div>';
+  html += '</select></label></div></div></div>';
   return html;
 }
 
@@ -264,15 +217,7 @@ function renderSudokuConfig(config, levelNames) {
   for (i = 0; i < levelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + levelNames[i] + '</option>';
   }
-  html += '</select></label></div>';
-  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Sudoku turi</span>';
-  html += '<select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  var keys = Object.keys(SUDOKU_TYPES);
-  for (i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    html += '<option value="' + k + '"' + (config.type === k ? ' selected' : '') + '>' + SUDOKU_TYPES[k] + '</option>';
-  }
-  html += '</select></label></div></div>';
+  html += '</select></label></div></div></div>';
   return html;
 }
 
@@ -294,16 +239,7 @@ function renderWordsConfig(config, levelNames) {
   for (i = 0; i < wordsLevelNames.length; i++) {
     html += '<option value="' + i + '"' + (config.level === i ? ' selected' : '') + '>' + wordsLevelNames[i] + '</option>';
   }
-  html += '</select></label></div>';
-  html += '<label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Mavzu</span>';
-  html += '<select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">';
-  html += '<option value="mixed"' + (config.category === 'mixed' ? ' selected' : '') + '>Aralash</option>';
-  var keys = Object.keys(catNames);
-  for (i = 0; i < keys.length; i++) {
-    var k = keys[i];
-    html += '<option value="' + k + '"' + (config.category === k ? ' selected' : '') + '>' + catNames[k] + '</option>';
-  }
-  html += '</select></label></div></div>';
+  html += '</select></label></div></div></div>';
   return html;
 }
 
@@ -360,43 +296,59 @@ function attachConfigEvents(container) {
         });
       })(itemType);
     }
-    var shape = container.querySelector('#cfg_' + itemType + '_shape');
-    if (shape) {
-      (function(type) {
-        shape.addEventListener('change', function(e) {
-          state.config[type].shape = e.target.value;
-        });
-      })(itemType);
-    }
-    var codeLength = container.querySelector('#cfg_' + itemType + '_codeLength');
-    if (codeLength) {
-      (function(type) {
-        codeLength.addEventListener('change', function(e) {
-          state.config[type].codeLength = parseInt(e.target.value);
-        });
-      })(itemType);
-    }
-    var typeSelect = container.querySelector('#cfg_' + itemType + '_type');
-    if (typeSelect) {
-      (function(type) {
-        typeSelect.addEventListener('change', function(e) {
-          state.config[type].type = e.target.value;
-        });
-      })(itemType);
-    }
-    var categorySelect = container.querySelector('#cfg_' + itemType + '_category');
-    if (categorySelect) {
-      (function(type) {
-        categorySelect.addEventListener('change', function(e) {
-          state.config[type].category = e.target.value;
-        });
-      })(itemType);
-    }
   }
   var buildBtn = container.querySelector('#buildBtn');
   if (buildBtn) {
     buildBtn.addEventListener('click', function() { buildPack(container); });
   }
+}
+
+function buildPack(container) {
+  var c = state.config;
+  var items = [];
+  var types = ['maze', 'code', 'sudoku', 'words', 'cross'];
+  var t, i;
+  for (t = 0; t < types.length; t++) {
+    var itemType = types[t];
+    if (!c[itemType].enabled || c[itemType].count <= 0) continue;
+    for (i = 0; i < c[itemType].count; i++) {
+      var seed = Math.floor(Math.random() * 1e9) + 1;
+      items.push({ type: itemType, seed: seed, config: Object.assign({}, c[itemType]), index: i + 1 });
+    }
+  }
+  if (items.length === 0) { alert('Kamida bitta turdan tanlang'); return; }
+  state.items = items;
+  state.showPreview = true;
+  render(container);
+}
+
+function renderPreview(container) {
+  var html = '<div class="card">';
+  html += '<div class="game-header"><h2>Toplam</h2><p>Jami: ' + state.items.length + ' ta topshiriq</p></div>';
+  html += '<div class="pack-preview-list" id="previewList">';
+  var i;
+  for (i = 0; i < state.items.length; i++) {
+    var item = state.items[i];
+    html += '<div class="pack-item" data-idx="' + i + '">';
+    html += '<div class="pack-item-info">';
+    html += '<span class="pack-item-icon">' + getTypeIcon(item.type) + '</span>';
+    html += '<div><div style="font-weight:700; font-size:14px;">' + getTypeName(item.type) + ' #' + item.index + '</div>';
+    html += '<div style="font-size:12px; color:var(--text-muted);">' + getItemDetails(item) + '</div></div>';
+    html += '</div>';
+    html += '<div class="pack-item-actions">';
+    html += '<button class="icon-btn-small" data-action="refresh" data-idx="' + i + '">Yangilash</button>';
+    html += '<button class="icon-btn-small" data-action="remove" data-idx="' + i + '">Ochirish</button>';
+    html += '</div></div>';
+  }
+  html += '</div>';
+  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">';
+  html += '<button class="primary-action" id="downloadTaskBtn">Topshiriq PDF</button>';
+  html += '<button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">Javoblar PDF</button>';
+  html += '</div>';
+  html += '<button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">Orqaga</button>';
+  html += '</div>';
+  container.innerHTML = html;
+  attachPreviewEvents(container);
 }
 
 function attachPreviewEvents(container) {
@@ -441,10 +393,10 @@ function getTypeName(type) {
 function getItemDetails(item) {
   var c = item.config;
   var levelNames = t('levelNames');
-  if (item.type === 'maze') return levelNames[c.level] + ' | ' + (SHAPES[c.shape] || c.shape);
+  if (item.type === 'maze') return levelNames[c.level];
   if (item.type === 'code') return c.codeLength + ' xonali | ' + levelNames[c.level];
-  if (item.type === 'sudoku') return (SUDOKU_TYPES[c.type] || c.type) + ' | ' + levelNames[c.level];
-  if (item.type === 'words') return (WORD_CATS[c.category] || c.category) + ' | ' + t('wordsLevelNames')[c.level];
+  if (item.type === 'sudoku') return levelNames[c.level];
+  if (item.type === 'words') return t('wordsLevelNames')[c.level];
   if (item.type === 'cross') return t('crossLevelNames')[c.level];
   return '';
 }
@@ -459,4 +411,3 @@ function renderProgress(container) {
   html += '</div></div>';
   container.innerHTML = html;
 }
-// Majburiy yangilanish
