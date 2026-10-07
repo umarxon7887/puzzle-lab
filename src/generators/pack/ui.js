@@ -22,9 +22,9 @@ let state = {
 };
 
 const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
-const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡' };
+const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '', hexagon: '⬡' };
 const SUDOKU_TYPES = { '4': '4×4', '5': '5×5', '6': '6×6', '7': '7×7', '8': '8×8', '9': '9×9', '9x': '9×9 X' };
-const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
+const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
 
 export function init(container) {
   render(container);
@@ -366,7 +366,7 @@ function renderPreview(container) {
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
         <button class="primary-action" id="downloadTaskBtn">📥 ${t('packTask')}</button>
-        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">📥 ${t('packAnswer')}</button>
+        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;"> ${t('packAnswer')}</button>
       </div>
       <button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ${t('backBtn')}</button>
     </div>
@@ -396,7 +396,7 @@ function attachPreviewEvents(container) {
 }
 
 function getTypeIcon(type) {
-  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type];
+  return { maze: '', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type];
 }
 
 function getTypeName(type) {
@@ -425,4 +425,3 @@ function renderProgress(container) {
     </div>
   `;
 }
-
