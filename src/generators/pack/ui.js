@@ -105,8 +105,6 @@ export async function exportPack(withAnswer) {
     fileName = withAnswer ? 'Toplam (Javoblar).pdf' : 'Toplam.pdf';
   } else if (lang === 'ru') {
     fileName = withAnswer ? 'Набор (Ответы).pdf' : 'Набор.pdf';
-  } else {
-    fileName = withAnswer ? 'Pack (Answers).pdf' : 'Pack.pdf';
   }
   
   downloadPdf(pdf, fileName);
@@ -279,7 +277,6 @@ function renderSudokuConfig(config, levelNames) {
 }
 
 function renderWordsConfig(config, levelNames) {
-  var lang = getLang();
   var catNames = t('catNames');
   var wordsLevelNames = t('wordsLevelNames');
   var html = '<div class="pack-type-card" id="pack_words">';
@@ -400,54 +397,6 @@ function attachConfigEvents(container) {
   if (buildBtn) {
     buildBtn.addEventListener('click', function() { buildPack(container); });
   }
-}
-
-function buildPack(container) {
-  var c = state.config;
-  var items = [];
-  var types = ['maze', 'code', 'sudoku', 'words', 'cross'];
-  var t, i;
-  for (t = 0; t < types.length; t++) {
-    var itemType = types[t];
-    if (!c[itemType].enabled || c[itemType].count <= 0) continue;
-    for (i = 0; i < c[itemType].count; i++) {
-      var seed = Math.floor(Math.random() * 1e9) + 1;
-      items.push({ type: itemType, seed: seed, config: Object.assign({}, c[itemType]), index: i + 1 });
-    }
-  }
-  if (items.length === 0) { alert('Kamida bitta turdan tanlang'); return; }
-  state.items = items;
-  state.showPreview = true;
-  render(container);
-}
-
-function renderPreview(container) {
-  var html = '<div class="card">';
-  html += '<div class="game-header"><h2>Toplam</h2><p>Jami: ' + state.items.length + ' ta topshiriq</p></div>';
-  html += '<div class="pack-preview-list" id="previewList">';
-  var i;
-  for (i = 0; i < state.items.length; i++) {
-    var item = state.items[i];
-    html += '<div class="pack-item" data-idx="' + i + '">';
-    html += '<div class="pack-item-info">';
-    html += '<span class="pack-item-icon">' + getTypeIcon(item.type) + '</span>';
-    html += '<div><div style="font-weight:700; font-size:14px;">' + getTypeName(item.type) + ' #' + item.index + '</div>';
-    html += '<div style="font-size:12px; color:var(--text-muted);">' + getItemDetails(item) + '</div></div>';
-    html += '</div>';
-    html += '<div class="pack-item-actions">';
-    html += '<button class="icon-btn-small" data-action="refresh" data-idx="' + i + '">Yangilash</button>';
-    html += '<button class="icon-btn-small" data-action="remove" data-idx="' + i + '">Ochirish</button>';
-    html += '</div></div>';
-  }
-  html += '</div>';
-  html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">';
-  html += '<button class="primary-action" id="downloadTaskBtn">Topshiriq PDF</button>';
-  html += '<button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">Javoblar PDF</button>';
-  html += '</div>';
-  html += '<button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">Orqaga</button>';
-  html += '</div>';
-  container.innerHTML = html;
-  attachPreviewEvents(container);
 }
 
 function attachPreviewEvents(container) {
