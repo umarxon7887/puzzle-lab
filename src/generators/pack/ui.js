@@ -18,8 +18,7 @@ let state = {
   items: [],
   showPreview: false,
   generating: false,
-  activeSettings: null,
-  mainContainer: null
+  activeSettings: null
 };
 
 const SHAPES = { rect: 'To\'rtburchak', circle: 'Doira', star: 'Yulduz', heart: 'Yurak', triangle: 'Uchburchak' };
@@ -27,7 +26,6 @@ const SUDOKU_TYPES = { '4': '4×4', '6': '6×6', '9': '9×9' };
 const WORD_CATS = { school: 'Maktab', animals: 'Hayvonlar', food: 'Ovqat', sport: 'Sport', space: 'Fazo' };
 
 export function init(container) {
-  state.mainContainer = container;
   render(container);
 }
 
@@ -38,7 +36,8 @@ export async function exportPDF(withAnswer) {
   }
   
   state.generating = true;
-  render(state.mainContainer);
+  const container = document.querySelector('#app-container');
+  render(container);
   
   const pages = [];
   const canvas = document.createElement('canvas');
@@ -69,7 +68,7 @@ export async function exportPDF(withAnswer) {
   }
   
   state.generating = false;
-  render(state.mainContainer);
+  render(container);
 }
 
 function buildPdf(pages) {
@@ -102,10 +101,18 @@ function buildPdf(pages) {
 }
 
 function render(container) {
-  state.mainContainer = container;
-  if (state.generating) { container.innerHTML = '<div class="card" style="text-align:center;padding:40px;"><h3>Yaratilmoqda...</h3></div>'; return; }
-  if (state.showPreview) { renderPreview(container); return; }
-  if (state.activeSettings) { renderSettingsModal(container); return; }
+  if (state.generating) { 
+    container.innerHTML = '<div class="card" style="text-align:center;padding:40px;"><h3>Yaratilmoqda...</h3></div>'; 
+    return; 
+  }
+  if (state.showPreview) { 
+    renderPreview(container); 
+    return; 
+  }
+  if (state.activeSettings) { 
+    renderSettingsModal(container); 
+    return; 
+  }
   renderConfig(container);
 }
 
