@@ -1,4 +1,3 @@
-cat > src/generators/pack/ui.js << 'JSEOF'
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
 import { drawMazeForPack } from '../maze/ui.js';
@@ -426,4 +425,4 @@ function renderProgress(container) {
     </div>
   `;
 }
-JSEOF
+
