@@ -1579,10 +1579,6 @@ button.primary:hover {
 }
 
 /* qizil nishon: doim yengil, shar yetib kelganda kuchli pulsatsiya */
-.icon-maze .maze-goal {
-  filter: drop-shadow(0 0 4px rgba(255, 107, 107, .8));
-  animation: mazeGoal 5s ease-in-out infinite;
-}
 @keyframes mazeGoal {
   0%, 50%   { transform: scale(1); }
   60%       { transform: scale(1.5); filter: drop-shadow(0 0 12px rgba(255, 107, 107, 1)); }
