@@ -51,7 +51,7 @@ function render(container) {
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
     onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
-    i18n: { new: t('newMaze'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko'''rish, hideAnswer: 'Javobni yashirish' }
+    i18n: { new: t('newMaze'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: "Javobni ko'rish", hideAnswer: "Javobni yashirish" }
   });
 
   buildAndDraw(container);
