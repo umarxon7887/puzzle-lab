@@ -3,7 +3,6 @@ import * as Maze from './maze/ui.js';
 import * as Sudoku from './sudoku/ui.js';
 import * as Words from './wordsearch/ui.js';
 import * as Cross from './crossword/ui.js';
-import * as Pack from './pack/ui.js';
 
 export const GENERATORS = [
   {
@@ -50,15 +49,6 @@ export const GENERATORS = [
     coverGradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     init: Cross.init,
     exportPDF: Cross.exportPDF
-  },
-  {
-    id: 'pack',
-    nameKey: 'tabPack',
-    descriptionKey: 'packDesc',
-    cover: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="30" width="70" height="50" rx="4" fill="none" stroke="#fff" stroke-width="4"/><path d="M30 30 V20 a20 20 0 0 1 40 0 V30" stroke="#fff" stroke-width="4" fill="none"/><circle cx="50" cy="55" r="8" fill="#fff"/><path d="M50 50 L50 60 M45 55 L55 55" stroke="#667eea" stroke-width="2" stroke-linecap="round"/></svg>',
-    coverGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    init: Pack.init,
-    exportPDF: Pack.exportPack
   }
 ];
 
