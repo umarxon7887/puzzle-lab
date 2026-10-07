@@ -8,16 +8,21 @@ import { drawCrossForPack } from '../crossword/ui.js';
 
 let state = {
   config: {
-    maze: { enabled: true, count: 1 },
-    code: { enabled: true, count: 1 },
-    sudoku: { enabled: true, count: 1 },
-    words: { enabled: true, count: 1 },
-    cross: { enabled: true, count: 1 }
+    maze: { enabled: true, count: 1, level: 0, shape: 'rect' },
+    code: { enabled: true, count: 1, level: 1, codeLength: 3 },
+    sudoku: { enabled: true, count: 1, level: 1, type: '9' },
+    words: { enabled: true, count: 1, level: 1, category: 'school' },
+    cross: { enabled: true, count: 1, level: 1 }
   },
   items: [],
   showPreview: false,
-  generating: false
+  generating: false,
+  activeSettings: null
 };
+
+const SHAPES = { rect: '▭', circle: '○', star: '★', heart: '♥', triangle: '△' };
+const SUDOKU_TYPES = { '4': '4×4', '6': '6×6', '9': '9×9' };
+const WORD_CATS = { school: '', animals: '🦁', food: '🍎', sport: '⚽', space: '' };
 
 export function init(container) { render(container); }
 
@@ -89,20 +94,30 @@ function buildPdf(pages) {
 function render(container) {
   if (state.generating) { container.innerHTML = '<div class="card" style="text-align:center;padding:40px;"><h3>Yaratilmoqda...</h3></div>'; return; }
   if (state.showPreview) { renderPreview(container); return; }
+  if (state.activeSettings) { renderSettingsModal(container); return; }
   renderConfig(container);
 }
 
 function renderConfig(container) {
+  const levelNames = t('levelNames');
   let html = '<div class="card"><div class="game-header"><h2>To\'plam yaratish</h2><p>Kerakli turlarni tanlang</p></div><div style="display:flex;flex-direction:column;gap:10px;">';
-  const types = ['maze', 'code', 'sudoku', 'words', 'cross'];
-  const names = { maze: 'Labirint', code: 'Kodni top', sudoku: 'Sudoku', words: 'So\'z qidiruv', cross: 'Krossvord' };
+  
+  const types = [
+    { id: 'maze', name: 'Labirint', icon: '🌀' },
+    { id: 'code', name: 'Kodni top', icon: '🔐' },
+    { id: 'sudoku', name: 'Sudoku', icon: '🔢' },
+    { id: 'words', name: 'So\'z qidiruv', icon: '' },
+    { id: 'cross', name: 'Krossvord', icon: '' }
+  ];
   
   types.forEach(type => {
-    const c = state.config[type];
-    html += '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:#f9f9f9;border-radius:8px;">';
-    html += '<input type="checkbox" id="cfg_' + type + '" ' + (c.enabled ? 'checked' : '') + ' style="width:20px;height:20px;">';
-    html += '<label for="cfg_' + type + '" style="flex:1;font-weight:600;">' + names[type] + '</label>';
-    html += '<input type="number" id="cnt_' + type + '" min="0" max="10" value="' + c.count + '" style="width:60px;padding:5px;border-radius:4px;border:1px solid #ccc;">';
+    const c = state.config[type.id];
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:12px;background:#f9f9f9;border-radius:8px;">';
+    html += '<input type="checkbox" id="cfg_' + type.id + '" ' + (c.enabled ? 'checked' : '') + ' style="width:20px;height:20px;">';
+    html += '<span style="font-size:20px;">' + type.icon + '</span>';
+    html += '<label for="cfg_' + type.id + '" style="flex:1;font-weight:600;">' + type.name + '</label>';
+    html += '<button class="settings-btn" data-type="' + type.id + '" style="padding:5px 10px;background:#667eea;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px;" title="Sozlamalar">⚙️</button>';
+    html += '<input type="number" id="cnt_' + type.id + '" min="0" max="10" value="' + c.count + '" style="width:60px;padding:5px;border-radius:4px;border:1px solid #ccc;">';
     html += '</div>';
   });
   
@@ -110,10 +125,98 @@ function renderConfig(container) {
   container.innerHTML = html;
   
   types.forEach(type => {
-    document.getElementById('cfg_' + type).addEventListener('change', e => { state.config[type].enabled = e.target.checked; });
-    document.getElementById('cnt_' + type).addEventListener('change', e => { state.config[type].count = parseInt(e.target.value) || 0; });
+    document.getElementById('cfg_' + type.id).addEventListener('change', e => { state.config[type.id].enabled = e.target.checked; });
+    document.getElementById('cnt_' + type.id).addEventListener('change', e => { state.config[type.id].count = parseInt(e.target.value) || 0; });
+    document.querySelector('.settings-btn[data-type="' + type.id + '"]').addEventListener('click', () => {
+      state.activeSettings = type.id;
+      render(container);
+    });
   });
   document.getElementById('buildBtn').addEventListener('click', buildPack);
+}
+
+function renderSettingsModal(container) {
+  const type = state.activeSettings;
+  const c = state.config[type];
+  const levelNames = t('levelNames');
+  
+  let html = '<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;">';
+  html += '<div style="background:white;border-radius:12px;padding:25px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;">';
+  html += '<h3 style="margin-bottom:20px;">';
+  
+  if (type === 'maze') html += '🌀 Labirint sozlamalari';
+  else if (type === 'code') html += '🔐 Kodni top sozlamalari';
+  else if (type === 'sudoku') html += '🔢 Sudoku sozlamalari';
+  else if (type === 'words') html += '🔍 So\'z qidiruv sozlamalari';
+  else if (type === 'cross') html += '➗ Krossvord sozlamalari';
+  
+  html += '</h3>';
+  
+  // Daraja
+  html += '<div style="margin-bottom:15px;">';
+  html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Daraja:</label>';
+  html += '<select id="setting_level" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+  levelNames.forEach((name, i) => {
+    html += '<option value="' + i + '"' + (c.level === i ? ' selected' : '') + '>' + name + '</option>';
+  });
+  html += '</select></div>';
+  
+  // Qo'shimcha sozlamalar
+  if (type === 'maze') {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Shakl:</label>';
+    html += '<select id="setting_shape" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    Object.keys(SHAPES).forEach(key => {
+      html += '<option value="' + key + '"' + (c.shape === key ? ' selected' : '') + '>' + SHAPES[key] + ' ' + key + '</option>';
+    });
+    html += '</select></div>';
+  } else if (type === 'code') {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Kod uzunligi:</label>';
+    html += '<select id="setting_codeLength" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    [3, 4, 5].forEach(len => {
+      html += '<option value="' + len + '"' + (c.codeLength === len ? ' selected' : '') + '>' + len + ' xonali</option>';
+    });
+    html += '</select></div>';
+  } else if (type === 'sudoku') {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Sudoku turi:</label>';
+    html += '<select id="setting_type" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    Object.keys(SUDOKU_TYPES).forEach(key => {
+      html += '<option value="' + key + '"' + (c.type === key ? ' selected' : '') + '>' + SUDOKU_TYPES[key] + '</option>';
+    });
+    html += '</select></div>';
+  } else if (type === 'words') {
+    html += '<div style="margin-bottom:15px;">';
+    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Mavzu:</label>';
+    html += '<select id="setting_category" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    Object.keys(WORD_CATS).forEach(key => {
+      html += '<option value="' + key + '"' + (c.category === key ? ' selected' : '') + '>' + WORD_CATS[key] + ' ' + key + '</option>';
+    });
+    html += '</select></div>';
+  }
+  
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">';
+  html += '<button id="saveSettings" style="padding:10px;background:#667eea;color:white;border:none;border-radius:6px;cursor:pointer;">Saqlash</button>';
+  html += '<button id="cancelSettings" style="padding:10px;background:#e0e0e0;border:none;border-radius:6px;cursor:pointer;">Bekor qilish</button>';
+  html += '</div></div></div>';
+  
+  container.innerHTML = html;
+  
+  document.getElementById('saveSettings').addEventListener('click', () => {
+    state.config[type].level = parseInt(document.getElementById('setting_level').value);
+    if (type === 'maze') state.config[type].shape = document.getElementById('setting_shape').value;
+    else if (type === 'code') state.config[type].codeLength = parseInt(document.getElementById('setting_codeLength').value);
+    else if (type === 'sudoku') state.config[type].type = document.getElementById('setting_type').value;
+    else if (type === 'words') state.config[type].category = document.getElementById('setting_category').value;
+    state.activeSettings = null;
+    render(container);
+  });
+  
+  document.getElementById('cancelSettings').addEventListener('click', () => {
+    state.activeSettings = null;
+    render(container);
+  });
 }
 
 function buildPack() {

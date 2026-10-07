@@ -1719,3 +1719,12 @@ button.primary:hover {
   .icon-cross .cross-op,
   .icon-words .word-cell.found { opacity: 1; }
 }
+
+/* Pack settings button */
+.settings-btn {
+  transition: all 0.3s ease;
+}
+.settings-btn:hover {
+  background: #5a67d8;
+  transform: scale(1.1);
+}
