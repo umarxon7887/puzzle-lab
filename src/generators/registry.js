@@ -10,7 +10,6 @@ export const GENERATORS = [
     id: 'maze',
     nameKey: 'tabMaze',
     descriptionKey: 'mazeDesc',
-    cover: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="icon-maze"><defs><linearGradient id="mazeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:1" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" /></linearGradient></defs><rect width="200" height="200" rx="20" fill="url(#mazeGrad)"/><path d="M40 40 L40 160 L160 160" stroke="rgba(255,255,255,0.3)" stroke-width="8" fill="none" stroke-linecap="round"/><path class="maze-path" d="M60 40 L60 80 L100 80 L100 120 L140 120 L140 60 L80 60 L80 140 L160 140" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle class="maze-hero" cx="50" cy="50" r="10" fill="#FFD700"/><circle class="maze-goal" cx="150" cy="150" r="12" fill="#FF6B6B"/></svg>`,
     coverGradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     init: Maze.init,
     exportPDF: Maze.exportPDF
