@@ -12,7 +12,7 @@ let state = {
     maze: { enabled: true, count: 2, level: 0, shape: 'rect' },
     code: { enabled: true, count: 2, level: 1, codeLength: 3 },
     sudoku: { enabled: true, count: 2, level: 1, type: '9' },
-    words: { enabled: true, count: 2, level: 1, cat: 'school' },
+    words: { enabled: true, count: 2, level: 1, category: 'school' },
     cross: { enabled: true, count: 2, level: 1 }
   },
   items: [],
@@ -257,9 +257,9 @@ function renderWordsConfig(config, levelNames) {
           </label>
         </div>
         <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packWordsCat')}</span>
-          <select id="cfg_words_cat" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
-            <option value="mixed" ${config.cat === 'mixed' ? 'selected' : ''}>🎲 ${lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')}</option>
-            ${Object.keys(catNames).map(k => `<option value="${k}" ${config.cat === k ? 'selected' : ''}>${WORD_CATS[k] || ''} ${catNames[k]}</option>`).join('')}
+          <select id="cfg_words_category" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
+            <option value="mixed" ${config.category === 'mixed' ? 'selected' : ''}>🎲 ${lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')}</option>
+            ${Object.keys(catNames).map(k => `<option value="${k}" ${config.category === k ? 'selected' : ''}>${WORD_CATS[k] || ''} ${catNames[k]}</option>`).join('')}
           </select>
         </label>
       </div>
@@ -314,10 +314,10 @@ function attachConfigEvents(container) {
     if (shape) shape.addEventListener('change', (e) => { state.config[itemType].shape = e.target.value; });
     const codeLength = container.querySelector(`#cfg_${itemType}_codeLength`);
     if (codeLength) codeLength.addEventListener('change', (e) => { state.config[itemType].codeLength = parseInt(e.target.value); });
-    const typeSelect = container.querySelector(`#cfg_${itemType}_type`); // Tuzatildi: 'type' o'rniga 'typeSelect'
+    const typeSelect = container.querySelector(`#cfg_${itemType}_type`);
     if (typeSelect) typeSelect.addEventListener('change', (e) => { state.config[itemType].type = e.target.value; });
-    const cat = container.querySelector(`#cfg_${itemType}_cat`);
-    if (cat) cat.addEventListener('change', (e) => { state.config[itemType].cat = e.target.value; });
+    const categorySelect = container.querySelector(`#cfg_${itemType}_category`);
+    if (categorySelect) categorySelect.addEventListener('change', (e) => { state.config[itemType].category = e.target.value; });
   });
   container.querySelector('#buildBtn').addEventListener('click', () => buildPack(container));
 }
@@ -409,7 +409,7 @@ function getItemDetails(item) {
   if (item.type === 'maze') return `${t('levelNames')[c.level]} | ${SHAPES[c.shape] || c.shape}`;
   if (item.type === 'code') return `${c.codeLength} ${t('digits')} | ${t('levelNames')[c.level]}`;
   if (item.type === 'sudoku') return `${SUDOKU_TYPES[c.type] || c.type} | ${t('levelNames')[c.level]}`;
-  if (item.type === 'words') return `${t('catNames')[c.cat] || c.cat} | ${t('wordsLevelNames')[c.level]}`;
+  if (item.type === 'words') return `${t('catNames')[c.category] || c.category} | ${t('wordsLevelNames')[c.level]}`;
   if (item.type === 'cross') return t('crossLevelNames')[c.level];
   return '';
 }
