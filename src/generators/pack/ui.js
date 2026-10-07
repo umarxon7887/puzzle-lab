@@ -23,9 +23,9 @@ let state = {
 };
 
 const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
-const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '', hexagon: '⬡' };
+const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡' };
 const SUDOKU_TYPES = { '4': '4×4', '5': '5×5', '6': '6×6', '7': '7×7', '8': '8×8', '9': '9×9', '9x': '9×9 X' };
-const WORD_CATS = { school: '🏫', autumn: '', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '' };
+const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
 
 export function init(container) {
   render(container);
@@ -35,8 +35,8 @@ export async function exportPack(withAnswer) {
   state.generating = true;
   state.total = state.items.length;
   state.progress = 0;
-  const container = document.querySelector('.card')?.parentElement || document.getElementById('app-container');
-  renderProgress(container);
+  const containerEl = document.querySelector('.card')?.parentElement || document.getElementById('app-container');
+  renderProgress(containerEl);
   
   const pages = [];
   const canvas = document.createElement('canvas');
@@ -44,7 +44,7 @@ export async function exportPack(withAnswer) {
   
   for (let i = 0; i < state.items.length; i++) {
     state.progress = i + 1;
-    renderProgress(container);
+    renderProgress(containerEl);
     await new Promise(r => setTimeout(r, 50));
     
     const item = state.items[i];
@@ -66,7 +66,7 @@ export async function exportPack(withAnswer) {
   if (pages.length === 0) {
     alert('Xatolik yuz berdi');
     state.generating = false;
-    render(container);
+    render(containerEl);
     return;
   }
   
@@ -79,7 +79,7 @@ export async function exportPack(withAnswer) {
   
   downloadPdf(pdf, fileName);
   state.generating = false;
-  render(container);
+  render(containerEl);
 }
 
 function buildMultiPagePdf(pages) {
@@ -111,22 +111,14 @@ function buildMultiPagePdf(pages) {
 }
 
 function render(container) {
-  if (state.generating) {
-    renderProgress(container);
-    return;
-  }
-  if (state.showPreview && state.items.length > 0) {
-    renderPreview(container);
-    return;
-  }
+  if (state.generating) { renderProgress(container); return; }
+  if (state.showPreview && state.items.length > 0) { renderPreview(container); return; }
   renderConfig(container);
 }
 
 function renderConfig(container) {
   const c = state.config;
-  const lang = getLang();
   const levelNames = t('levelNames');
-  
   container.innerHTML = `
     <div class="card">
       <div class="game-header">
@@ -158,19 +150,16 @@ function renderMazeConfig(config, levelNames) {
       </div>
       <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
             <input type="number" id="cfg_maze_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
           </label>
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
             <select id="cfg_maze_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
               ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
           </label>
         </div>
-        <label style="margin-top:8px;">
-          <span style="font-size:11px; font-weight:700;">Shakl</span>
+        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">Shakl</span>
           <select id="cfg_maze_shape" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
             ${Object.keys(SHAPES).map(k => `<option value="${k}" ${config.shape === k ? 'selected' : ''}>${SHAPES[k]} ${k}</option>`).join('')}
           </select>
@@ -192,19 +181,16 @@ function renderCodeConfig(config, levelNames) {
       </div>
       <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
             <input type="number" id="cfg_code_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
           </label>
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
             <select id="cfg_code_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
               ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
           </label>
         </div>
-        <label style="margin-top:8px;">
-          <span style="font-size:11px; font-weight:700;">${t('packCodeLength')}</span>
+        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packCodeLength')}</span>
           <select id="cfg_code_codeLength" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
             <option value="3" ${config.codeLength === 3 ? 'selected' : ''}>3</option>
             <option value="4" ${config.codeLength === 4 ? 'selected' : ''}>4</option>
@@ -228,19 +214,16 @@ function renderSudokuConfig(config, levelNames) {
       </div>
       <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
             <input type="number" id="cfg_sudoku_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
           </label>
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
             <select id="cfg_sudoku_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
               ${levelNames.map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
           </label>
         </div>
-        <label style="margin-top:8px;">
-          <span style="font-size:11px; font-weight:700;">${t('packSudokuType')}</span>
+        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packSudokuType')}</span>
           <select id="cfg_sudoku_type" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
             ${Object.keys(SUDOKU_TYPES).map(k => `<option value="${k}" ${config.type === k ? 'selected' : ''}>${SUDOKU_TYPES[k]}</option>`).join('')}
           </select>
@@ -264,19 +247,16 @@ function renderWordsConfig(config, levelNames) {
       </div>
       <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
             <input type="number" id="cfg_words_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
           </label>
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
             <select id="cfg_words_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
               ${t('wordsLevelNames').map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
           </label>
         </div>
-        <label style="margin-top:8px;">
-          <span style="font-size:11px; font-weight:700;">${t('packWordsCat')}</span>
+        <label style="margin-top:8px;"><span style="font-size:11px; font-weight:700;">${t('packWordsCat')}</span>
           <select id="cfg_words_cat" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
             <option value="mixed" ${config.cat === 'mixed' ? 'selected' : ''}>🎲 ${lang === 'uz' ? 'Aralash' : (lang === 'ru' ? 'Смешано' : 'Mixed')}</option>
             ${Object.keys(catNames).map(k => `<option value="${k}" ${config.cat === k ? 'selected' : ''}>${WORD_CATS[k] || ''} ${catNames[k]}</option>`).join('')}
@@ -299,12 +279,10 @@ function renderCrossConfig(config, levelNames) {
       </div>
       <div class="pack-type-body" ${!config.enabled ? 'style="opacity:0.5; pointer-events:none;"' : ''}>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packCount')}</span>
             <input type="number" id="cfg_cross_count" min="0" max="20" value="${config.count}" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
           </label>
-          <label>
-            <span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
+          <label><span style="font-size:11px; font-weight:700;">${t('packLevel')}</span>
             <select id="cfg_cross_level" style="width:100%; padding:6px; border-radius:6px; border:1px solid var(--border); font-size:12px;">
               ${t('crossLevelNames').map((n, i) => `<option value="${i}" ${config.level === i ? 'selected' : ''}>${n}</option>`).join('')}
             </select>
@@ -316,30 +294,30 @@ function renderCrossConfig(config, levelNames) {
 }
 
 function attachConfigEvents(container) {
-  ['maze', 'code', 'sudoku', 'words', 'cross'].forEach(type => {
-    const enabledCb = container.querySelector(`#cfg_${type}_enabled`);
-    const body = container.querySelector(`#pack_${type} .pack-type-body`);
+  ['maze', 'code', 'sudoku', 'words', 'cross'].forEach(itemType => {
+    const enabledCb = container.querySelector(`#cfg_${itemType}_enabled`);
+    const body = container.querySelector(`#pack_${itemType} .pack-type-body`);
     enabledCb.addEventListener('change', (e) => {
-      state.config[type].enabled = e.target.checked;
+      state.config[itemType].enabled = e.target.checked;
       body.style.opacity = e.target.checked ? '1' : '0.5';
       body.style.pointerEvents = e.target.checked ? 'auto' : 'none';
     });
-    const countInput = container.querySelector(`#cfg_${type}_count`);
+    const countInput = container.querySelector(`#cfg_${itemType}_count`);
     countInput.addEventListener('change', (e) => {
-      state.config[type].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0));
+      state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0));
     });
-    const levelSelect = container.querySelector(`#cfg_${type}_level`);
+    const levelSelect = container.querySelector(`#cfg_${itemType}_level`);
     levelSelect.addEventListener('change', (e) => {
-      state.config[type].level = parseInt(e.target.value);
+      state.config[itemType].level = parseInt(e.target.value);
     });
-    const shape = container.querySelector(`#cfg_${type}_shape`);
-    if (shape) shape.addEventListener('change', (e) => { state.config[type].shape = e.target.value; });
-    const codeLength = container.querySelector(`#cfg_${type}_codeLength`);
-    if (codeLength) codeLength.addEventListener('change', (e) => { state.config[type].codeLength = parseInt(e.target.value); });
-    const type = container.querySelector(`#cfg_${type}_type`);
-    if (type) type.addEventListener('change', (e) => { state.config[type].type = e.target.value; });
-    const cat = container.querySelector(`#cfg_${type}_cat`);
-    if (cat) cat.addEventListener('change', (e) => { state.config[type].cat = e.target.value; });
+    const shape = container.querySelector(`#cfg_${itemType}_shape`);
+    if (shape) shape.addEventListener('change', (e) => { state.config[itemType].shape = e.target.value; });
+    const codeLength = container.querySelector(`#cfg_${itemType}_codeLength`);
+    if (codeLength) codeLength.addEventListener('change', (e) => { state.config[itemType].codeLength = parseInt(e.target.value); });
+    const typeSelect = container.querySelector(`#cfg_${itemType}_type`); // Tuzatildi: 'type' o'rniga 'typeSelect'
+    if (typeSelect) typeSelect.addEventListener('change', (e) => { state.config[itemType].type = e.target.value; });
+    const cat = container.querySelector(`#cfg_${itemType}_cat`);
+    if (cat) cat.addEventListener('change', (e) => { state.config[itemType].cat = e.target.value; });
   });
   container.querySelector('#buildBtn').addEventListener('click', () => buildPack(container));
 }
@@ -347,11 +325,11 @@ function attachConfigEvents(container) {
 function buildPack(container) {
   const c = state.config;
   const items = [];
-  for (const type of ['maze', 'code', 'sudoku', 'words', 'cross']) {
-    if (!c[type].enabled || c[type].count <= 0) continue;
-    for (let i = 0; i < c[type].count; i++) {
+  for (const itemType of ['maze', 'code', 'sudoku', 'words', 'cross']) {
+    if (!c[itemType].enabled || c[itemType].count <= 0) continue;
+    for (let i = 0; i < c[itemType].count; i++) {
       const seed = Math.floor(Math.random() * 1e9) + 1;
-      items.push({ type, seed, config: {...c[type]}, index: i + 1 });
+      items.push({ type: itemType, seed, config: {...c[itemType]}, index: i + 1 });
     }
   }
   if (items.length === 0) {
@@ -419,7 +397,7 @@ function attachPreviewEvents(container) {
 }
 
 function getTypeIcon(type) {
-  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '' }[type];
+  return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type];
 }
 
 function getTypeName(type) {
