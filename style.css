@@ -1511,3 +1511,26 @@ button.primary:hover {
   min-height: 160px;
   padding: 20px;
 }
+
+/* Kartochka ikonkalari animatsiya */
+.generator-card .card-cover svg {
+  width: 140px !important;
+  height: 140px !important;
+  max-width: 140px !important;
+  max-height: 140px !important;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.generator-card:hover .card-cover svg {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.3));
+}
+
+.generator-card .card-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 20px;
+}
