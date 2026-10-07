@@ -4,6 +4,7 @@ import { makePdf, downloadPdf } from '../../core/pdf.js';
 import { renderActionBar } from '../../components/ActionBar.js';
 
 let state = {
+  showSolution: false,
   level: 1,
   seed: Math.floor(Math.random()*1e9)+1,
   showSettings: false,
@@ -43,11 +44,13 @@ function render(container) {
   renderActionBar(container, {
     primaryText: '🔄 Yangi',
     primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; generateAndRender(container); },
-    showPdf: true, showSettings: true,
+    showPdf: true, showSettings: true, showAnswer: true,
+    answerVisible: state.showSolution,
     onPdfTask: () => exportPdf(false),
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
-    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar' }
+    onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
+    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko'''rish, hideAnswer: 'Javobni yashirish' }
   });
   draw(container);
 }
@@ -203,4 +206,8 @@ export function drawCrossForPack(canvas, k, seed, config, showSolution) {
   state.puzzle = buildCrossword(state.level, state.seed);
   drawSheet(canvas, k, showSolution);
   Object.assign(state, savedState);
+}
+
+export function toggleSolution() {
+  state.showSolution = !state.showSolution;
 }

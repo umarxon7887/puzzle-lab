@@ -4,6 +4,7 @@ import { makePdf, downloadPdf } from '../../core/pdf.js';
 import { renderActionBar } from '../../components/ActionBar.js';
 
 let state = {
+  showSolution: false,
   W: 10, H: 14, seed: Math.floor(Math.random()*1e9)+1,
   shape: 'rect', hero: HEROES[0], goal: GOALS[0],
   title: '', fontPt: 28, showSolution: false,
@@ -44,11 +45,13 @@ function render(container) {
   renderActionBar(container, {
     primaryText: `🔄 ${t('newMaze')}`,
     primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; state.manualSize = false; render(container); },
-    showPdf: true, showSettings: true,
+    showPdf: true, showSettings: true, showAnswer: true,
+    answerVisible: state.showSolution,
     onPdfTask: () => exportPdf(false),
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
-    i18n: { new: t('newMaze'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar' }
+    onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
+    i18n: { new: t('newMaze'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko'''rish, hideAnswer: 'Javobni yashirish' }
   });
 
   buildAndDraw(container);

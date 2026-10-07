@@ -21,14 +21,11 @@ let state = {
   total: 0
 };
 
-const FONT = '"Nunito","Trebuchet MS",Arial,sans-serif';
-const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '', hexagon: '⬡' };
+const SHAPES = { rect: '▭', circle: '●', star: '★', heart: '♥', triangle: '▲', diamond: '◆', house: '⌂', hexagon: '⬡' };
 const SUDOKU_TYPES = { '4': '4×4', '5': '5×5', '6': '6×6', '7': '7×7', '8': '8×8', '9': '9×9', '9x': '9×9 X' };
-const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
+const WORD_CATS = { school: '🏫', autumn: '🍂', animals: '🐾', food: '🍽️', sport: '⚽', space: '🚀', mixed: '🎲' };
 
-export function init(container) {
-  render(container);
-}
+export function init(container) { render(container); }
 
 export async function exportPack(withAnswer) {
   state.generating = true;
@@ -45,7 +42,6 @@ export async function exportPack(withAnswer) {
     state.progress = i + 1;
     renderProgress(containerEl);
     await new Promise(r => setTimeout(r, 50));
-    
     const item = state.items[i];
     try {
       if (item.type === 'maze') drawMazeForPack(canvas, k, item.seed, item.config, withAnswer);
@@ -53,29 +49,17 @@ export async function exportPack(withAnswer) {
       else if (item.type === 'sudoku') drawSudokuForPack(canvas, k, item.seed, item.config, withAnswer);
       else if (item.type === 'words') drawWordsForPack(canvas, k, item.seed, item.config, withAnswer);
       else if (item.type === 'cross') drawCrossForPack(canvas, k, item.seed, item.config, withAnswer);
-      
       const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
+      if (!blob) throw new Error('Canvas to blob failed');
       const jpeg = new Uint8Array(await blob.arrayBuffer());
       pages.push({ buf: jpeg, w: canvas.width, h: canvas.height });
-    } catch (err) {
-      console.error('Error:', err);
-    }
+    } catch (err) { console.error('Error:', err); }
   }
   
-  if (pages.length === 0) {
-    alert('Xatolik yuz berdi');
-    state.generating = false;
-    render(containerEl);
-    return;
-  }
-  
+  if (pages.length === 0) { alert('Xatolik yuz berdi'); state.generating = false; render(containerEl); return; }
   const pdf = buildMultiPagePdf(pages);
   const lang = getLang();
-  const fileName = lang === 'uz' 
-    ? (withAnswer ? `Toplam (Javoblar).pdf` : `Toplam.pdf`)
-    : (lang === 'ru' ? (withAnswer ? `Набор (Ответы).pdf` : `Набор.pdf`)
-    : (withAnswer ? `Pack (Answers).pdf` : `Pack.pdf`));
-  
+  const fileName = lang === 'uz' ? (withAnswer ? 'Toplam (Javoblar).pdf' : 'Toplam.pdf') : (lang === 'ru' ? (withAnswer ? 'Набор (Ответы).pdf' : 'Набор.pdf') : (withAnswer ? 'Pack (Answers).pdf' : 'Pack.pdf'));
   downloadPdf(pdf, fileName);
   state.generating = false;
   render(containerEl);
@@ -302,13 +286,9 @@ function attachConfigEvents(container) {
       body.style.pointerEvents = e.target.checked ? 'auto' : 'none';
     });
     const countInput = container.querySelector(`#cfg_${itemType}_count`);
-    countInput.addEventListener('change', (e) => {
-      state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0));
-    });
+    countInput.addEventListener('change', (e) => { state.config[itemType].count = Math.max(0, Math.min(20, parseInt(e.target.value) || 0)); });
     const levelSelect = container.querySelector(`#cfg_${itemType}_level`);
-    levelSelect.addEventListener('change', (e) => {
-      state.config[itemType].level = parseInt(e.target.value);
-    });
+    levelSelect.addEventListener('change', (e) => { state.config[itemType].level = parseInt(e.target.value); });
     const shape = container.querySelector(`#cfg_${itemType}_shape`);
     if (shape) shape.addEventListener('change', (e) => { state.config[itemType].shape = e.target.value; });
     const codeLength = container.querySelector(`#cfg_${itemType}_codeLength`);
@@ -331,10 +311,7 @@ function buildPack(container) {
       items.push({ type: itemType, seed, config: {...c[itemType]}, index: i + 1 });
     }
   }
-  if (items.length === 0) {
-    alert(t('packEmpty'));
-    return;
-  }
+  if (items.length === 0) { alert(t('packEmpty')); return; }
   state.items = items;
   state.showPreview = true;
   render(container);
@@ -366,7 +343,7 @@ function renderPreview(container) {
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px;">
         <button class="primary-action" id="downloadTaskBtn">📥 ${t('packTask')}</button>
-        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;"> ${t('packAnswer')}</button>
+        <button class="primary-action" id="downloadAnswerBtn" style="background:#10B981;">📥 ${t('packAnswer')}</button>
       </div>
       <button id="backToConfigBtn" style="margin-top:10px; width:100%; padding:10px; background:#F3F4F6; border:1px solid var(--border); border-radius:8px; cursor:pointer;">← ${t('backBtn')}</button>
     </div>
@@ -395,13 +372,8 @@ function attachPreviewEvents(container) {
   container.querySelector('#backToConfigBtn').addEventListener('click', () => { state.showPreview = false; render(container); });
 }
 
-function getTypeIcon(type) {
-  return { maze: '', code: '🔐', sudoku: '🔢', words: '🔍', cross: '➗' }[type];
-}
-
-function getTypeName(type) {
-  return { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') }[type];
-}
+function getTypeIcon(type) { return { maze: '🌀', code: '🔐', sudoku: '🔢', words: '🔍', cross: '' }[type]; }
+function getTypeName(type) { return { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') }[type]; }
 
 function getItemDetails(item) {
   const c = item.config;
