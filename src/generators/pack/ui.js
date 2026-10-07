@@ -5,7 +5,6 @@ import { drawCodeForPack } from '../code/ui.js';
 import { drawSudokuForPack } from '../sudoku/ui.js';
 import { drawWordsForPack } from '../wordsearch/ui.js';
 import { drawCrossForPack } from '../crossword/ui.js';
-import { isAuthenticated } from '../../auth.js';
 
 let state = {
   config: {
@@ -30,10 +29,6 @@ export function init(container) {
 }
 
 export async function exportPDF(withAnswer) {
-  if (!isAuthenticated()) {
-    alert("PDF yuklab olish uchun tizimga kiring yoki ro'yxatdan o'ting!");
-    return;
-  }
   
   state.generating = true;
   const container = document.querySelector('#app-container');

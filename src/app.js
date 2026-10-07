@@ -9,7 +9,6 @@ const header = document.querySelector('header');
 header.innerHTML = `
   <h1>🧩 ${t('title')}</h1>
   <div id="lang-switch"></div>
-    <div id="auth-status" style="margin-left: auto;"></div>
 `;
 
 // 3. Til almashtirish tugmalari
