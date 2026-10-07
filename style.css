@@ -1669,3 +1669,138 @@ button.primary:hover {
   min-height: 180px;
   padding: 20px;
 }
+
+/* ===== ANIMATSIYALI IKONKALAR ===== */
+
+/* Labirint animatsiyasi */
+.icon-maze .maze-path {
+  animation: drawPath 3s ease-in-out infinite;
+}
+@keyframes drawPath {
+  0% { stroke-dashoffset: 200; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -200; }
+}
+.icon-maze .maze-hero {
+  animation: moveHero 3s ease-in-out infinite;
+}
+@keyframes moveHero {
+  0%, 100% { cx: 50px; cy: 50px; }
+  50% { cx: 150px; cy: 150px; }
+}
+.icon-maze .maze-goal {
+  animation: pulseGoal 1.5s ease-in-out infinite;
+}
+@keyframes pulseGoal {
+  0%, 100% { r: 12px; opacity: 1; }
+  50% { r: 16px; opacity: 0.7; }
+}
+
+/* Kodni top animatsiyasi */
+.icon-code .code-shackle {
+  animation: openShackle 2s ease-in-out infinite;
+  transform-origin: 100px 95px;
+}
+@keyframes openShackle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.icon-code .code-key {
+  animation: glowKey 1.5s ease-in-out infinite;
+}
+@keyframes glowKey {
+  0%, 100% { fill: #4CAF50; filter: drop-shadow(0 0 2px #4CAF50); }
+  50% { fill: #81C784; filter: drop-shadow(0 0 10px #4CAF50); }
+}
+.icon-code .code-num {
+  animation: shakeNum 0.5s ease-in-out infinite;
+}
+@keyframes shakeNum {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Sudoku animatsiyasi */
+.icon-sudoku .sudoku-num {
+  animation: fadeInNum 4s ease-in-out infinite;
+}
+.icon-sudoku .sudoku-num:nth-child(1) { animation-delay: 0s; }
+.icon-sudoku .sudoku-num:nth-child(2) { animation-delay: 1s; }
+.icon-sudoku .sudoku-num:nth-child(3) { animation-delay: 2s; }
+.icon-sudoku .sudoku-num:nth-child(4) { animation-delay: 3s; }
+@keyframes fadeInNum {
+  0%, 100% { opacity: 0; transform: translateY(-10px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
+}
+
+/* So'z qidiruv animatsiyasi */
+.icon-words .words-lupa {
+  animation: moveLupa 3s ease-in-out infinite;
+}
+@keyframes moveLupa {
+  0%, 100% { cx: 100px; cy: 100px; }
+  50% { cx: 72px; cy: 62px; }
+}
+.icon-words .words-lupa-handle {
+  animation: moveLupaHandle 3s ease-in-out infinite;
+}
+@keyframes moveLupaHandle {
+  0%, 100% { x1: 125px; y1: 125px; x2: 155px; y2: 155px; }
+  50% { x1: 97px; y1: 87px; x2: 127px; y2: 117px; }
+}
+.icon-words .word-cell.found {
+  animation: highlightCell 3s ease-in-out infinite;
+}
+@keyframes highlightCell {
+  0%, 40%, 100% { fill: rgba(255,255,255,0.3); }
+  50%, 90% { fill: #4CAF50; }
+}
+
+/* Krossvord animatsiyasi */
+.icon-cross .cross-cell.open {
+  animation: openCell 3s ease-in-out infinite;
+}
+@keyframes openCell {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.icon-cross .cross-num {
+  animation: showNum 3s ease-in-out infinite;
+}
+.icon-cross .cross-num:nth-child(1) { animation-delay: 0s; }
+.icon-cross .cross-num:nth-child(2) { animation-delay: 1s; }
+.icon-cross .cross-num:nth-child(3) { animation-delay: 2s; }
+@keyframes showNum {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.icon-cross .cross-q {
+  animation: blinkQ 1s ease-in-out infinite;
+}
+@keyframes blinkQ {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Umumiy ikonka kattaligi */
+.generator-card .card-cover svg {
+  width: 140px !important;
+  height: 140px !important;
+  max-width: 140px !important;
+  max-height: 140px !important;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+  transition: transform 0.3s ease;
+}
+
+.generator-card:hover .card-cover svg {
+  transform: scale(1.1);
+}
+
+.generator-card .card-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 20px;
+}
