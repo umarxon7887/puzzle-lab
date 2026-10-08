@@ -33,14 +33,14 @@ function render(container) {
         <p>${t('wordsDefTitle')}</p>
         <div style="margin-top:8px; font-size:13px; color:var(--text-muted);">
           📂 ${t('catNames')[state.cat]} | ${t('wordsLevelNames')[state.level]} | 🔢 #${state.seed}
-          <br>📝 ${state.puzzle.total} ta so'z | 📐 ${state.puzzle.N}×${state.puzzle.N}
+          <br>📝 ${t('wordsCount', state.puzzle.total)} | 📐 ${state.puzzle.N}×${state.puzzle.N}
         </div>
       </div>
       <canvas id="wCanvas" style="width:100%; max-width:500px; margin:0 auto; display:block; border-radius:12px; border:2px solid var(--border);"></canvas>
     </div>
   `;
   renderActionBar(container, {
-    primaryText: '🔄 Yangi',
+    primaryText: t('newGame'),
     primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; generateAndRender(container); },
     showPdf: true, showSettings: true, showAnswer: true,
     answerVisible: state.showSolution,
@@ -48,7 +48,7 @@ function render(container) {
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
     onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
-    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: "Javobni ko'rish", hideAnswer: "Javobni yashirish" }
+    i18n: { new: t('newGame'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: "Javobni ko'rish", hideAnswer: "Javobni yashirish" }
   });
   draw(container);
 }

@@ -40,7 +40,7 @@ function render(container) {
     </div>
   `;
   renderActionBar(container, {
-    primaryText: '🔄 Yangi',
+    primaryText: t('newGame'),
     primaryAction: () => { state.seed = Math.floor(Math.random()*1e9)+1; generateAndRender(container); },
     showPdf: true, showSettings: true, showAnswer: true,
     answerVisible: state.showSolution,
@@ -48,7 +48,7 @@ function render(container) {
     onPdfAnswer: () => exportPdf(true),
     onSettings: () => { state.showSettings = true; render(container); },
     onAnswer: () => { state.showSolution = !state.showSolution; draw(container); render(container); },
-    i18n: { new: 'Yangi', pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko\'rish', hideAnswer: 'Javobni yashirish' }
+    i18n: { new: t('newGame'), pdf: 'PDF', pdfTask: t('pdfTask'), pdfAnswer: t('pdfAnswer'), settings: 'Sozlamalar', showAnswer: 'Javobni ko\'rish', hideAnswer: 'Javobni yashirish' }
   });
   draw(container);
 }
