@@ -17,22 +17,25 @@ let state = {
   items: [],
   showPreview: false,
   generating: false,
-  activeSettings: null
+  activeSettings: null,
+  container: null
 };
 
-const SHAPES = { rect: 'To\'rtburchak', circle: 'Doira', star: 'Yulduz', heart: 'Yurak', triangle: 'Uchburchak' };
+const SHAPES = { 
+  rect: t('shapeRect'), circle: t('shapeCircle'), star: t('shapeStar'), 
+  heart: t('shapeHeart'), triangle: t('shapeTriangle') 
+};
 const SUDOKU_TYPES = { '4': '4×4', '6': '6×6', '9': '9×9' };
-const WORD_CATS = { school: 'Maktab', animals: 'Hayvonlar', food: 'Ovqat', sport: 'Sport', space: 'Fazo' };
+const WORD_CATS = t('catNames');
 
 export function init(container) {
-  render(container);
+  state.container = container;
+  render();
 }
 
 export async function exportPDF(withAnswer) {
-  
   state.generating = true;
-  const container = document.querySelector('#app-container');
-  render(container);
+  render();
   
   const pages = [];
   const canvas = document.createElement('canvas');
@@ -63,7 +66,7 @@ export async function exportPDF(withAnswer) {
   }
   
   state.generating = false;
-  render(container);
+  render();
 }
 
 function buildPdf(pages) {
@@ -95,9 +98,12 @@ function buildPdf(pages) {
   return new Blob(parts, { type: 'application/pdf' });
 }
 
-function render(container) {
+function render() {
+  const container = state.container;
+  if (!container) return;
+  
   if (state.generating) { 
-    container.innerHTML = '<div class="card" style="text-align:center;padding:40px;"><h3>Yaratilmoqda...</h3></div>'; 
+    container.innerHTML = `<div class="card" style="text-align:center;padding:40px;"><h3>${t('generating')}</h3></div>`; 
     return; 
   }
   if (state.showPreview) { 
@@ -112,40 +118,39 @@ function render(container) {
 }
 
 function renderConfig(container) {
-  const levelNames = t('levelNames');
-  let html = '<div class="card"><div class="game-header"><h2>To\'plam yaratish</h2><p>Kerakli turlarni tanlang</p></div><div style="display:flex;flex-direction:column;gap:10px;">';
+  let html = `<div class="card"><div class="game-header"><h2>${t('packTitle')}</h2><p>${t('packSubtitle')}</p></div><div style="display:flex;flex-direction:column;gap:10px;">`;
   
   const types = [
-    { id: 'maze', name: 'Labirint', icon: '🌀' },
-    { id: 'code', name: 'Kodni top', icon: '🔐' },
-    { id: 'sudoku', name: 'Sudoku', icon: '🔢' },
-    { id: 'words', name: 'So\'z qidiruv', icon: '🔍' },
-    { id: 'cross', name: 'Krossvord', icon: '➗' }
+    { id: 'maze', name: t('tabMaze'), icon: '🌀' },
+    { id: 'code', name: t('tabCode'), icon: '' },
+    { id: 'sudoku', name: t('tabSudoku'), icon: '🔢' },
+    { id: 'words', name: t('tabWords'), icon: '' },
+    { id: 'cross', name: t('tabCross'), icon: '➗' }
   ];
   
   types.forEach(type => {
     const c = state.config[type.id];
-    html += '<div style="display:flex;align-items:center;gap:10px;padding:12px;background:#f9f9f9;border-radius:8px;">';
-    html += '<input type="checkbox" id="cfg_' + type.id + '" ' + (c.enabled ? 'checked' : '') + ' style="width:20px;height:20px;">';
-    html += '<span style="font-size:20px;">' + type.icon + '</span>';
-    html += '<label for="cfg_' + type.id + '" style="flex:1;font-weight:600;">' + type.name + '</label>';
-    html += '<button class="settings-btn" data-type="' + type.id + '" style="padding:5px 10px;background:#667eea;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px;" title="Sozlamalar">⚙️</button>';
-    html += '<input type="number" id="cnt_' + type.id + '" min="0" max="10" value="' + c.count + '" style="width:60px;padding:5px;border-radius:4px;border:1px solid #ccc;">';
-    html += '</div>';
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:12px;background:#f9f9f9;border-radius:8px;">
+      <input type="checkbox" id="cfg_${type.id}" ${c.enabled ? 'checked' : ''} style="width:20px;height:20px;">
+      <span style="font-size:20px;">${type.icon}</span>
+      <label for="cfg_${type.id}" style="flex:1;font-weight:600;">${type.name}</label>
+      <button class="settings-btn" data-type="${type.id}" style="padding:5px 10px;background:#667eea;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px;" title="${t('settingsTitle')}">⚙️</button>
+      <input type="number" id="cnt_${type.id}" min="0" max="10" value="${c.count}" style="width:60px;padding:5px;border-radius:4px;border:1px solid #ccc;">
+    </div>`;
   });
   
-  html += '</div><button class="primary-action" id="buildBtn" style="margin-top:20px;width:100%;">To\'plamni yaratish</button></div>';
+  html += `</div><button class="primary-action" id="buildBtn" style="margin-top:20px;width:100%;">${t('packBuildBtn')}</button></div>`;
   container.innerHTML = html;
   
   types.forEach(type => {
-    document.getElementById('cfg_' + type.id).addEventListener('change', e => { state.config[type.id].enabled = e.target.checked; });
-    document.getElementById('cnt_' + type.id).addEventListener('change', e => { state.config[type.id].count = parseInt(e.target.value) || 0; });
-    document.querySelector('.settings-btn[data-type="' + type.id + '"]').addEventListener('click', () => {
+    document.getElementById(`cfg_${type.id}`).addEventListener('change', e => { state.config[type.id].enabled = e.target.checked; });
+    document.getElementById(`cnt_${type.id}`).addEventListener('change', e => { state.config[type.id].count = parseInt(e.target.value) || 0; });
+    document.querySelector(`.settings-btn[data-type="${type.id}"]`).addEventListener('click', () => {
       state.activeSettings = type.id;
-      render(container);
+      render();
     });
   });
-  document.getElementById('buildBtn').addEventListener('click', () => buildPack(container));
+  document.getElementById('buildBtn').addEventListener('click', () => buildPack());
 }
 
 function renderSettingsModal(container) {
@@ -153,64 +158,57 @@ function renderSettingsModal(container) {
   const c = state.config[type];
   const levelNames = t('levelNames');
   
-  let html = '<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;">';
-  html += '<div style="background:white;border-radius:12px;padding:25px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;">';
-  html += '<h3 style="margin-bottom:20px;">';
+  let html = `<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;">
+    <div style="background:white;border-radius:12px;padding:25px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;">
+    <h3 style="margin-bottom:20px;">`;
   
-  if (type === 'maze') html += '🌀 Labirint sozlamalari';
-  else if (type === 'code') html += '🔐 Kodni top sozlamalari';
-  else if (type === 'sudoku') html += '🔢 Sudoku sozlamalari';
-  else if (type === 'words') html += '🔍 So\'z qidiruv sozlamalari';
-  else if (type === 'cross') html += '➗ Krossvord sozlamalari';
+  const typeName = type === 'maze' ? t('tabMaze') : type === 'code' ? t('tabCode') : type === 'sudoku' ? t('tabSudoku') : type === 'words' ? t('tabWords') : t('tabCross');
+  html += `${typeName} - ${t('settingsTitle')}`;
   
-  html += '</h3>';
-  
-  html += '<div style="margin-bottom:15px;">';
-  html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Daraja:</label>';
-  html += '<select id="setting_level" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+  html += `</h3>
+    <div style="margin-bottom:15px;">
+      <label style="display:block;margin-bottom:5px;font-weight:600;">${t('difficulty')}:</label>
+      <select id="setting_level" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">`;
+      
   levelNames.forEach((name, i) => {
-    html += '<option value="' + i + '"' + (c.level === i ? ' selected' : '') + '>' + name + '</option>';
+    html += `<option value="${i}" ${c.level === i ? 'selected' : ''}>${name}</option>`;
   });
-  html += '</select></div>';
+  html += `</select></div>`;
   
   if (type === 'maze') {
-    html += '<div style="margin-bottom:15px;">';
-    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Shakl:</label>';
-    html += '<select id="setting_shape" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    html += `<div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">${t('shape')}:</label>
+      <select id="setting_shape" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">`;
     Object.keys(SHAPES).forEach(key => {
-      html += '<option value="' + key + '"' + (c.shape === key ? ' selected' : '') + '>' + SHAPES[key] + '</option>';
+      html += `<option value="${key}" ${c.shape === key ? 'selected' : ''}>${SHAPES[key]}</option>`;
     });
-    html += '</select></div>';
+    html += `</select></div>`;
   } else if (type === 'code') {
-    html += '<div style="margin-bottom:15px;">';
-    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Kod uzunligi:</label>';
-    html += '<select id="setting_codeLength" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    html += `<div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">${t('packCodeLength')}:</label>
+      <select id="setting_codeLength" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">`;
     [3, 4, 5].forEach(len => {
-      html += '<option value="' + len + '"' + (c.codeLength === len ? ' selected' : '') + '>' + len + ' xonali</option>';
+      html += `<option value="${len}" ${c.codeLength === len ? 'selected' : ''}>${len} ${t('digits')}</option>`;
     });
-    html += '</select></div>';
+    html += `</select></div>`;
   } else if (type === 'sudoku') {
-    html += '<div style="margin-bottom:15px;">';
-    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Sudoku turi:</label>';
-    html += '<select id="setting_type" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    html += `<div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">${t('packSudokuType')}:</label>
+      <select id="setting_type" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">`;
     Object.keys(SUDOKU_TYPES).forEach(key => {
-      html += '<option value="' + key + '"' + (c.type === key ? ' selected' : '') + '>' + SUDOKU_TYPES[key] + '</option>';
+      html += `<option value="${key}" ${c.type === key ? 'selected' : ''}>${SUDOKU_TYPES[key]}</option>`;
     });
-    html += '</select></div>';
+    html += `</select></div>`;
   } else if (type === 'words') {
-    html += '<div style="margin-bottom:15px;">';
-    html += '<label style="display:block;margin-bottom:5px;font-weight:600;">Mavzu:</label>';
-    html += '<select id="setting_category" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">';
+    html += `<div style="margin-bottom:15px;"><label style="display:block;margin-bottom:5px;font-weight:600;">${t('wordsCategoryLabel')}:</label>
+      <select id="setting_category" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">`;
     Object.keys(WORD_CATS).forEach(key => {
-      html += '<option value="' + key + '"' + (c.category === key ? ' selected' : '') + '>' + WORD_CATS[key] + '</option>';
+      html += `<option value="${key}" ${c.category === key ? 'selected' : ''}>${WORD_CATS[key]}</option>`;
     });
-    html += '</select></div>';
+    html += `</select></div>`;
   }
   
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">';
-  html += '<button id="saveSettings" style="padding:10px;background:#667eea;color:white;border:none;border-radius:6px;cursor:pointer;">Saqlash</button>';
-  html += '<button id="cancelSettings" style="padding:10px;background:#e0e0e0;border:none;border-radius:6px;cursor:pointer;">Bekor qilish</button>';
-  html += '</div></div></div>';
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">
+    <button id="saveSettings" style="padding:10px;background:#667eea;color:white;border:none;border-radius:6px;cursor:pointer;">${t('save')}</button>
+    <button id="cancelSettings" style="padding:10px;background:#e0e0e0;border:none;border-radius:6px;cursor:pointer;">${t('cancel')}</button>
+  </div></div></div>`;
   
   container.innerHTML = html;
   
@@ -221,16 +219,16 @@ function renderSettingsModal(container) {
     else if (type === 'sudoku') state.config[type].type = document.getElementById('setting_type').value;
     else if (type === 'words') state.config[type].category = document.getElementById('setting_category').value;
     state.activeSettings = null;
-    render(container);
+    render();
   });
   
   document.getElementById('cancelSettings').addEventListener('click', () => {
     state.activeSettings = null;
-    render(container);
+    render();
   });
 }
 
-function buildPack(container) {
+function buildPack() {
   state.items = [];
   const types = ['maze', 'code', 'sudoku', 'words', 'cross'];
   types.forEach(type => {
@@ -241,30 +239,34 @@ function buildPack(container) {
       }
     }
   });
-  if (state.items.length === 0) { alert('Kamida bitta tur tanlang!'); return; }
+  if (state.items.length === 0) { alert(t('packEmpty')); return; }
   state.showPreview = true;
-  render(container);
+  render();
 }
 
 function renderPreview(container) {
-  const typeNames = { maze: 'Labirint', code: 'Kodni top', sudoku: 'Sudoku', words: 'So\'z qidiruv', cross: 'Krossvord' };
-  let html = '<div class="card"><div class="game-header"><h2>To\'plam tayyor</h2><p>Jami: ' + state.items.length + ' ta topshiriq</p></div>';
-  html += '<div style="max-height:300px;overflow-y:auto;margin:15px 0;">';
+  const typeNames = { maze: t('tabMaze'), code: t('tabCode'), sudoku: t('tabSudoku'), words: t('tabWords'), cross: t('tabCross') };
+  let html = `<div class="card"><div class="game-header"><h2>${t('packReady')}</h2><p>${t('packTotal', state.items.length)}</p></div>
+    <div style="max-height:300px;overflow-y:auto;margin:15px 0;">`;
+    
   state.items.forEach((item, i) => {
-    html += '<div style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">' + (i+1) + '. ' + typeNames[item.type] + ' (Seed: ' + item.seed + ')</div>';
+    html += `<div style="padding:8px;border-bottom:1px solid #eee;font-size:14px;">${i+1}. ${typeNames[item.type]} (Seed: ${item.seed})</div>`;
   });
-  html += '</div>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
-  html += '<button class="primary-action" id="dlTask">Topshiriq PDF</button>';
-  html += '<button class="primary-action" id="dlAns" style="background:#10B981;">Javoblar PDF</button>';
-  html += '</div>';
-  html += '<button id="backBtn" style="margin-top:10px;width:100%;padding:10px;background:#eee;border:none;border-radius:8px;cursor:pointer;">Orqaga</button></div>';
+  
+  html += `</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <button class="primary-action" id="dlTask">${t('pdfTask')}</button>
+      <button class="primary-action" id="dlAns" style="background:#10B981;">${t('pdfAnswer')}</button>
+    </div>
+    <button id="backBtn" style="margin-top:10px;width:100%;padding:10px;background:#eee;border:none;border-radius:8px;cursor:pointer;">${t('back')}</button>
+  </div>`;
+  
   container.innerHTML = html;
   
   document.getElementById('dlTask').addEventListener('click', () => exportPDF(false));
   document.getElementById('dlAns').addEventListener('click', () => exportPDF(true));
   document.getElementById('backBtn').addEventListener('click', () => { 
     state.showPreview = false; 
-    render(container); 
+    render(); 
   });
 }

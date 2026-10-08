@@ -89,7 +89,15 @@ export const translations = {
     packCodeLength: "Kod uzunligi",
     packSudokuType: "Sudoku turi",
     packWordsCat: "Mavzu",
-    packMazeLevel: "Qiyinlik"
+    packMazeLevel: "Qiyinlik",
+
+    generating: "Yaratilmoqda...",
+    back: "Orqaga",
+    shapeRect: "To'rtburchak",
+    shapeCircle: "Doira",
+    shapeStar: "Yulduz",
+    shapeHeart: "Yurak",
+    shapeTriangle: "Uchburchak",
   },
   ru: {
     title: "Лаборатория головоломок",
@@ -181,7 +189,15 @@ export const translations = {
     packCodeLength: "Длина кода",
     packSudokuType: "Тип судоку",
     packWordsCat: "Тема",
-    packMazeLevel: "Сложность"
+    packMazeLevel: "Сложность",
+
+    generating: "Создание...",
+    back: "Назад",
+    shapeRect: "Прямоугольник",
+    shapeCircle: "Круг",
+    shapeStar: "Звезда",
+    shapeHeart: "Сердце",
+    shapeTriangle: "Треугольник",
   },
   en: {
     title: "Puzzle Lab",
@@ -273,7 +289,15 @@ export const translations = {
     packCodeLength: "Code length",
     packSudokuType: "Sudoku type",
     packWordsCat: "Category",
-    packMazeLevel: "Difficulty"
+    packMazeLevel: "Difficulty",
+
+    generating: "Generating...",
+    back: "Back",
+    shapeRect: "Rectangle",
+    shapeCircle: "Circle",
+    shapeStar: "Star",
+    shapeHeart: "Heart",
+    shapeTriangle: "Triangle",
   }
 };
 
