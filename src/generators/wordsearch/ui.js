@@ -183,7 +183,7 @@ function drawSheet(canvas, k, showSolution) {
 function draw(container) {
   const canvas = container.querySelector('#wCanvas');
   if (!canvas) return;
-  drawSheet(canvas, 1240/210, false);
+  drawSheet(canvas, 1240/210, state.showSolution);
 }
 
 export function exportPdf(withSolution) {

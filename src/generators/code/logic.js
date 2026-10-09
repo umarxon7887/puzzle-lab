@@ -3,7 +3,14 @@
  * Topshiriqlar Lab
  *
  * Kodlar har doim STRING sifatida saqlanadi ("007"), shunda boshidagi
- * nollar yo'qolmaydi. Raqamlar takrorlanishi mumkin.
+ * nollar yo'qolmaydi.
+ *
+ * SODDALIK QOIDASI:
+ *  - Standart rejimda maxfiy kod raqamlari HAR XIL (takrorlanmaydi).
+ *  - Ipuqlardagi taxminlar HAR DOIM har xil raqamlardan iborat, shunda
+ *    "1 raqam to'g'ri" aynan bitta aniq raqamga tegishli bo'ladi.
+ *  - Takroriy raqamli kod faqat { allowRepeats: true } ("qiyin" daraja)
+ *    bilan ruxsat etiladi.
  *
  * Ipuq obyekti: { guess: "123", correctPlace: 1, wrongPlace: 1 }
  */
@@ -13,46 +20,58 @@
 // ---------------------------------------------------------------
 const MIN_LENGTH = 3;
 const MAX_LENGTH = 5;
-const MAX_ATTEMPTS = 30; // ipuqlarni qayta yaratish urinishlari soni
-const SAMPLE_SIZE = 30; // har bir qadamda sinab ko'riladigan taxminlar soni
-const MAX_EXTRA_CLUES = 20; // zaxira rejada qo'shiladigan ipuqlar chegarasi
+const MAX_ATTEMPTS = 30;
+const SAMPLE_SIZE = 30;
+const MAX_EXTRA_CLUES = 20;
 
 // ---------------------------------------------------------------
 // 1. Yordamchi funksiyalar
 // ---------------------------------------------------------------
 
-/** Kod uzunligi 3, 4 yoki 5 ekanini tekshiradi. */
 function assertLength(length) {
   if (!Number.isInteger(length) || length < MIN_LENGTH || length > MAX_LENGTH) {
     throw new RangeError(`Kod uzunligi ${MIN_LENGTH}–${MAX_LENGTH} oralig'ida bo'lishi kerak.`);
   }
 }
 
-/** Qator berilgan uzunlikdagi to'g'ri raqamli kod ekanini tekshiradi. */
 function isValidCode(code, length) {
   return typeof code === 'string' && code.length === length && /^[0-9]+$/.test(code);
 }
 
-/** Tasodifiy butun son: [0, max). */
 function randInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-/** Tasodifiy kod (hech qanday cheklovsiz, raqamlar takrorlanishi mumkin). */
 function randomCode(length) {
   let code = '';
   for (let i = 0; i < length; i++) code += randInt(10);
   return code;
 }
 
-// Baholash uchun qayta ishlatiladigan buferlar (tezlik uchun).
+function randomDistinctCode(length) {
+  const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  for (let i = digits.length - 1; i > 0; i--) {
+    const j = randInt(i + 1);
+    [digits[i], digits[j]] = [digits[j], digits[i]];
+  }
+  return digits.slice(0, length).join('');
+}
+
+function hasRepeats(code) {
+  return new Set(code).size < code.length;
+}
+
+function resolveAllowRepeats(secretCode, opts) {
+  const allow = opts && opts.allowRepeats !== undefined ? opts.allowRepeats : hasRepeats(secretCode);
+  if (!allow && hasRepeats(secretCode)) {
+    throw new Error('Maxfiy kodda takroriy raqam bor, lekin allowRepeats o\'chirilgan.');
+  }
+  return allow;
+}
+
 const secretCounts = new Int8Array(10);
 const guessCounts = new Int8Array(10);
 
-/**
- * Taxminni maxfiy kod bilan solishtiradi (Mastermind qoidasi, takroriy
- * raqamlar bilan to'g'ri ishlaydi).
- */
 export function scoreGuess(secret, guess) {
   secretCounts.fill(0);
   guessCounts.fill(0);
@@ -76,18 +95,19 @@ export function scoreGuess(secret, guess) {
   return { correctPlace, wrongPlace };
 }
 
-/** Berilgan kod ushbu ipuqqa mos keladimi? */
 function matchesClue(code, clue) {
   const r = scoreGuess(code, clue.guess);
   return r.correctPlace === clue.correctPlace && r.wrongPlace === clue.wrongPlace;
 }
 
-/** Barcha mumkin kodlar: 000…999, 0000…9999 yoki 00000…99999. */
-export function getAllCodes(length) {
+export function getAllCodes(length, allowRepeats = true) {
   assertLength(length);
   const total = 10 ** length;
-  const codes = new Array(total);
-  for (let i = 0; i < total; i++) codes[i] = String(i).padStart(length, '0');
+  const codes = [];
+  for (let i = 0; i < total; i++) {
+    const code = String(i).padStart(length, '0');
+    if (allowRepeats || !hasRepeats(code)) codes.push(code);
+  }
   return codes;
 }
 
@@ -95,8 +115,10 @@ export function getAllCodes(length) {
 // 2. Maxfiy kod yaratish
 // ---------------------------------------------------------------
 
-export function generateSecretCode(length) {
+export function generateSecretCode(length, { allowRepeats = false } = {}) {
   assertLength(length);
+  if (!allowRepeats) return randomDistinctCode(length);
+
   const minDistinct = Math.ceil(length / 2);
   while (true) {
     const code = randomCode(length);
@@ -105,10 +127,10 @@ export function generateSecretCode(length) {
 }
 
 // ---------------------------------------------------------------
-// 3. Tekshiruv (eng muhim qism)
+// 3. Tekshiruv
 // ---------------------------------------------------------------
 
-export function validatePuzzle(clues, secretCode, length) {
+export function validatePuzzle(clues, secretCode, length, opts) {
   assertLength(length);
 
   const fail = (reason) => ({
@@ -127,15 +149,13 @@ export function validatePuzzle(clues, secretCode, length) {
 
   const secretConsistent = clues.every((c) => matchesClue(secretCode, c));
 
-  const total = 10 ** length;
+  const allowRepeats = resolveAllowRepeats(secretCode, opts);
   const solutions = [];
   let solutionCount = 0;
-  for (let i = 0; i < total; i++) {
-    const code = String(i).padStart(length, '0');
-    if (clues.every((c) => matchesClue(code, c))) {
-      solutionCount++;
-      if (solutions.length < 10) solutions.push(code);
-    }
+  for (const code of getAllCodes(length, allowRepeats)) {
+    if (!clues.every((c) => matchesClue(code, c))) continue;
+    solutionCount++;
+    if (solutions.length < 10) solutions.push(code);
   }
 
   let reason = null;
@@ -169,7 +189,7 @@ function pickClue(secret, length, candidates, used, target) {
   const logTarget = Math.log(target);
 
   for (let s = 0; s < SAMPLE_SIZE; s++) {
-    const guess = randomCode(length);
+    const guess = randomDistinctCode(length);
     if (used.has(guess)) continue;
 
     const { correctPlace, wrongPlace } = scoreGuess(secret, guess);
@@ -202,7 +222,7 @@ function buildClues(secret, length, numClues, allCodes) {
   return { clues, candidates };
 }
 
-export function generateClues(secretCode, numClues) {
+export function generateClues(secretCode, numClues, opts) {
   const length = secretCode.length;
   assertLength(length);
   if (!isValidCode(secretCode, length)) throw new TypeError('secretCode noto\'g\'ri formatda');
@@ -210,11 +230,13 @@ export function generateClues(secretCode, numClues) {
     throw new RangeError('numClues musbat butun son bo\'lishi kerak.');
   }
 
-  const allCodes = getAllCodes(length);
+  const allowRepeats = resolveAllowRepeats(secretCode, opts);
+  const allCodes = getAllCodes(length, allowRepeats);
+  const check = (clues) => validatePuzzle(clues, secretCode, length, { allowRepeats }).valid;
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const { clues } = buildClues(secretCode, length, numClues, allCodes);
-    if (clues.length === numClues && validatePuzzle(clues, secretCode, length).valid) {
+    if (clues.length === numClues && check(clues)) {
       return clues;
     }
   }
@@ -224,13 +246,16 @@ export function generateClues(secretCode, numClues) {
 
   for (let extra = 0; candidates.length > 1 && extra < MAX_EXTRA_CLUES; extra++) {
     let clue = pickClue(secretCode, length, candidates, used, 1);
-    if (!clue) clue = { guess: secretCode, correctPlace: length, wrongPlace: 0 };
+    if (!clue) {
+      if (hasRepeats(secretCode)) break;
+      clue = { guess: secretCode, correctPlace: length, wrongPlace: 0 };
+    }
     clues.push(clue);
     used.add(clue.guess);
     candidates = candidates.filter((code) => matchesClue(code, clue));
   }
 
-  if (!validatePuzzle(clues, secretCode, length).valid) {
+  if (!check(clues)) {
     throw new Error('Yagona yechimli topshiriq yaratib bo\'lmadi.');
   }
   return clues;
