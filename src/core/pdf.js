@@ -14,19 +14,32 @@ export function makePdf(jpeg, imgW, imgH) {
   push(`4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`);
   push(jpeg); push('\nendstream\nendobj\n');
   offsets[5] = len; push(`5 0 obj\n<< /Length ${content.length} >>\nstream\n${content}\nendstream\nendobj\n`);
-  
+
   const xref = len;
   let x = 'xref\n0 6\n0000000000 65535 f \n';
   for (let i = 1; i <= 5; i++) x += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
   push(x + `trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
-  
+
   return new Blob(parts, { type: 'application/pdf' });
 }
 
+// PDF nomiga timestamp qo'shish uchun yordamchi funksiya
+function addTimestampToFileName(fileName) {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+  const lastDot = fileName.lastIndexOf('.');
+  if (lastDot === -1) return `${fileName}_${timestamp}`;
+  return `${fileName.slice(0, lastDot)}_${timestamp}${fileName.slice(lastDot)}`;
+}
+
 export function downloadPdf(blob, name) {
+  // Fayl nomiga avtomatik timestamp qo'shish
+  const nameWithTimestamp = addTimestampToFileName(name);
+  
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = name;
+  a.download = nameWithTimestamp;
   document.body.appendChild(a);
   a.click();
   a.remove();

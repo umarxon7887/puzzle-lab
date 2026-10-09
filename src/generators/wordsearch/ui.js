@@ -1,4 +1,14 @@
 import { CAT_KEYS, CAT_ICONS, generateWordSearch } from './logic.js';
+
+// PDF nomiga timestamp qo'shish uchun yordamchi funksiya
+function addTimestampToFileName(fileName) {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+  const lastDot = fileName.lastIndexOf('.');
+  if (lastDot === -1) return `${fileName}_${timestamp}`;
+  return `${fileName.slice(0, lastDot)}_${timestamp}${fileName.slice(lastDot)}`;
+}
 import { t, getLang } from '../../core/i18n.js';
 import { makePdf, downloadPdf } from '../../core/pdf.js';
 import { renderActionBar } from '../../components/ActionBar.js';

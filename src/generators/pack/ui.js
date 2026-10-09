@@ -1,4 +1,17 @@
 import { t, getLang } from '../../core/i18n.js';
+
+// PDF nomiga timestamp qo'shish uchun yordamchi funksiya
+function addTimestampToFileName(fileName) {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const timestamp = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+  const lastDot = fileName.lastIndexOf('.');
+  if (lastDot === -1) return `${fileName}_${timestamp}`;
+  return `${fileName.slice(0, lastDot)}_${timestamp}${fileName.slice(lastDot)}`;
+}
+
+
+
 import { downloadPdf } from '../../core/pdf.js';
 import { drawMazeForPack } from '../maze/ui.js';
 import { drawCodeForPack } from '../code/ui.js';
@@ -62,7 +75,7 @@ export async function exportPDF(withAnswer) {
     const pdf = buildPdf(pages);
     const lang = getLang();
     const name = lang === 'uz' ? (withAnswer ? 'Toplam (Javoblar).pdf' : 'Toplam.pdf') : 'Pack.pdf';
-    downloadPdf(pdf, name);
+    downloadPdf(pdf, addTimestampToFileName(name));
   }
   
   state.generating = false;
