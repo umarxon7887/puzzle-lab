@@ -9,7 +9,8 @@ import words from './wordsearch.js';
 import cross from './crossword.js';
 import code from './code.js';
 import odd from './oddone.js';
+import overlap from './overlap.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code, odd];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;

@@ -1,8 +1,8 @@
 {
   "name": "puzzle-lab",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "private": true,
-  "description": "Bolalar uchun mantiqiy topshiriqlar generatori: labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Ortiqchasini top» — A4 PDF va javob varaqlari bilan",
+  "description": "Bolalar uchun mantiqiy topshiriqlar generatori: labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Ortiqchasini top», «Ustma-ust rasmlar» — A4 PDF va javob varaqlari bilan",
   "type": "module",
   "scripts": {
     "test": "node tests/run.mjs",

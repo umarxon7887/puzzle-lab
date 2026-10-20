@@ -471,7 +471,14 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .gen-card-cover .cover-odd .oo-odd { animation: ooWiggle 4s ease-in-out infinite; }
 @keyframes ooWiggle { 0%, 55% { transform: none; } 62% { transform: rotate(-12deg) scale(1.08); } 70% { transform: rotate(10deg) scale(1.08); } 78%, 100% { transform: none; } }
 
-/* 7. To'plam: varaqlar yelpig'ichdek ochiladi */
+/* 7. Ustma-ust rasmlar: konturlar navbatma-navbat chiziladi */
+.cover-ovl path { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-ovl .ovl-a { animation: ovlDraw 6s ease-in-out infinite; }
+.gen-card-cover .cover-ovl .ovl-b { animation: ovlDraw 6s ease-in-out .5s infinite; }
+.gen-card-cover .cover-ovl .ovl-c { animation: ovlDraw 6s ease-in-out 1s infinite; }
+@keyframes ovlDraw { 0% { stroke-dashoffset: 100; } 30%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 100; } }
+
+/* 8. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
 @keyframes pk3 { 0%, 100% { transform: none; } 50% { transform: translate(8px, -2px) rotate(5deg); } }

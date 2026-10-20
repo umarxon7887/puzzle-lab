@@ -13,6 +13,7 @@ import { TOPICS, BANKS } from '../src/generators/wordsearch-words.js';
 import { toCells, parseCustom } from '../src/generators/wordsearch.js';
 import { clueText } from '../src/generators/code.js';
 import { POLYS, polyCells } from '../src/generators/oddone.js';
+import { ICONS as OVL_ICONS } from '../src/generators/overlap-icons.js';
 import { ITEMS as ODD_ITEMS, CATS as ODD_CATS, PAIRS_MEDIUM as ODD_PAIRS_MEDIUM, PAIRS_HARD as ODD_PAIRS_HARD, eligible as oddEligible } from '../src/generators/oddone-items.js';
 import { _dict, LANGS } from '../src/core/i18n.js';
 import { buildPdf } from '../src/core/pdf.js';
@@ -314,6 +315,33 @@ if (!ONLY || ONLY === 'odd') {
         if (mode === 'mixed') assert(new Set(rules).size === rules.length, `L${level} seed ${s}: repeated rule ${rules}`);
       }
       for (const [aspect, perPage] of [['landscape', 2], ['portrait', 4]]) eq(g.generate({ level, mode: 'shapes', aspect, perPage }, s).rows.length, 4, `${perPage} per page`);
+    }
+  });
+}
+
+if (!ONLY || ONLY === 'overlap') {
+  section('Ustma-ust rasmlar: konturlar');
+  await test('har bir kontur to\'g\'ri: yopiq yo\'llar, 0–100 oralig\'ida, nomlari uch tilda', () => {
+    for (const [k, v] of Object.entries(OVL_ICONS)) {
+      for (const l of LANG_CODES) assert(typeof v[l] === 'string' && v[l].trim(), `${k}: no ${l} name`);
+      const polys = v.d.split('M').map(t => t.replace('Z', '').trim()).filter(Boolean);
+      assert(polys.length >= 1, k + ': empty');
+      for (const poly of polys) {
+        const nums = poly.split(/\s+/).map(Number);
+        assert(nums.length >= 6 && nums.length % 2 === 0, `${k}: bad polygon`);
+        assert(nums.every(n => Number.isFinite(n) && n >= -1 && n <= 101), `${k}: point outside 0..100`);
+      }
+      assert((v.d.match(/M/g) || []).length === (v.d.match(/Z/g) || []).length, k + ': unclosed path');
+    }
+    const names = Object.values(OVL_ICONS).map(v => v.uz);
+    assert(new Set(names).size === names.length, 'repeated uz name');
+  });
+  await test('ko\'p tasodifiy topshiriq: o\'xshash siluetlar birga emas, hammasi ustma-ust', () => {
+    const g = getGenerator('overlap');
+    for (let level = 0; level < 4; level++) for (const mode of ['list', 'name']) for (let s = 1; s <= 150; s++) {
+      const p = g.generate({ level, mode }, s * 7919 + level);
+      const pr = g.check(p);
+      assert(!pr.length, `L${level} ${mode} seed ${s}: ${pr.join('; ')}`);
     }
   });
 }

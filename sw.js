@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.1.0';
+const VERSION = '2.3.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -32,6 +32,8 @@ const CORE = [
   'src/generators/maze.js',
   'src/generators/oddone-items.js',
   'src/generators/oddone.js',
+  'src/generators/overlap-icons.js',
+  'src/generators/overlap.js',
   'src/generators/registry.js',
   'src/generators/sudoku.js',
   'src/generators/wordsearch-words.js',
