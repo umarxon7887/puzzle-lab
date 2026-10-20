@@ -1,94 +1,67 @@
-import { GENERATORS, getGenerator } from './generators/registry.js';
-import { t, setLanguage, getLang } from './core/i18n.js';
+// app.js — ilovaning kirish nuqtasi: sarlavha, til tanlash, sahifalar (router) va oflayn rejim.
+// Manzillar: #/ — bosh sahifa, #/pack — to'plam, #/<generator-id> — generator sahifasi.
 
-// 1. Sarlavhani o'rnatish
-document.title = t('title');
+import { h } from './ui/dom.js';
+import { mountHome } from './ui/home.js';
+import { mountGenerator } from './ui/generator-page.js';
+import { mountPack } from './ui/pack-page.js';
+import { loadFonts } from './ui/fonts.js';
+import { closeAllModals } from './ui/modal.js';
+import { getGenerator } from './generators/registry.js';
+import { LANGS, getLang, setLang, applyDocumentLang, t } from './core/i18n.js';
 
-// 2. Header'ni yaratish
-const header = document.querySelector('header');
-header.innerHTML = `
-  <h1>🧩 ${t('title')}</h1>
-  <div id="lang-switch"></div>
-`;
+const header = document.querySelector('.topbar');
+const main = document.getElementById('main');
+let view = null, currentRoute = null;
 
-// 3. Til almashtirish tugmalari
-const langSwitch = document.getElementById('lang-switch');
-['uz', 'ru', 'en'].forEach(lang => {
-  const btn = document.createElement('button');
-  btn.textContent = lang.toUpperCase();
-  if (lang === getLang()) btn.classList.add('primary');
-  btn.addEventListener('click', () => setLanguage(lang));
-  langSwitch.appendChild(btn);
-});
-
-// 4. Asosiy konteyner
-const container = document.getElementById('app-container');
-
-// 5. Asosiy sahifa (Kartochkalar lentasi)
-function renderHome() {
-  container.innerHTML = `
-    <div class="home-header">
-      <h2>${t('homeTitle')}</h2>
-      <p>${t('homeSubtitle')}</p>
-    </div>
-    <div class="card-grid" id="cardGrid"></div>
-  `;
-
-  const grid = container.querySelector('#cardGrid');
-  GENERATORS.forEach(gen => {
-    const card = document.createElement('div');
-    card.className = 'generator-card';
-    card.innerHTML = `
-      <div class="card-cover" style="background: ${gen.coverGradient}">
-        <span class="card-emoji">${gen.cover}</span>
-      </div>
-      <div class="card-content">
-        <h3>${t(gen.nameKey)}</h3>
-        <p>${t(gen.descriptionKey)}</p>
-        <span class="card-arrow">→</span>
-      </div>
-    `;
-    card.addEventListener('click', () => {
-      window.location.hash = `#/${gen.id}`;
-    });
-    grid.appendChild(card);
-  });
+function renderHeader() {
+  header.innerHTML = '';
+  const langs = h('div', { class: 'lang-switch', role: 'group', 'aria-label': t('langLabel') },
+    LANGS.map(l => {
+      const b = h('button', { type: 'button', lang: l.code, title: l.name, 'aria-label': l.name, 'aria-pressed': String(l.code === getLang()) }, l.short);
+      b.addEventListener('click', () => setLang(l.code));
+      return b;
+    }));
+  header.append(
+    h('a', { class: 'brand', href: '#/' }, h('img', { class: 'brand-logo', src: 'icon.svg', alt: '', width: 30, height: 30 }), h('span', { class: 'brand-name' }, t('appName'))),
+    langs);
 }
 
-// 6. Generator sahifasi
-function renderGenerator(id) {
-  const gen = getGenerator(id);
-  if (!gen) {
-    renderHome();
-    return;
+function parseRoute() {
+  const raw = (location.hash || '#/').replace(/^#\/?/, '').split('?')[0];
+  return raw.replace(/\/+$/, '');
+}
+
+function route({ keepScroll = false } = {}) {
+  const r = parseRoute();
+  const scroll = window.scrollY;
+  closeAllModals();
+  if (view) { view.destroy(); view = null; }
+  main.innerHTML = '';
+  document.body.classList.remove('no-scroll');
+  if (!r) view = mountHome(main);
+  else if (r === 'pack') view = mountPack(main);
+  else {
+    const gen = getGenerator(r);
+    if (gen) view = mountGenerator(main, gen);
+    else { history.replaceState(null, '', '#/'); view = mountHome(main); }
   }
-
-  container.innerHTML = `
-    <button class="back-btn" id="backBtn">${t('backBtn')}</button>
-    <div id="generatorContent"></div>
-  `;
-
-  container.querySelector('#backBtn').addEventListener('click', () => {
-    window.location.hash = '#/';
-  });
-
-  const content = container.querySelector('#generatorContent');
-  gen.init(content);
+  document.body.dataset.route = r || 'home';
+  document.title = (view.title ? view.title + ' — ' : '') + t('appName');
+  if (keepScroll) window.scrollTo(0, scroll);
+  else if (r !== currentRoute) { window.scrollTo(0, 0); main.focus({ preventScroll: true }); }
+  currentRoute = r;
 }
 
-// 7. Router
-function router() {
-  const hash = window.location.hash || '#/';
-  if (hash === '#/' || hash === '#' || hash === '') {
-    renderHome();
-  } else if (hash.startsWith('#/')) {
-    const id = hash.replace('#/', '');
-    renderGenerator(id);
-  } else {
-    renderHome();
-  }
-}
+applyDocumentLang();
+renderHeader();
+route();
+loadFonts();
 
-// 8. Dastlabki yuklash
-router();
-window.addEventListener('hashchange', router);
+window.addEventListener('hashchange', () => route());
+window.addEventListener('langchange', () => { renderHeader(); route({ keepScroll: true }); });
+
+// Oflayn ishlash va telefonga o'rnatish (PWA)
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+}

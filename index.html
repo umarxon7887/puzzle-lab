@@ -2,21 +2,42 @@
 <html lang="uz">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Topshiriqlar Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Topshiriqlar Lab — bolalar uchun mantiqiy topshiriqlar</title>
+  <meta name="description" content="Labirint, sudoku, so'z qidiruv, sonli krossvord va «Kodni top» topshiriqlarini bir zumda yarating va javoblari bilan A4 PDF qilib chop eting. Bepul, internetsiz ham ishlaydi.">
   <meta name="theme-color" content="#4F46E5">
-  
-  <!-- Ikonkalar -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
-  
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Topshiriqlar">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Topshiriqlar Lab — bolalar uchun mantiqiy topshiriqlar">
+  <meta property="og:description" content="Labirint, sudoku, so'z qidiruv, sonli krossvord va «Kodni top»: bir zumda yarating, javoblari bilan PDF qilib chop eting.">
+  <meta property="og:url" content="https://umarxon7887.github.io/puzzle-lab/">
+  <meta property="og:image" content="https://umarxon7887.github.io/puzzle-lab/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://umarxon7887.github.io/puzzle-lab/og.png">
+  <meta property="og:locale" content="uz_UZ">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:locale:alternate" content="en_US">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/app.js"></script>
 </head>
 <body>
-  <header></header>
-  <main id="app-container"></main>
-  <script type="module" src="src/app.js"></script>
+  <header class="topbar"></header>
+  <main id="main" tabindex="-1"></main>
+  <noscript>
+    <p class="noscript">Bu sayt ishlashi uchun brauzerda JavaScript yoqilgan bo'lishi kerak.<br>
+    Для работы сайта в браузере должен быть включён JavaScript.<br>
+    JavaScript must be enabled for this site to work.</p>
+  </noscript>
 </body>
 </html>
