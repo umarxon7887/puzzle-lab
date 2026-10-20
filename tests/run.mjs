@@ -12,6 +12,8 @@ import { GENERATORS, getGenerator } from '../src/generators/registry.js';
 import { TOPICS, BANKS } from '../src/generators/wordsearch-words.js';
 import { toCells, parseCustom } from '../src/generators/wordsearch.js';
 import { clueText } from '../src/generators/code.js';
+import { POLYS, polyCells } from '../src/generators/oddone.js';
+import { ITEMS as ODD_ITEMS, CATS as ODD_CATS, PAIRS_MEDIUM as ODD_PAIRS_MEDIUM, PAIRS_HARD as ODD_PAIRS_HARD, eligible as oddEligible } from '../src/generators/oddone-items.js';
 import { _dict, LANGS } from '../src/core/i18n.js';
 import { buildPdf } from '../src/core/pdf.js';
 import { slotRects, drawPage, PAGE_W, PAGE_H } from '../src/core/sheet.js';
@@ -171,13 +173,16 @@ for (const g of GENERATORS) {
     for (const [name, box] of Object.entries(BOXES)) {
       for (let level = 0; level < 4; level++) {
         for (const v of variants) {
-          const p = g.generate({ level, ...v, lang: 'uz', aspect: name === 'half' ? 'landscape' : 'portrait' }, 777 + level);
-          for (const showSolution of [false, true]) {
-            for (const lang of LANG_CODES) {
-              const { ctx, pts } = mockCtx();
-              g.draw(ctx, p, box, { showSolution, lang });
-              assert(pts.length > 10, 'nothing drawn');
-              checkInside(pts, box, 1.5, `${name}/L${level}/${json(v)}/${lang}${showSolution ? '/answer' : ''}`);
+          // 4 tadan: shu o'lcham uchun yaratilgan va 1 tadan uchun yaratilgan (to'plamdagi javoblar) topshiriq
+          for (const perPage of name === 'quarter' ? [4, 1] : [name === 'half' ? 2 : 1]) {
+            const p = g.generate({ level, ...v, lang: 'uz', aspect: name === 'half' ? 'landscape' : 'portrait', perPage }, 777 + level);
+            for (const showSolution of [false, true]) {
+              for (const lang of LANG_CODES) {
+                const { ctx, pts } = mockCtx();
+                g.draw(ctx, p, box, { showSolution, lang });
+                assert(pts.length > 10, 'nothing drawn');
+                checkInside(pts, box, 1.5, `${name}/${perPage}/L${level}/${json(v)}/${lang}${showSolution ? '/answer' : ''}`);
+              }
             }
           }
         }
@@ -271,6 +276,44 @@ if (!ONLY || ONLY === 'code') {
     for (const l of LANG_CODES) for (let A = 0; A <= 4; A++) for (let B = 0; A + B <= 5; B++) {
       const s = clueText(A, B, l);
       assert(typeof s === 'string' && s.length > 5 && !/undefined/.test(s), `${l} ${A},${B}: ${s}`);
+    }
+  });
+}
+
+if (!ONLY || ONLY === 'odd') {
+  section('Ortiqchasini top: rasmlar va figuralar');
+  await test("har bir emoji bir marta, toifalari mavjud, nomlari uch tilda", () => {
+    const seen = new Set();
+    for (const [e, ...tags] of ODD_ITEMS) {
+      assert(!seen.has(e), 'duplicate emoji ' + e); seen.add(e);
+      assert(tags.length, 'no tags ' + e);
+      for (const t of tags) assert(ODD_CATS[t.replace(/^~/, '')], `${e}: unknown category ${t}`);
+    }
+    for (const [k, c] of Object.entries(ODD_CATS)) for (const l of LANG_CODES) assert(c[l] && c[l].length === 2, `${k}.${l}`);
+  });
+  await test("juftliklar: ko'pchilik uchun yetarli rasm bor", () => {
+    for (const [a, b] of [...ODD_PAIRS_MEDIUM, ...ODD_PAIRS_HARD]) {
+      assert(oddEligible(a, b).length >= 4, `${a}/${b}: only ${oddEligible(a, b).length} majority pictures`);
+      assert(oddEligible(b, a).length >= 1, `${a}/${b}: no odd picture`);
+    }
+  });
+  await test("ko'zgu aksi figuralari: aksini burib asl holiga keltirib bo'lmaydi", () => {
+    for (const poly of Object.keys(POLYS)) {
+      const rotations = [0, 90, 180, 270].map(r => JSON.stringify(polyCells(poly, r, false)));
+      for (const r of [0, 90, 180, 270]) assert(!rotations.includes(JSON.stringify(polyCells(poly, r, true))), poly + ' is symmetric');
+    }
+  });
+  await test("bir varaqda rasm takrorlanmaydi, aralashda qoidalar har xil; 2–4 tadan bo'lsa 4 qator", () => {
+    const g = getGenerator('odd');
+    for (let level = 0; level < 4; level++) for (let s = 1; s <= 60; s++) {
+      for (const mode of ['pictures', 'mixed']) {
+        const p = g.generate({ level, mode }, s * 131 + level);
+        const pics = p.rows.filter(r => r.t === 'pic').flatMap(r => r.items);
+        assert(new Set(pics).size === pics.length, `L${level} ${mode} seed ${s}: repeated picture`);
+        const rules = p.rows.filter(r => r.t === 'fig').map(r => r.rule);
+        if (mode === 'mixed') assert(new Set(rules).size === rules.length, `L${level} seed ${s}: repeated rule ${rules}`);
+      }
+      for (const [aspect, perPage] of [['landscape', 2], ['portrait', 4]]) eq(g.generate({ level, mode: 'shapes', aspect, perPage }, s).rows.length, 4, `${perPage} per page`);
     }
   });
 }

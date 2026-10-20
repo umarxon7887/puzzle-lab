@@ -72,7 +72,7 @@ export function mountPack(main) {
   const save = () => store.set('pack', st);
   let token = 0, exporting = false;
 
-  const genOpts = it => ({ ...it.opts, aspect: slotAspect(st.perPage) });
+  const genOpts = it => ({ ...it.opts, aspect: slotAspect(st.perPage), perPage: st.perPage });
   const puzzleOf = it => getPuzzle(getGenerator(it.gen), genOpts(it), it.seed);
 
   // ---------- Sarlavha ----------

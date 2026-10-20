@@ -350,6 +350,7 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .pack-row-cover { width: 32px; height: 32px; flex-shrink: 0; }
 .pack-row-cover svg { width: 100%; height: 100%; }
 .pack-row-cover svg * { animation: none !important; }
+.pack-row-cover .maze-path { stroke-dashoffset: 0; }
 .pack-row-body { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: end; margin-top: 10px; }
 .pack-row-body .mini-field:last-child:nth-child(3) { grid-column: 1 / -1; }
 .mini-field { display: grid; gap: 4px; font-size: 12px; font-weight: 800; color: var(--muted); min-width: 0; }
@@ -462,7 +463,15 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .gen-card-cover .cover-code .code-q { animation: codeQ 1.6s ease-in-out infinite; }
 @keyframes codeQ { 0%, 100% { transform: rotate(0) scale(1); } 20% { transform: rotate(-12deg) scale(1.3); } 40% { transform: rotate(8deg) scale(1.05); } 60% { transform: rotate(-5deg); } }
 
-/* 6. To'plam: varaqlar yelpig'ichdek ochiladi */
+/* 6. Ortiqchasini top: qizil aylana ortiqcha shaklni o'rab oladi, shakl silkinadi */
+.cover-odd .oo-ring { stroke-dasharray: 252; stroke-dashoffset: 0; transform-box: view-box; transform-origin: 138px 138px; transform: rotate(-90deg); }
+.gen-card-cover .cover-odd .oo-ring { animation: ooRing 4s ease-in-out infinite; }
+@keyframes ooRing { 0%, 20% { stroke-dashoffset: 252; opacity: 1; } 55%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+.cover-odd .oo-odd { transform-box: fill-box; transform-origin: center; }
+.gen-card-cover .cover-odd .oo-odd { animation: ooWiggle 4s ease-in-out infinite; }
+@keyframes ooWiggle { 0%, 55% { transform: none; } 62% { transform: rotate(-12deg) scale(1.08); } 70% { transform: rotate(10deg) scale(1.08); } 78%, 100% { transform: none; } }
+
+/* 7. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
 @keyframes pk3 { 0%, 100% { transform: none; } 50% { transform: translate(8px, -2px) rotate(5deg); } }

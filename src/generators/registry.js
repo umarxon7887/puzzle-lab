@@ -8,7 +8,8 @@ import sudoku from './sudoku.js';
 import words from './wordsearch.js';
 import cross from './crossword.js';
 import code from './code.js';
+import odd from './oddone.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;

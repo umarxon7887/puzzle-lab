@@ -120,7 +120,7 @@ export function mountGenerator(main, gen) {
   // ---------- Topshiriqlarni yaratish ----------
   async function regenerate() {
     const my = ++token;
-    const genOpts = { ...st.opts, aspect: slotAspect(st.perPage) };
+    const genOpts = { ...st.opts, aspect: slotAspect(st.perPage), perPage: st.perPage };
     const seeds = Array.from({ length: st.perPage }, (_, i) => deriveSeed(st.seed, i));
     const slow = seeds.some(s => !isCached(gen, genOpts, s));
     if (slow) { busy.hidden = false; await nextFrame(); if (my !== token) return; }

@@ -2,7 +2,7 @@
 
 ![Topshiriqlar Lab](og.png)
 
-Bolalar uchun mantiqiy topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top»**.
+Bolalar uchun mantiqiy topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Ortiqchasini top»**.
 Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'yxatdan o'tishsiz, internetsiz ham ishlaydi.
 
 **Sayt:** https://umarxon7887.github.io/puzzle-lab/
@@ -15,12 +15,13 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
 
 ### Imkoniyatlar
 
-- **5 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin.
+- **6 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin.
   - **Labirint** — 8 xil shakl (to'rtburchak, doira, yulduz, yurak…), qahramon va manzil stikerlari, o'lchamni o'zingiz ham berishingiz mumkin.
   - **Sudoku** — 4×4 dan 9×9 gacha, diagonal (X) va shaklli bloklar (5×5, 7×7). Yechim har doim **yagona**; Oson va O'rta taxminsiz yechiladi.
   - **So'z qidiruv** — 11 ta mavzu (uch tilda) yoki o'zingiz yozgan so'zlar. Har bir so'z jadvalda **aynan bir marta** uchraydi. O'zbekcha **O‘** va **G‘** — bitta harf, bitta katakka yoziladi.
   - **Sonli krossvord** — kesishgan misollar (+, −, ×, ÷); har bir bo'sh katakcha mantiq bilan topiladi.
   - **Kodni top** — 3, 4 yoki 5 xonali kod va ishoralar; yechim yagona, ekranda javobni tekshirib ko'rish mumkin.
+  - **Ortiqchasini top** — har qatorda bittasi boshqalariga o'xshamaydi: rasmlar (mevalar, hayvonlar, transport, kiyimlar…), shakllar (shakli, bo'yalishi, o'lchami, yo'nalishi, nuqtalar soni, ichki shakl, ko'zgu aksi) yoki aralash. Ortiqchasi har doim **bitta**; javob varag'ida nega ortiqchaligi yozilgan.
 - **To'plam** — turli generatorlardan aralash topshiriqlar: har turdan nechtadan kerakligini tanlang, ko'rib chiqing, keragini almashtiring yoki olib tashlang, so'ng **bitta PDF** (topshiriqlar, javoblar yoki ikkalasi) qilib oling.
 - Bir varaqda **1, 2 yoki 4 ta** topshiriq (qirqish chiziqlari bilan), **ism va sana** uchun qator.
 - Varaq tepasidagi matnni o'zgartirish va o'lchamini tanlash mumkin.
@@ -45,9 +46,9 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 
 ## Русский
 
-Генератор логических заданий для детей: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код»**. Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
+Генератор логических заданий для детей: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код», «Найди лишнее»**. Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
 
-- 4 уровня сложности; у судоку, кроссворда и «Взломай код» решение всегда **единственное**.
+- 4 уровня сложности; у судоку, кроссворда, «Взломай код» и «Найди лишнее» решение всегда **единственное**.
 - **Набор**: задания разных видов в одном PDF (задания, ответы или оба), с просмотром, заменой и удалением.
 - 1, 2 или 4 задания на листе, строка для имени и даты, свой текст заголовка.
 - **Номер задания**: тот же номер и настройки всегда дают то же задание.
@@ -55,9 +56,9 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 
 ## English
 
-A logic puzzle generator for kids: **maze, sudoku, word search, math crossword, crack the code**. Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
+A logic puzzle generator for kids: **maze, sudoku, word search, math crossword, crack the code, odd one out**. Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
 
-- 4 difficulty levels; sudoku, math crossword and crack-the-code puzzles always have a **unique** solution.
+- 4 difficulty levels; sudoku, math crossword, crack-the-code and odd-one-out puzzles always have a **unique** solution.
 - **Pack**: mix different puzzles into one PDF (puzzles, answers or both), with review, replace and remove.
 - 1, 2 or 4 puzzles per page, a name/date line, custom title text.
 - **Puzzle number**: the same number and settings always produce the same puzzle.
@@ -89,6 +90,7 @@ src/
     storage.js, files.js
   generators/           — har bir generator — BITTA fayl
     maze.js  sudoku.js  wordsearch.js (+ wordsearch-words.js)  crossword.js  code.js
+    oddone.js (+ oddone-items.js)
     registry.js         — generatorlar ro'yxati
   ui/                   — sahifalar: home.js, generator-page.js, pack-page.js va yordamchilar
 tests/run.mjs           — testlar (Node bilan)
@@ -113,6 +115,8 @@ export default {
     { key: 'w', type: 'number', advanced: true, min, max }
   ],
   generate(opts, seed),          // TOZA funksiya: bir xil (opts, seed) → bir xil topshiriq (oddiy ma'lumot)
+                                 // opts — sozlamalar + aspect ('portrait' | 'landscape') va perPage (1, 2 yoki 4):
+                                 // joy kichik bo'lsa topshiriqni moslash mumkin (labirint yotadi, «Ortiqchasini top» 4 qator)
   draw(ctx, puzzle, box, { showSolution, lang }),  // box = {x, y, w, h} millimetrda; faqat shu joyga chizadi
   info(puzzle, lang),            // varaq pastidagi qisqa ma'lumot: "10×14, Yulduz"
   hint(puzzle, drawInfo, lang),  // ekrandagi izoh: { text, warn }
@@ -121,7 +125,7 @@ export default {
 }
 ```
 
-### Yangi generator qo'shish (masalan, 6-chi)
+### Yangi generator qo'shish (masalan, 7-chi)
 
 1. `src/generators/` ichida yangi fayl yarating (`maze.js` ni namuna qiling) va yuqoridagi maydonlarni yozing.
 2. `src/generators/registry.js` ga import qilib, `GENERATORS` ro'yxatiga qo'shing.
