@@ -49,22 +49,32 @@ const json = x => JSON.stringify(x);
 // Canvas o'rniga ishlatiladigan "soxta" kontekst: chizilgan nuqtalarni yig'adi
 function mockCtx() {
   const pts = [];
+  // Joriy o'zgartirish matritsasi (translate/rotate/scale): nuqtalar varaqdagi haqiqiy joyida yig'iladi
+  let m = [1, 0, 0, 1, 0, 0];
+  const stack = [];
+  const T = (x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]];
+  const mul = (a, b, c, d, e, f) => { m = [m[0] * a + m[2] * b, m[1] * a + m[3] * b, m[0] * c + m[2] * d, m[1] * c + m[3] * d, m[0] * e + m[2] * f + m[4], m[1] * e + m[3] * f + m[5]]; };
+  const push = (x, y, what) => { const [X, Y] = T(x, y); pts.push([X, Y, what]); };
   const ctx = {
     font: '10px sans-serif', fillStyle: '#000', strokeStyle: '#000', lineWidth: 1, lineCap: 'butt', lineJoin: 'miter',
     textAlign: 'left', textBaseline: 'alphabetic', globalAlpha: 1,
-    save() {}, restore() {}, setTransform() {}, setLineDash() {}, beginPath() {}, closePath() {},
+    save() { stack.push(m.slice()); }, restore() { if (stack.length) m = stack.pop(); },
+    setTransform() {}, setLineDash() {}, beginPath() {}, closePath() {},
+    translate(x, y) { mul(1, 0, 0, 1, x, y); },
+    rotate(a) { const c = Math.cos(a), s = Math.sin(a); mul(c, s, -s, c, 0, 0); },
+    scale(x, y) { mul(x, 0, 0, y, 0, 0); },
     stroke() {}, fill() {}, clip() {}, clearRect() {},
-    moveTo(x, y) { pts.push([x, y, 'moveTo']); },
-    lineTo(x, y) { pts.push([x, y, 'lineTo']); },
-    quadraticCurveTo(cx, cy, x, y) { pts.push([x, y, 'quad']); },
-    arc(x, y, r) { pts.push([x - r, y - r, 'arc'], [x + r, y + r, 'arc']); },
-    rect(x, y, w, h) { pts.push([x, y, 'rect'], [x + w, y + h, 'rect']); },
-    fillRect(x, y, w, h) { pts.push([x, y, 'fillRect'], [x + w, y + h, 'fillRect']); },
-    strokeRect(x, y, w, h) { pts.push([x, y, 'strokeRect'], [x + w, y + h, 'strokeRect']); },
-    fillText(t, x, y) { pts.push([x, y, 'text:' + t]); },
+    moveTo(x, y) { push(x, y, 'moveTo'); },
+    lineTo(x, y) { push(x, y, 'lineTo'); },
+    quadraticCurveTo(cx, cy, x, y) { push(x, y, 'quad'); },
+    arc(x, y, r) { push(x - r, y - r, 'arc'); push(x + r, y + r, 'arc'); },
+    rect(x, y, w, h) { push(x, y, 'rect'); push(x + w, y + h, 'rect'); },
+    fillRect(x, y, w, h) { push(x, y, 'fillRect'); push(x + w, y + h, 'fillRect'); },
+    strokeRect(x, y, w, h) { push(x, y, 'strokeRect'); push(x + w, y + h, 'strokeRect'); },
+    fillText(t, x, y) { push(x, y, 'text:' + t); },
     measureText(t) {
-      const m = /([\d.]+)px/.exec(ctx.font);
-      return { width: String(t).length * (m ? +m[1] : 10) * 0.55 };
+      const mm = /([\d.]+)px/.exec(ctx.font);
+      return { width: String(t).length * (mm ? +mm[1] : 10) * 0.55 };
     }
   };
   return { ctx, pts };
@@ -136,6 +146,15 @@ await test('har bir generatorda kerakli maydonlar bor', () => {
   }
   eq(getGenerator('maze').id, 'maze');
   eq(getGenerator('nope'), null);
+});
+await test("har bir generatorda ko'nikma belgilari bor va ular ro'yxatda", async () => {
+  const { SKILLS, SKILL_KEYS } = await import('../src/core/skills.js');
+  for (const k of SKILL_KEYS) for (const l of LANG_CODES) assert(SKILLS[k][l], `skill ${k}.${l} missing`);
+  for (const g of GENERATORS) {
+    assert(Array.isArray(g.skills) && g.skills.length >= 1 && g.skills.length <= 3, g.id + ': 1–3 skills expected');
+    for (const s of g.skills) assert(SKILL_KEYS.includes(s), `${g.id}: unknown skill ${s}`);
+    eq(new Set(g.skills).size, g.skills.length, g.id + ': repeated skill');
+  }
 });
 await test('ikonkalardagi SVG gradient id lari takrorlanmaydi', () => {
   const ids = GENERATORS.map(g => (/id="([^"]+)"/.exec(g.cover) || [])[1]).filter(Boolean);
@@ -361,6 +380,40 @@ if (!ONLY || ONLY === 'pictures') {
 }
 
 // ---------------------------------------------------------------------------
+section('Savat');
+await test('variantlar: har bir variantda raqamlar boshqa, tartib va raqamlash saqlanadi', async () => {
+  const { cartPages, variantSeed } = await import('../src/core/cart.js');
+  const items = [1, 2, 3, 4, 5].map(i => ({ gen: 'maze', opts: { level: 1 }, seed: 100 + i, title: null, fontPt: 24 }));
+  const cart = { items, copies: 3 };
+  const pages = cartPages(cart, 2);
+  eq(pages.length, 9, 'pages (3 per copy × 3 copies)');
+  eq(pages[0].entries[0].seed, 101, 'copy 0 keeps the original seed');
+  assert(pages[3].entries[0].seed !== 101, 'copy 1 uses another seed');
+  eq(pages[3].entries[0].number, 1, 'each copy is numbered from 1');
+  eq(pages[2].entries.length, 1, 'last page of a copy holds the rest');
+  const seeds = new Set([0, 1, 2].map(k => variantSeed(101, k)));
+  eq(seeds.size, 3, 'variant seeds differ');
+  eq(variantSeed(101, 2), variantSeed(101, 2), 'variant seed is deterministic');
+});
+await test('shablon: turlar va sozlamalar saqlanadi, raqamlar yangilanadi', async () => {
+  const { saveTemplate, itemsFromTemplate } = await import('../src/core/cart.js');
+  const cart = { items: [{ gen: 'schulte', opts: { level: 2, mode: 'letters' }, seed: 7, title: 'Tez!', fontPt: 20 }], templates: [] };
+  const tp = saveTemplate(cart, ' 2-sinf ');
+  eq(tp.name, '2-sinf');
+  eq(cart.templates.length, 1);
+  assert(!('seed' in tp.items[0]), 'template keeps no seeds');
+  let s = 40;
+  const items = itemsFromTemplate(tp, () => ++s);
+  eq(items[0].seed, 41); eq(items[0].opts.mode, 'letters'); eq(items[0].title, 'Tez!');
+  saveTemplate(cart, '2-sinf');
+  eq(cart.templates.length, 1, 'same name replaces the template');
+});
+await test('savat elementlari tekshiriladi (buzilganlari tashlab yuboriladi)', async () => {
+  const { addToCart } = await import('../src/core/cart.js');
+  const r = addToCart([{ gen: 'maze', opts: { level: 1 }, seed: 5 }, { gen: 'maze', seed: -1, opts: {} }, null]);
+  eq(r.added, 1);
+});
+
 section('Tillar (i18n)');
 await test("uz, ru, en — barcha kalitlar bor va turi bir xil", () => {
   const base = _dict.uz;

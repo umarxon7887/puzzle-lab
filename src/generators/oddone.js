@@ -242,6 +242,7 @@ function propOk(vals) {                                // hammasi bir xil / hamm
 
 export default {
   id: 'odd',
+  skills: ['logic', 'visual'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Ortiqchasini top', ru: 'Найди лишнее', en: 'Odd one out' },
   desc: {
     uz: "Har qatorda bitta rasm yoki shakl boshqalaridan farq qiladi — uni toping",

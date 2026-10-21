@@ -186,6 +186,7 @@ const RULE = {
 
 export default {
   id: 'cross',
+  skills: ['counting', 'logic'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Sonli krossvord', ru: 'Числовой кроссворд', en: 'Math crossword' },
   desc: {
     uz: "Kesishgan misollar: bo'sh katakchalarni hisoblab to'ldiring",

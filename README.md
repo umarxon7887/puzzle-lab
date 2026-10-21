@@ -2,7 +2,7 @@
 
 ![Topshiriqlar Lab](og.png)
 
-Bolalar uchun mantiqiy topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top» va 10 ta vizual mantiq topshirig'i** («Ortiqchasini top», «Farqlarni top», «Soyasini top» va boshqalar).
+Bolalar uchun topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top»**, 10 ta vizual mantiq topshirig'i («Ortiqchasini top», «Farqlarni top», «Soyasini top» va boshqalar), **diqqat va xotira** mashqlari (Shulte jadvali, korrektura sinovi…) hamda **chizish va katakli qog'oz** topshiriqlari (yapon krossvordi, grafik diktant, raqam bo'yicha bo'yash, nuqtalarni tutashtirish…) — jami **26 xil**.
 Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'yxatdan o'tishsiz, internetsiz ham ishlaydi.
 
 **Sayt:** https://umarxon7887.github.io/puzzle-lab/
@@ -15,7 +15,7 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
 
 ### Imkoniyatlar
 
-- **15 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin.
+- **26 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin.
   - **Labirint** — 8 xil shakl (to'rtburchak, doira, yulduz, yurak…), qahramon va manzil stikerlari, o'lchamni o'zingiz ham berishingiz mumkin.
   - **Sudoku** — 4×4 dan 9×9 gacha, diagonal (X) va shaklli bloklar (5×5, 7×7). Yechim har doim **yagona**; Oson va O'rta taxminsiz yechiladi.
   - **So'z qidiruv** — 11 ta mavzu (uch tilda) yoki o'zingiz yozgan so'zlar. Har bir so'z jadvalda **aynan bir marta** uchraydi. O'zbekcha **O‘** va **G‘** — bitta harf, bitta katakka yoziladi.
@@ -31,7 +31,23 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
   - **Ko'rib top va sana** — aralash rasmlar orasidan berilganlarini sanash.
   - **Aynan bir xil ikkitasi** — o'xshash kartochkalar orasidan to'liq bir xil ikkitasini topish.
   - **Kubiklarni sana** — izometrik kubiklar uyumi; qiyin darajalarda ko'rinmaydigan kubiklar ham bor.
+- **Diqqat va xotira:**
+  - **Shulte jadvali** — 4×4 dan 6×6 gacha va Gorbov jadvali (ikki qator navbatma-navbat); sonlar yoki harflar (alifbo sahifa tiliga qarab olinadi), vaqtni yozish uchun qator.
+  - **Korrektura sinovi** — harflar yoki belgilar qatorlarida berilganlarini o'chirish; qiyin darajalarda ikkinchi belgining tagiga chiziladi. Javob varag'ida har qatorda nechta borligi yozilgan.
+  - **Belgilar kodi** — kalit bo'yicha har bir shaklga raqamini yoki raqamga belgisini yozish (4 tadan 9 tagacha juftlik).
+  - **Harfli va sonli labirint** — yo'l faqat tartib bilan keladigan sonlar yoki harflar orqali o'tadi; har qadamda keyingisi bitta.
+- **Chizish va katakli qog'oz** (101 ta rasm kutubxonasi):
+  - **Simmetrik chiz** — rasmning ikkinchi yarmini ko'zgudagidek bo'yab tugatish (10 dan 20 katakgacha).
+  - **Nusxa ko'chir** — nuqtali yoki katakli to'rdagi rasmni yonidagi bo'sh to'rga ko'chirish.
+  - **Yapon krossvordi** — 15×15 dan 30×30 gacha; har biri taxminsiz, faqat mantiq bilan yechiladi, javob varag'ida rasm nomi.
+  - **Grafik diktant** — «2 →, 1 ↑» kabi ko'rsatmalar bo'yicha chizish; eng qiyin darajada qiyshiq yurishlar ham bor.
+  - **Raqam bo'yicha bo'ya** — 16×16 dan 30×30 gacha, 3 tadan 6 tagacha rang; bo'yalgach yashirin rasm chiqadi.
+  - **Koordinatalar bo'yicha chiz** — nuqtalarni shaxmat usulida (B3) yoki (x; y) bo'yicha topib, ketma-ket tutashtirish.
+  - **Nuqtalarni tutashtir** — 20 tadan 80 tagacha raqamlangan nuqta; tutashtirilgach rasm chiqadi.
 - **To'plam** — turli generatorlardan aralash topshiriqlar: har turdan nechtadan kerakligini tanlang, ko'rib chiqing, keragini almashtiring yoki olib tashlang, so'ng **bitta PDF** (topshiriqlar, javoblar yoki ikkalasi) qilib oling.
+- **Savat** — internet-do'kondagidek: generator sahifasida topshiriqni o'zingizga moslab sozlang va 🛒+ tugmasi bilan savatga qo'shing. Savatda tartibini o'zgartiring, raqamini yangilang yoki olib tashlang va **bir klikda bitta PDF** oling.
+  - **Variantlar** — har bir o'quvchiga alohida variant: turlari va sozlamalari bir xil, masalalari boshqa (bir-biridan ko'chira olmaydi).
+  - **Shablonlar** — savatni nom bilan saqlang («2-sinf, haftalik»); keyingi safar bir klikda xuddi shunday to'plam yangi masalalar bilan yig'iladi.
 - Bir varaqda **1, 2 yoki 4 ta** topshiriq (qirqish chiziqlari bilan), **ism va sana** uchun qator.
 - Varaq tepasidagi matnni o'zgartirish va o'lchamini tanlash mumkin.
 - **Topshiriq raqami**: bir xil raqam va sozlamalar har doim aynan bir xil topshiriqni beradi — raqamni yozib qo'ysangiz, keyin javobini ham topasiz. Raqam varaq pastida va fayl nomida ko'rsatiladi.
@@ -40,10 +56,11 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
 
 ### Qanday ishlatiladi
 
-1. Saytni oching va generatorni tanlang (yoki **To'plam yaratish**).
+1. Saytni oching va generatorni tanlang (yoki **To'plam yaratish**, yoki yuqoridagi 🛒 — **Savat**).
 2. Darajani va turini tanlang. Pastdagi **Yangi topshiriq** tugmasi har safar yangisini yaratadi.
 3. 👁 tugmasi javobni ekranda ko'rsatadi, ⚙ — qo'shimcha sozlamalar (bir varaqda nechta, ism qatori, raqam).
 4. ⬇ tugmasi: **Topshiriq**, **Javob varag'i** yoki **Ikkalasi (bitta faylda)**.
+5. 🛒+ tugmasi topshiriqni savatga qo'shadi — bir nechta generatordan yig'ib, savatdan bitta PDF qilib olasiz.
 
 Fayl nomlari: `123456 raqamli labirint.pdf`, `123456 raqamli labirint javobi.pdf`.
 
@@ -55,20 +72,22 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 
 ## Русский
 
-Генератор логических заданий для детей: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код» и 10 заданий на зрительную логику** («Найди лишнее», «Найди отличия», «Найди тень», «Чего не хватает?» и другие). Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
+Генератор заданий для детей — **26 видов**: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код»**, 10 заданий на зрительную логику («Найди лишнее», «Найди отличия», «Найди тень», «Чего не хватает?» и другие), задания на **внимание и память** (таблица Шульте, корректурная проба, «Шифровка», лабиринт по порядку) и **рисование по клеточкам** (японский кроссворд, графический диктант, раскраска по номерам, по точкам, по координатам, симметрия, копирование). Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
 
 - 4 уровня сложности; у судоку, кроссворда, «Взломай код» и «Найди лишнее» решение всегда **единственное**.
 - **Набор**: задания разных видов в одном PDF (задания, ответы или оба), с просмотром, заменой и удалением.
+- **Корзина**: настройте задание на его странице и добавьте в корзину; в корзине меняйте порядок и получите один PDF в один клик. **Варианты** — отдельный вариант для каждого ученика; **шаблоны** — сохранённый набор, который в один клик собирается заново с новыми заданиями.
 - 1, 2 или 4 задания на листе, строка для имени и даты, свой текст заголовка.
 - **Номер задания**: тот же номер и настройки всегда дают то же задание.
 - Языки: узбекский, русский, английский.
 
 ## English
 
-A logic puzzle generator for kids: **maze, sudoku, word search, math crossword, crack the code and 10 visual logic puzzles** (odd one out, spot the difference, find the shadow, what is missing, and more). Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
+A puzzle generator for kids with **26 puzzle types**: **maze, sudoku, word search, math crossword, crack the code**, 10 visual logic puzzles (odd one out, spot the difference, find the shadow, what is missing, and more), **attention and memory** drills (Schulte table, proofreading test, symbol coding, number-order maze) and **drawing on grid paper** (nonograms, graphic dictation, paint by numbers, dot-to-dot, coordinates, symmetry, copying). Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
 
 - 4 difficulty levels; sudoku, math crossword, crack-the-code and odd-one-out puzzles always have a **unique** solution.
 - **Pack**: mix different puzzles into one PDF (puzzles, answers or both), with review, replace and remove.
+- **Basket**: set up a puzzle on its page and add it to the basket; reorder there and get one PDF in one click. **Versions** give each student their own copy; **templates** save a set and rebuild it later with fresh puzzles in one click.
 - 1, 2 or 4 puzzles per page, a name/date line, custom title text.
 - **Puzzle number**: the same number and settings always produce the same puzzle.
 - Languages: Uzbek, Russian, English.

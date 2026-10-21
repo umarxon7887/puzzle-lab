@@ -1,10 +1,13 @@
 // app.js — ilovaning kirish nuqtasi: sarlavha, til tanlash, sahifalar (router) va oflayn rejim.
-// Manzillar: #/ — bosh sahifa, #/pack — to'plam, #/<generator-id> — generator sahifasi.
+// Manzillar: #/ — bosh sahifa, #/pack — to'plam, #/cart — savat, #/<generator-id> — generator sahifasi.
 
 import { h } from './ui/dom.js';
 import { mountHome } from './ui/home.js';
 import { mountGenerator } from './ui/generator-page.js';
 import { mountPack } from './ui/pack-page.js';
+import { mountCart } from './ui/cart-page.js';
+import { ICONS } from './ui/icons.js';
+import { cartCount } from './core/cart.js';
 import { loadFonts } from './ui/fonts.js';
 import { closeAllModals } from './ui/modal.js';
 import { getGenerator } from './generators/registry.js';
@@ -22,9 +25,20 @@ function renderHeader() {
       b.addEventListener('click', () => setLang(l.code));
       return b;
     }));
+  // Savat: belgida savatdagi topshiriqlar soni
+  const badge = h('span', { class: 'cart-badge', 'aria-hidden': 'true' });
+  const cart = h('a', { class: 'cart-link', href: '#/cart', title: t('cartTitle') }, h('span', { class: 'cart-icon', html: ICONS.cart }), badge);
+  const syncCart = () => {
+    const n = cartCount();
+    badge.textContent = n > 99 ? '99+' : String(n);
+    badge.hidden = n === 0;
+    cart.setAttribute('aria-label', n ? `${t('cartTitle')}: ${n}` : t('cartTitle'));
+  };
+  syncCart();
   header.append(
     h('a', { class: 'brand', href: '#/' }, h('img', { class: 'brand-logo', src: 'icon.svg', alt: '', width: 30, height: 30 }), h('span', { class: 'brand-name' }, t('appName'))),
-    langs);
+    h('div', { class: 'topbar-right' }, cart, langs));
+  header.syncCart = syncCart;
 }
 
 function parseRoute() {
@@ -41,6 +55,7 @@ function route({ keepScroll = false } = {}) {
   document.body.classList.remove('no-scroll');
   if (!r) view = mountHome(main);
   else if (r === 'pack') view = mountPack(main);
+  else if (r === 'cart') view = mountCart(main);
   else {
     const gen = getGenerator(r);
     if (gen) view = mountGenerator(main, gen);
@@ -60,6 +75,11 @@ loadFonts();
 
 window.addEventListener('hashchange', () => route());
 window.addEventListener('langchange', () => { renderHeader(); route({ keepScroll: true }); });
+window.addEventListener('cartchange', () => {
+  header.syncCart?.();
+  const b = header.querySelector('.cart-link');
+  if (b) { b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+});
 
 // Oflayn ishlash va telefonga o'rnatish (PWA)
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {

@@ -96,6 +96,7 @@ const nameOf = (k, lang) => ICONS[k][lang] || ICONS[k].uz;
 
 export default {
   id: 'overlap',
+  skills: ['visual', 'attention'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Ustma-ust rasmlar', ru: 'Наложенные картинки', en: 'Overlapping pictures' },
   desc: {
     uz: "Bir-birining ustiga chizilgan buyumlarni toping va nomini ayting",

@@ -51,6 +51,7 @@ const MODES = {
 
 export default {
   id: 'shadow',
+  skills: ['visual', 'spatial'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Soyasini top', ru: 'Найди тень', en: 'Find the shadow' },
   desc: {
     uz: "Rasmga aynan mos keladigan soyani toping",

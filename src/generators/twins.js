@@ -79,6 +79,7 @@ const MODES = {
 
 export default {
   id: 'twins',
+  skills: ['attention', 'visual'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Aynan bir xil ikkitasi', ru: 'Найди две одинаковые', en: 'Find the twins' },
   desc: {
     uz: "Bir-biriga o'xshash kartochkalar orasidan aynan bir xil ikkitasini toping",

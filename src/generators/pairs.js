@@ -60,6 +60,7 @@ function drawGroup(ctx, pic, n, cx, cy, w, h, color) {
 
 export default {
   id: 'pairs',
+  skills: ['visual', 'language', 'counting'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Juftini top', ru: 'Найди пару', en: 'Match the pairs' },
   desc: {
     uz: "Ikki ustundagi mos rasmlarni, so'zlarni yoki sonlarni chiziq bilan tutashtiring",

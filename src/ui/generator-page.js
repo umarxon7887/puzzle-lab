@@ -15,6 +15,7 @@ import { newSeed, deriveSeed } from '../core/rng.js';
 import { drawPage, slotAspect, PER_PAGE } from '../core/sheet.js';
 import { renderPdf } from '../core/pdf.js';
 import { download } from '../core/files.js';
+import { addToCart } from '../core/cart.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -91,16 +92,25 @@ export function mountGenerator(main, gen) {
     interactive);
 
   // ---------- Pastki panel ----------
-  const newBtn = h('button', { type: 'button', class: 'btn btn-primary btn-new' },
-    h('span', { class: 'btn-icon', html: ICONS.refresh }), h('span', null, t('newPuzzle')));
+  const newBtn = h('button', { type: 'button', class: 'btn btn-primary btn-new', 'aria-label': t('newPuzzle') },
+    h('span', { class: 'btn-icon', html: ICONS.refresh }),
+    h('span', { class: 'lbl-full' }, t('newPuzzle')), h('span', { class: 'lbl-short', 'aria-hidden': 'true' }, t('newPuzzleShort')));
   newBtn.addEventListener('click', () => { st.seed = newSeed(); save(); regenerate(); });
   const eyeBtn = h('button', { type: 'button', class: 'icon-btn', 'aria-pressed': 'false' });
   eyeBtn.addEventListener('click', () => { showAnswer = !showAnswer; syncEye(); preview.redraw(); });
   const pdfBtn = h('button', { type: 'button', class: 'icon-btn', title: t('pdf'), 'aria-label': t('pdf'), html: ICONS.download });
   const setBtn = h('button', { type: 'button', class: 'icon-btn', title: t('settings'), 'aria-label': t('settings'), html: ICONS.settings });
+  // Savatga: varaqdagi topshiriq(lar) aynan shu sozlamalar va raqamlar bilan qo'shiladi
+  const cartBtn = h('button', { type: 'button', class: 'icon-btn cart-add', title: t('cartAdd'), 'aria-label': t('cartAdd'), html: ICONS.cartPlus });
+  cartBtn.addEventListener('click', () => {
+    if (!slots.length) return;
+    const entries = slots.map((_, i) => ({ gen: gen.id, opts: { ...st.opts }, seed: deriveSeed(st.seed, i), title: st.title, fontPt: st.fontPt }));
+    const r = addToCart(entries);
+    toast(r.added ? t('cartAdded', r.added, r.total) : t('cartFull'));
+  });
   setBtn.addEventListener('click', openSettings);
   const bar = h('div', { class: 'action-bar' },
-    h('div', { class: 'action-inner' }, newBtn, eyeBtn, h('div', { class: 'menu-wrap' }, pdfBtn), setBtn));
+    h('div', { class: 'action-inner' }, newBtn, eyeBtn, h('div', { class: 'menu-wrap' }, pdfBtn), cartBtn, setBtn));
   attachMenu(pdfBtn, () => [
     { label: t('pdfTask'), icon: ICONS.file, onSelect: () => exportPdf('task') },
     { label: t('pdfAnswer'), icon: ICONS.answer, onSelect: () => exportPdf('answer') },

@@ -100,6 +100,7 @@ const HIDDEN = {
 
 export default {
   id: 'cubes',
+  skills: ['spatial', 'counting'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Kubiklarni sana', ru: 'Посчитай кубики', en: 'Count the cubes' },
   desc: {
     uz: "Uyilgan kubiklarni sanang — ko'rinmaydiganlarini ham",

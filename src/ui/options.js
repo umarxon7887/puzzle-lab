@@ -45,7 +45,7 @@ export function buildOptions(gen, opts, onChange, { advanced = false } = {}) {
           type: 'button', role: 'radio', class: 'choice', title: icons ? pick(ch.label) : null,
           onclick: () => { opts[op.key] = ch.value; onChange(op.key); syncAll(); }
         },
-        ch.icon ? h('span', { class: 'choice-icon', html: ch.icon }) : h('span', { class: 'choice-big' }, ch.big ?? ''),
+        ch.icon ? h('span', { class: 'choice-icon', html: ch.icon }) : h('span', { class: 'choice-big' }, pick(ch.big)),
         h('span', { class: icons ? 'sr-only' : 'choice-label' }, pick(ch.label)));
         b.dataset.value = ch.value;
         grid.appendChild(b);

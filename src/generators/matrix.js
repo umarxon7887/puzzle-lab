@@ -84,6 +84,7 @@ const MODES = {
 
 export default {
   id: 'matrix',
+  skills: ['patterns', 'logic'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Yetishmayotgan qism', ru: 'Чего не хватает?', en: 'What is missing?' },
   desc: {
     uz: "3×3 jadvaldagi qonuniyatni topib, bo'sh katakka mos rasmni tanlang",

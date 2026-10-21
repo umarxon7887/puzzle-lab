@@ -100,7 +100,7 @@ export function mountPack(main) {
     if (mo) {
       mainSel = h('select', { 'aria-label': pick(mo.label) },
         h('option', { value: 'mix' }, t('packMixed')),
-        packChoices(mo).map(c => h('option', { value: c.value }, (c.big ? c.big + ' ' : '') + pick(c.label))));
+        packChoices(mo).map(c => h('option', { value: c.value }, (c.big ? pick(c.big) + ' ' : '') + pick(c.label))));
       mainSel.value = String(row.main);
     }
     const body = h('div', { class: 'pack-row-body' },

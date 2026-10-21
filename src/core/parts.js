@@ -105,3 +105,43 @@ export function ringEllipse(ctx, cx, cy, rx, ry, scale = 1) {
   ctx.closePath(); ctx.stroke();
   ctx.restore();
 }
+
+// «Vaqt: ____ soniya» qatori (diqqat mashqlari uchun). cx — markaz, y — matn asosi (baseline).
+// fields — qo'shimcha qatorlar: [{ label, unit }] (masalan «Topildi: ___ ta»)
+const TIME_TXT = { uz: ['Vaqt:', 'soniya'], ru: ['Время:', 'сек'], en: ['Time:', 'seconds'] };
+export function timeLine(ctx, cx, y, scale, lang, fields = []) {
+  const items = [TIME_TXT[lang] || TIME_TXT.uz, ...fields.map(f => [f.label, f.unit || ''])];
+  font(ctx, 11 * PT * scale * 1.15, 700);
+  ctx.save();
+  ctx.fillStyle = MUTE; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  const lineW = 24 * scale, sep = 10 * scale;
+  const widths = items.map(([a, b]) => ctx.measureText(a).width + 2 + lineW + (b ? 2 + ctx.measureText(b).width : 0));
+  let x = cx - (widths.reduce((s, w) => s + w, 0) + sep * (items.length - 1)) / 2;
+  ctx.strokeStyle = '#9CA3AF'; ctx.lineWidth = 0.3;
+  items.forEach(([a, b], i) => {
+    const wa = ctx.measureText(a).width;
+    ctx.fillText(a, x, y);
+    ctx.beginPath(); ctx.moveTo(x + wa + 2, y + 0.6); ctx.lineTo(x + wa + 2 + lineW, y + 0.6); ctx.stroke();
+    if (b) ctx.fillText(b, x + wa + 2 + lineW + 2, y);
+    x += widths[i] + sep;
+  });
+  ctx.restore();
+}
+
+// Katakli qog'oz (yoki nuqtali to'r): x, y — chap yuqori burchak, cols×rows katak, cs — katak o'lchami (mm)
+export function drawGrid(ctx, x, y, cols, rows, cs, scale = 1, { dots = false, color = '#C7CDD6', border = true } = {}) {
+  ctx.save();
+  if (dots) {
+    ctx.fillStyle = '#9CA3AF';
+    const r = Math.max(0.28, Math.min(0.55, cs * 0.06));
+    for (let j = 0; j <= rows; j++) for (let i = 0; i <= cols; i++) { ctx.beginPath(); ctx.arc(x + i * cs, y + j * cs, r, 0, Math.PI * 2); ctx.fill(); }
+  } else {
+    ctx.strokeStyle = color; ctx.lineWidth = Math.max(0.15, 0.22 * scale);
+    ctx.beginPath();
+    for (let i = 0; i <= cols; i++) { ctx.moveTo(x + i * cs, y); ctx.lineTo(x + i * cs, y + rows * cs); }
+    for (let j = 0; j <= rows; j++) { ctx.moveTo(x, y + j * cs); ctx.lineTo(x + cols * cs, y + j * cs); }
+    ctx.stroke();
+    if (border) { ctx.strokeStyle = '#9CA3AF'; ctx.lineWidth = Math.max(0.25, 0.35 * scale); ctx.strokeRect(x, y, cols * cs, rows * cs); }
+  }
+  ctx.restore();
+}

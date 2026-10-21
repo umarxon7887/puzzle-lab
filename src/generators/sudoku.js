@@ -199,6 +199,7 @@ const RULE = {
 
 export default {
   id: 'sudoku',
+  skills: ['logic', 'attention'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Sudoku', ru: 'Судоку', en: 'Sudoku' },
   desc: {
     uz: '4×4 dan 9×9 gacha: klassik, diagonal va shaklli bloklar',

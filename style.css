@@ -70,6 +70,16 @@ h1, h2, h3 { line-height: 1.2; }
 }
 .lang-switch button[aria-pressed="true"] { background: #fff; color: var(--primary); box-shadow: var(--shadow-sm); }
 
+/* Savat belgisi (yuqori panelda) */
+.topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.cart-link { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 38px; border-radius: 12px; color: #4B5563; background: #F3F4F6; text-decoration: none; transition: background .15s, color .15s; }
+.cart-link:hover { background: var(--primary-50); color: var(--primary); }
+.cart-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.cart-badge { position: absolute; top: -5px; right: -5px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px; background: var(--danger); color: #fff; font-size: 11px; font-weight: 900; line-height: 19px; text-align: center; box-shadow: 0 0 0 2px #fff; }
+.cart-badge[hidden] { display: none; }
+.cart-link.bump { animation: cartBump .45s ease-out; }
+@keyframes cartBump { 0% { transform: scale(1); } 35% { transform: scale(1.22) rotate(-6deg); } 70% { transform: scale(.95); } 100% { transform: none; } }
+
 main { display: block; max-width: 1200px; margin: 0 auto; padding: 16px 16px 32px; }
 main:focus { outline: none; }
 .page { animation: pageIn .22s ease-out; }
@@ -289,7 +299,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 }
 .action-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 8px; }
 .btn-new { flex: 1; min-width: 0; white-space: nowrap; }
-.btn-new span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.btn-new span:last-child, .btn-new .lbl-full { overflow: hidden; text-overflow: ellipsis; }
+.btn-new .lbl-short { display: none; }
 .menu-wrap { position: relative; }
 .menu-wrap-wide { flex: 1; display: flex; }
 .menu-wrap-wide .btn { flex: 1; }
@@ -403,9 +414,21 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
   .settings-panel { position: sticky; top: 76px; max-height: calc(100vh - 76px - var(--bar-h) - 16px); overflow: auto; }
   .page-head { flex-direction: row; align-items: center; gap: 16px; }
 }
-@media (max-width: 380px) {
-  .brand-name { font-size: 16px; }
+/* Tor telefonlar: yuqori panelda savat ham bor — nom, tillar va pastki tugmalar ixchamroq */
+@media (max-width: 440px) {
+  .topbar { gap: 8px; }
+  .topbar-right { gap: 6px; }
+  .brand-name { font-size: 16.5px; }
   .lang-switch button { padding: 6px 8px; }
+  .cart-link { width: 38px; }
+  .action-inner { gap: 6px; }
+  .action-bar .icon-btn { width: 44px; height: 44px; }
+  .btn-new .lbl-full { display: none; }
+  .btn-new .lbl-short { display: inline; }
+}
+@media (max-width: 380px) {
+  .brand-name { font-size: 15px; }
+  .lang-switch button { padding: 6px 7px; }
   .choices-icons { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
   .choice-label { font-size: 10.5px; }
   .emoji { height: 44px; font-size: 22px; }
@@ -518,11 +541,62 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .cover-diff .df-ring { stroke-dasharray: 100; stroke-dashoffset: 0; }
 .gen-card-cover .cover-diff .df-ring { animation: ringDraw 3.6s ease-in-out infinite; }
 
-/* 16. To'plam: varaqlar yelpig'ichdek ochiladi */
+/* 16–26. Diqqat va xotira, chizish va katakli qog'oz bo'limlari.
+   Asosiy (animatsiyasiz) holat — tayyor rasm: harakatni kamaytirish yoqilganda shunisi ko'rinadi. */
+/* Shulte: 1, 2, 3 navbatma-navbat topiladi */
+.gen-card-cover .cover-schulte .sh-hl rect { animation: shFind 4.2s ease-in-out infinite; }
+.gen-card-cover .cover-schulte .sh-h2 { animation-delay: .6s; }
+.gen-card-cover .cover-schulte .sh-h3 { animation-delay: 1.2s; }
+@keyframes shFind { 0%, 8% { opacity: 0; transform: scale(.6); } 16% { opacity: 1; transform: scale(1.12); } 22%, 82% { opacity: 1; transform: none; } 94%, 100% { opacity: 0; transform: none; } }
+/* Korrektura: kerakli harflar birin-ketin o'chiriladi */
+.cover-proof [class^="pf-x"] { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-proof .pf-x1 { animation: lineDraw 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-proof .pf-x2 { animation: lineDraw 4.4s ease-in-out .35s infinite; }
+.gen-card-cover .cover-proof .pf-x3 { animation: lineDraw 4.4s ease-in-out .7s infinite; }
+.gen-card-cover .cover-proof .pf-x4 { animation: lineDraw 4.4s ease-in-out 1.05s infinite; }
+/* Shifrlash: raqamlar birin-ketin yoziladi */
+.gen-card-cover .cover-coding [class^="cd-"] { animation: cdWrite 4.2s ease-in-out infinite; }
+.gen-card-cover .cover-coding .cd-b { animation-delay: .5s; }
+.gen-card-cover .cover-coding .cd-c { animation-delay: 1s; }
+@keyframes cdWrite { 0%, 10% { opacity: 0; transform: translateY(6px); } 20%, 84% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; transform: none; } }
+/* Ketma-ketlik labirinti, simmetriya, nusxa, diktant, koordinatalar, nuqtalar: yo'l chiziladi */
+.cover-seqmaze .sq-path, .cover-symmetry .sym-half, .cover-copy .cp-draw, .cover-dictation .dc-path, .cover-coords .cr-path, .cover-dots .dt-path { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-seqmaze .sq-path { animation: lineDraw 4s ease-in-out infinite; }
+.gen-card-cover .cover-symmetry .sym-half { animation: lineDraw 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-copy .cp-draw { animation: lineDraw 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-dictation .dc-path { animation: lineDraw 5s ease-in-out infinite; }
+.gen-card-cover .cover-coords .cr-path { animation: lineDraw 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-dots .dt-path { animation: lineDraw 5.2s ease-in-out infinite; }
+/* Yapon krossvordi: kataklar qatorma-qator bo'yaladi */
+.gen-card-cover .cover-nonogram [class^="ng-"] { animation: ngFill 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-nonogram .ng-b { animation-delay: .35s; }
+.gen-card-cover .cover-nonogram .ng-c { animation-delay: .7s; }
+.gen-card-cover .cover-nonogram .ng-d { animation-delay: 1.05s; }
+@keyframes ngFill { 0%, 8% { opacity: 0; } 18%, 84% { opacity: 1; } 96%, 100% { opacity: 0; } }
+/* Raqam bo'yicha bo'ya: rang yoyiladi */
+.gen-card-cover .cover-paintnum .pn-fill { animation: pnFill 4.4s ease-in-out infinite; }
+@keyframes pnFill { 0%, 12% { opacity: 0; } 40%, 84% { opacity: 1; } 100% { opacity: 0; } }
+
+/* 27. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
 @keyframes pk3 { 0%, 100% { transform: none; } 50% { transform: translate(8px, -2px) rotate(5deg); } }
 @keyframes pk2 { 0%, 100% { transform: none; } 50% { transform: translate(4px, -1px) rotate(2deg); } }
+
+/* ---------- Savat sahifasi ---------- */
+.cart-page .pack-review { margin-bottom: 20px; }
+.cart-page .empty { display: grid; gap: 14px; justify-items: center; }
+.cart-page .empty p { margin: 0; }
+.cart-opts, .cart-templates { margin-bottom: 20px; }
+.cart-opts .stepper { width: max-content; }
+.cart-templates .group-title { margin: 0 0 6px; }
+.tpl-save { display: flex; gap: 8px; margin: 10px 0 12px; }
+.tpl-save input { flex: 1; min-width: 0; }
+.tpl-list { display: grid; gap: 8px; }
+.tpl-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--border); border-radius: 12px; padding: 8px 10px; background: #fff; }
+.tpl-name { font-weight: 900; flex: 1; min-width: 120px; overflow-wrap: anywhere; }
+.tpl-count { color: var(--muted); font-size: 13px; font-weight: 700; }
+.btn-small { min-height: 36px; padding: 6px 12px; font-size: 13.5px; border-radius: 10px; }
 
 /* Harakatni kamaytirishni so'ragan foydalanuvchilar uchun */
 @media (prefers-reduced-motion: reduce) {
@@ -530,6 +604,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
   .cover-maze .maze-path { stroke-dashoffset: 0; }
   .cover-pattern .pt-ring, .cover-pairs path[pathLength], .cover-twins ellipse[pathLength], .cover-diff .df-ring, .cover-ovl path { stroke-dashoffset: 0 !important; }
   .cover-sudoku .sd-num, .cover-cross .x-t, .cover-words .w-found { opacity: 1 !important; }
+  .cover-proof [class^="pf-x"], .cover-seqmaze .sq-path, .cover-symmetry .sym-half, .cover-copy .cp-draw, .cover-dictation .dc-path, .cover-coords .cr-path, .cover-dots .dt-path { stroke-dashoffset: 0 !important; }
+  .cover-schulte .sh-hl rect, .cover-coding [class^="cd-"], .cover-nonogram [class^="ng-"], .cover-paintnum .pn-fill { opacity: 1 !important; }
   .pack-card, .gen-card { transform: none !important; }
 }
 

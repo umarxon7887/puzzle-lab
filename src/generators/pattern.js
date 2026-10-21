@@ -210,6 +210,7 @@ const MODES = {
 
 export default {
   id: 'pattern',
+  skills: ['patterns', 'logic'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Qonuniyatni davom ettir', ru: 'Продолжи закономерность', en: 'Continue the pattern' },
   desc: {
     uz: "Ketma-ketlikdagi qonuniyatni topib, «?» o'rniga keladigan rasmni tanlang",

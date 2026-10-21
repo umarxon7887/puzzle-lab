@@ -205,6 +205,7 @@ function bank(lang, topic) {
 
 export default {
   id: 'words',
+  skills: ['attention', 'language'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: "So'z qidiruv", ru: 'Найди слова', en: 'Word search' },
   desc: {
     uz: "Jadvalga yashiringan so'zlarni toping — 11 ta mavzu yoki o'z so'zlaringiz",

@@ -52,6 +52,7 @@ const MODES = {
 
 export default {
   id: 'diff',
+  skills: ['attention', 'visual'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Farqlarni top', ru: 'Найди отличия', en: 'Spot the difference' },
   desc: {
     uz: "Ikki rasm orasidagi farqlarni toping — 3 tadan 9 tagacha",

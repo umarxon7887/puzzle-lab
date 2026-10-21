@@ -121,7 +121,7 @@ export function paint(ctx, polys, fill, cx, cy, R, lw) {
   ctx.restore();
 }
 export function drawFigure(ctx, it, cx, cy, cell) {
-  const lw = Math.max(0.22, cell * 0.026);
+  const lw = it.lw || Math.max(0.22, cell * 0.026);       // it.lw — chiziq qalinligi (ixtiyoriy)
   if (it.poly) {                                       // kataklardan figura
     const cells = polyCells(it.poly, it.rot, it.mirror);
     const w = Math.max(...cells.map(c => c[0])) + 1, hgt = Math.max(...cells.map(c => c[1])) + 1;

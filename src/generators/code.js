@@ -394,6 +394,7 @@ const UI = {
 
 export default {
   id: 'code',
+  skills: ['logic', 'counting'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Kodni top', ru: 'Взломай код', en: 'Crack the code' },
   desc: {
     uz: 'Ishoralar yordamida qulfning maxfiy kodini toping',

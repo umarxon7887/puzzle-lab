@@ -179,6 +179,7 @@ const clampInt = (v, lo, hi, def) => { v = Math.round(+v); return Number.isFinit
 // ---------- Generator ----------
 export default {
   id: 'maze',
+  skills: ['spatial', 'attention', 'motor'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Labirint', ru: 'Лабиринт', en: 'Maze' },
   desc: {
     uz: "Qahramonga manzilga yo'l topishga yordam beradigan labirint",

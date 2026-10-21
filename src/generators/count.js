@@ -71,6 +71,7 @@ const MODES = {
 
 export default {
   id: 'count',
+  skills: ['counting', 'attention'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: "Ko'rib top va sana", ru: 'Найди и посчитай', en: 'Find and count' },
   desc: {
     uz: "Aralash rasmlar orasidan berilganlarini topib, nechta ekanini sanang",

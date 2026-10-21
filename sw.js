@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.4.0';
+const VERSION = '2.5.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -31,11 +31,25 @@ const CORE = [
   'src/core/sheet.js',
   'src/core/storage.js',
   'src/core/parts.js',
+  'src/core/gridpics.js',
+  'src/core/skills.js',
+  'src/core/cart.js',
   'src/generators/code.js',
   'src/generators/count.js',
   'src/generators/crossword.js',
   'src/generators/cubes.js',
   'src/generators/diff.js',
+  'src/generators/schulte.js',
+  'src/generators/proofread.js',
+  'src/generators/coding.js',
+  'src/generators/seqmaze.js',
+  'src/generators/symmetry.js',
+  'src/generators/copy.js',
+  'src/generators/nonogram.js',
+  'src/generators/dictation.js',
+  'src/generators/paintnum.js',
+  'src/generators/coords.js',
+  'src/generators/dots.js',
   'src/generators/matrix.js',
   'src/generators/maze.js',
   'src/generators/oddone-items.js',
@@ -57,6 +71,7 @@ const CORE = [
   'src/ui/modal.js',
   'src/ui/options.js',
   'src/ui/pack-page.js',
+  'src/ui/cart-page.js',
   'src/ui/preview.js',
   'src/ui/puzzles.js'
 ];
