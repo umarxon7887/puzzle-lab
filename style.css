@@ -478,7 +478,47 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .gen-card-cover .cover-ovl .ovl-c { animation: ovlDraw 6s ease-in-out 1s infinite; }
 @keyframes ovlDraw { 0% { stroke-dashoffset: 100; } 30%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 100; } }
 
-/* 8. To'plam: varaqlar yelpig'ichdek ochiladi */
+/* 8. Qonuniyat: javob aylanasi chiziladi */
+.cover-pattern .pt-ring { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-pattern .pt-ring { animation: ringDraw 4s ease-in-out infinite; }
+@keyframes ringDraw { 0%, 25% { stroke-dashoffset: 100; } 55%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 100; } }
+
+/* 9. Sanash: doirachalar navbatma-navbat "sanaladi" */
+.cover-count .ct-a, .cover-count .ct-b, .cover-count .ct-c { transform-box: fill-box; transform-origin: center; }
+.gen-card-cover .cover-count .ct-a { animation: ctPop 3s ease-in-out infinite; }
+.gen-card-cover .cover-count .ct-b { animation: ctPop 3s ease-in-out .5s infinite; }
+.gen-card-cover .cover-count .ct-c { animation: ctPop 3s ease-in-out 1s infinite; }
+@keyframes ctPop { 0%, 20%, 100% { transform: none; } 10% { transform: scale(1.25); } }
+
+/* 10. Juftini top: chiziqlar chiziladi */
+.cover-pairs path[pathLength] { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-pairs .pr-l1 { animation: lineDraw 4s ease-in-out infinite; }
+.gen-card-cover .cover-pairs .pr-l2 { animation: lineDraw 4s ease-in-out .6s infinite; }
+@keyframes lineDraw { 0%, 15% { stroke-dashoffset: 100; } 45%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 100; } }
+
+/* 11. Soyasini top: rasm soyasi tomon siljiydi */
+.gen-card-cover .cover-shadow .sh-pic { animation: shMove 4s ease-in-out infinite; }
+@keyframes shMove { 0%, 20%, 100% { transform: none; } 50%, 70% { transform: translate(6px, 4px); } }
+
+/* 12. Yetishmayotgan qism: "?" yonib-o'chadi */
+.cover-matrix .mx-q { transform-box: fill-box; transform-origin: center; }
+.gen-card-cover .cover-matrix .mx-q { animation: mxQ 2.4s ease-in-out infinite; }
+@keyframes mxQ { 0%, 100% { transform: none; } 50% { transform: scale(1.2) rotate(-8deg); } }
+
+/* 13. Aynan bir xil ikkitasi: aylanalar chiziladi */
+.cover-twins ellipse[pathLength] { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-twins .tw-r1 { animation: ringDraw 4s ease-in-out infinite; }
+.gen-card-cover .cover-twins .tw-r2 { animation: ringDraw 4s ease-in-out .5s infinite; }
+
+/* 14. Kubiklar: tepadagi kubik tushadi */
+.gen-card-cover .cover-cubes .cb-3 { animation: cbDrop 3.2s ease-in-out infinite; }
+@keyframes cbDrop { 0%, 15% { transform: translateY(-24px); opacity: 0; } 35%, 85% { transform: none; opacity: 1; } 100% { transform: none; opacity: 1; } }
+
+/* 15. Farqlarni top: aylana chiziladi */
+.cover-diff .df-ring { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-diff .df-ring { animation: ringDraw 3.6s ease-in-out infinite; }
+
+/* 16. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
 @keyframes pk3 { 0%, 100% { transform: none; } 50% { transform: translate(8px, -2px) rotate(5deg); } }
@@ -488,6 +528,7 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .cover-maze .maze-path { stroke-dashoffset: 0; }
+  .cover-pattern .pt-ring, .cover-pairs path[pathLength], .cover-twins ellipse[pathLength], .cover-diff .df-ring, .cover-ovl path { stroke-dashoffset: 0 !important; }
   .cover-sudoku .sd-num, .cover-cross .x-t, .cover-words .w-found { opacity: 1 !important; }
   .pack-card, .gen-card { transform: none !important; }
 }

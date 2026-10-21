@@ -13,7 +13,8 @@ import { TOPICS, BANKS } from '../src/generators/wordsearch-words.js';
 import { toCells, parseCustom } from '../src/generators/wordsearch.js';
 import { clueText } from '../src/generators/code.js';
 import { POLYS, polyCells } from '../src/generators/oddone.js';
-import { ICONS as OVL_ICONS } from '../src/generators/overlap-icons.js';
+import { ICONS as OVL_ICONS } from '../src/core/picture-data.js';
+import { picPolys, computeMirrorDiff } from '../src/core/pictures.js';
 import { ITEMS as ODD_ITEMS, CATS as ODD_CATS, PAIRS_MEDIUM as ODD_PAIRS_MEDIUM, PAIRS_HARD as ODD_PAIRS_HARD, eligible as oddEligible } from '../src/generators/oddone-items.js';
 import { _dict, LANGS } from '../src/core/i18n.js';
 import { buildPdf } from '../src/core/pdf.js';
@@ -342,6 +343,19 @@ if (!ONLY || ONLY === 'overlap') {
       const p = g.generate({ level, mode }, s * 7919 + level);
       const pr = g.check(p);
       assert(!pr.length, `L${level} ${mode} seed ${s}: ${pr.join('; ')}`);
+    }
+  });
+}
+
+if (!ONLY || ONLY === 'pictures') {
+  section('Rasmlar to\'plami: siluet va ko\'zgu');
+  await test('har bir rasmning siluet konturi bor', () => {
+    for (const k of Object.keys(OVL_ICONS)) assert(picPolys(k).outer.length >= 1, k + ': no outer contour');
+  });
+  await test('yozib qo\'yilgan ko\'zgu qiymatlari (m) hisoblanganiga mos', () => {
+    for (const [k, v] of Object.entries(OVL_ICONS)) {
+      assert(typeof v.m === 'number', k + ': no m');
+      assert(Math.abs(computeMirrorDiff(k) - v.m) <= 0.06, `${k}: m=${v.m}, computed ${computeMirrorDiff(k).toFixed(2)}`);
     }
   });
 }

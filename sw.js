@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.3.0';
+const VERSION = '2.4.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -20,22 +20,33 @@ const CORE = [
   'apple-touch-icon.png',
   'src/app.js',
   'src/core/draw.js',
+  'src/core/figures.js',
   'src/core/files.js',
   'src/core/i18n.js',
   'src/core/levels.js',
   'src/core/pdf.js',
+  'src/core/picture-data.js',
+  'src/core/pictures.js',
   'src/core/rng.js',
   'src/core/sheet.js',
   'src/core/storage.js',
+  'src/core/parts.js',
   'src/generators/code.js',
+  'src/generators/count.js',
   'src/generators/crossword.js',
+  'src/generators/cubes.js',
+  'src/generators/diff.js',
+  'src/generators/matrix.js',
   'src/generators/maze.js',
   'src/generators/oddone-items.js',
   'src/generators/oddone.js',
-  'src/generators/overlap-icons.js',
   'src/generators/overlap.js',
+  'src/generators/pairs.js',
+  'src/generators/pattern.js',
   'src/generators/registry.js',
+  'src/generators/shadow.js',
   'src/generators/sudoku.js',
+  'src/generators/twins.js',
   'src/generators/wordsearch-words.js',
   'src/generators/wordsearch.js',
   'src/ui/dom.js',

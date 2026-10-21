@@ -9,7 +9,7 @@
 
 import { makeRng, shuffle } from '../core/rng.js';
 import { INK, MUTE, LINE, PT, font, wrapLines, roundRect } from '../core/draw.js';
-import { ICONS } from './overlap-icons.js';
+import { ICONS, PIC_KEYS, picPolys, drawPic } from '../core/pictures.js';
 
 // n — rasmlar soni; minD/maxD — markazlar orasidagi eng kichik / qo'shni uchun eng katta masofa
 // (rasm o'lchami ulushida); rot — eng katta burilish burchagi; flip — ko'zgu aksi ham bo'lishi mumkinmi
@@ -24,11 +24,7 @@ const LEVELS = [
 const COLORS = ['#2563EB', '#DC2626', '#16A34A', '#9333EA', '#EA580C', '#0891B2', '#DB2777', '#65A30D'];
 
 // Konturlar: [[x, y, x, y, ...], ...] (0–100)
-const POLYS = {};
-for (const [k, v] of Object.entries(ICONS)) {
-  POLYS[k] = v.d.split('M').map(s => s.replace('Z', '').trim()).filter(Boolean).map(s => s.split(/\s+/).map(Number));
-}
-export const ICON_KEYS = Object.keys(ICONS);
+export const ICON_KEYS = PIC_KEYS;
 
 const MODES = {
   list: { big: '🖍️', label: { uz: "Ro'yxat bilan", ru: 'Со списком', en: 'With a list' } },
@@ -94,18 +90,7 @@ function transformer(it) {
   };
 }
 
-function drawIcon(ctx, key, map, color) {
-  ctx.beginPath();
-  for (const poly of POLYS[key]) {
-    for (let i = 0; i < poly.length; i += 2) {
-      const [x, y] = map(poly[i], poly[i + 1]);
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-  }
-  ctx.fillStyle = color;
-  ctx.fill('evenodd');
-}
+const drawIcon = (ctx, key, map, color) => drawPic(ctx, key, map, color);
 
 const nameOf = (k, lang) => ICONS[k][lang] || ICONS[k].uz;
 
@@ -198,7 +183,7 @@ export default {
     const maps = p.items.map(transformer);
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     p.items.forEach((it, i) => {
-      for (const poly of POLYS[it.k]) for (let j = 0; j < poly.length; j += 2) {
+      for (const poly of picPolys(it.k).all) for (let j = 0; j < poly.length; j += 2) {
         const [u, v] = maps[i](poly[j], poly[j + 1]);
         if (u < x0) x0 = u; if (u > x1) x1 = u; if (v < y0) y0 = v; if (v > y1) y1 = v;
       }

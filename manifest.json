@@ -1,7 +1,7 @@
 {
   "name": "Topshiriqlar Lab",
   "short_name": "Topshiriqlar",
-  "description": "Bolalar uchun mantiqiy topshiriqlar: labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Ortiqchasini top», «Ustma-ust rasmlar». PDF va javob varaqlari bilan.",
+  "description": "Bolalar uchun mantiqiy topshiriqlar: labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Farqlarni top», «Soyasini top» va boshqalar. PDF va javob varaqlari bilan.",
   "lang": "uz",
   "start_url": "./",
   "scope": "./",

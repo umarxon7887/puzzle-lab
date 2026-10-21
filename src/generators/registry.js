@@ -10,7 +10,15 @@ import cross from './crossword.js';
 import code from './code.js';
 import odd from './oddone.js';
 import overlap from './overlap.js';
+import pattern from './pattern.js';
+import count from './count.js';
+import pairs from './pairs.js';
+import shadow from './shadow.js';
+import matrix from './matrix.js';
+import twins from './twins.js';
+import cubes from './cubes.js';
+import diff from './diff.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;
