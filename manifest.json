@@ -1,7 +1,7 @@
 {
   "name": "Topshiriqlar Lab",
   "short_name": "Topshiriqlar",
-  "description": "Bolalar uchun mantiqiy topshiriqlar: labirint, sudoku, so'z qidiruv, sonli krossvord, «Farqlarni top», Shulte jadvali, yapon krossvordi, grafik diktant va boshqalar. PDF va javob varaqlari bilan.",
+  "description": "Bolalar uchun mantiqiy topshiriqlar: labirint, sudoku, so'z qidiruv, sonli krossvord, «Farqlarni top», Shulte jadvali, yapon krossvordi, grafik diktant, sehrli kvadrat, KenKen va boshqalar. PDF va javob varaqlari bilan.",
   "lang": "uz",
   "start_url": "./",
   "scope": "./",

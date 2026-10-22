@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.5.0';
+const VERSION = '2.6.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -50,6 +50,17 @@ const CORE = [
   'src/generators/paintnum.js',
   'src/generators/coords.js',
   'src/generators/dots.js',
+  'src/generators/pyramid.js',
+  'src/generators/magic.js',
+  'src/generators/numseq.js',
+  'src/generators/chain.js',
+  'src/generators/mathmaze.js',
+  'src/generators/numpath.js',
+  'src/generators/drill.js',
+  'src/generators/scales.js',
+  'src/generators/domino.js',
+  'src/generators/kakuro.js',
+  'src/generators/kenken.js',
   'src/generators/matrix.js',
   'src/generators/maze.js',
   'src/generators/oddone-items.js',

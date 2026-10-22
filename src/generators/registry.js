@@ -29,7 +29,18 @@ import dictation from './dictation.js';
 import paintnum from './paintnum.js';
 import coords from './coords.js';
 import dots from './dots.js';
+import pyramid from './pyramid.js';
+import magic from './magic.js';
+import numseq from './numseq.js';
+import chain from './chain.js';
+import mathmaze from './mathmaze.js';
+import numpath from './numpath.js';
+import drill from './drill.js';
+import scales from './scales.js';
+import domino from './domino.js';
+import kakuro from './kakuro.js';
+import kenken from './kenken.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots, pyramid, magic, numseq, chain, mathmaze, numpath, drill, scales, domino, kakuro, kenken];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;

@@ -577,6 +577,28 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 .gen-card-cover .cover-paintnum .pn-fill { animation: pnFill 4.4s ease-in-out infinite; }
 @keyframes pnFill { 0%, 12% { opacity: 0; } 40%, 84% { opacity: 1; } 100% { opacity: 0; } }
 
+/* 28–38. Matematik mantiq bo'limi.
+   Asosiy (animatsiyasiz) holat — tayyor rasm: javob raqamlari ko'rinib turadi, yo'llar to'liq chizilgan. */
+/* Javob raqamlari birin-ketin yoziladi (cdWrite) */
+.gen-card-cover .cover-pyramid [class^="pyr-"], .gen-card-cover .cover-magic .mg-c, .gen-card-cover .cover-chain .ch-a,
+.gen-card-cover .cover-numpath .np-a, .gen-card-cover .cover-numpath .np-b, .gen-card-cover .cover-numseq [class^="ns-"],
+.gen-card-cover .cover-drill [class^="dr-"], .gen-card-cover .cover-kakuro [class^="kk-"], .gen-card-cover .cover-kenken [class^="kn-"] { animation: cdWrite 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-pyramid .pyr-b, .gen-card-cover .cover-numpath .np-b, .gen-card-cover .cover-numseq .ns-q,
+.gen-card-cover .cover-drill .dr-b, .gen-card-cover .cover-kakuro .kk-b, .gen-card-cover .cover-kenken .kn-b { animation-delay: .5s; }
+.gen-card-cover .cover-kakuro .kk-c, .gen-card-cover .cover-kenken .kn-c { animation-delay: 1s; }
+.gen-card-cover .cover-kakuro .kk-d { animation-delay: 1.5s; }
+/* Sehrli kvadrat diagonali, arifmetik labirint va sonlar yo'li: chiziq chiziladi */
+.cover-magic .mg-d, .cover-mathmaze .mz-path, .cover-numpath .np-path { stroke-dasharray: 100; stroke-dashoffset: 0; }
+.gen-card-cover .cover-magic .mg-d { animation: lineDraw 4.4s ease-in-out .6s infinite; }
+.gen-card-cover .cover-mathmaze .mz-path { animation: lineDraw 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-numpath .np-path { animation: lineDraw 4.4s ease-in-out infinite; }
+/* Tarozi: shakllar pallaga tushadi, «?» tebranadi */
+.cover-scales .sc-q { transform-box: fill-box; transform-origin: center; }
+.gen-card-cover .cover-scales .sc-r { animation: cbDrop 3.6s ease-in-out infinite; }
+.gen-card-cover .cover-scales .sc-q { animation: mxQ 2.4s ease-in-out infinite; }
+/* Domino: bo'sh dominoga nuqtalar chiziladi */
+.gen-card-cover .cover-domino .dm-a { animation: ngFill 4s ease-in-out infinite; }
+
 /* 27. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
@@ -606,6 +628,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
   .cover-sudoku .sd-num, .cover-cross .x-t, .cover-words .w-found { opacity: 1 !important; }
   .cover-proof [class^="pf-x"], .cover-seqmaze .sq-path, .cover-symmetry .sym-half, .cover-copy .cp-draw, .cover-dictation .dc-path, .cover-coords .cr-path, .cover-dots .dt-path { stroke-dashoffset: 0 !important; }
   .cover-schulte .sh-hl rect, .cover-coding [class^="cd-"], .cover-nonogram [class^="ng-"], .cover-paintnum .pn-fill { opacity: 1 !important; }
+  .cover-pyramid [class^="pyr-"], .cover-magic .mg-c, .cover-chain .ch-a, .cover-numpath .np-a, .cover-numpath .np-b, .cover-numseq [class^="ns-"], .cover-drill [class^="dr-"], .cover-kakuro [class^="kk-"], .cover-kenken [class^="kn-"], .cover-scales .sc-r, .cover-domino .dm-a { opacity: 1 !important; transform: none !important; }
+  .cover-magic .mg-d, .cover-mathmaze .mz-path, .cover-numpath .np-path { stroke-dashoffset: 0 !important; }
   .pack-card, .gen-card { transform: none !important; }
 }
 
