@@ -15,8 +15,11 @@ import { TAU, POLYS, polyCells, drawFigure } from '../core/figures.js';
 
 export { POLYS, polyCells };
 import { GROUPS, CATS, ITEMS, PAIRS_MEDIUM, PAIRS_HARD, eligible, inCat, nearCat } from './oddone-items.js';
+import { wordRow, numRow, mirrorPicRow, whyOlder, checkOlder } from './oddone-older.js';
+import { drawPic, picMap } from '../core/pictures.js';
 
-const LEVELS = [{ K: 4, N: 6 }, { K: 5, N: 7 }, { K: 5, N: 8 }, { K: 6, N: 8 }];   // K — qatordagi soni, N — qatorlar
+// K — qatordagi soni, N — qatorlar; 4 — «Katta bolalar» (so'zlar, sonlar, burilgan rasmlar orasida ko'zgu aksi)
+const LEVELS = [{ K: 4, N: 6 }, { K: 5, N: 7 }, { K: 5, N: 8 }, { K: 6, N: 8 }, { K: 5, N: 7 }];
 const SMALL_ROWS = 4;                                  // varaqda 2 yoki 4 ta bo'lsa qatorlar soni (rasmlar kichrayib ketmasin)
 
 // ---------- Rasmlar (emoji) ----------
@@ -35,7 +38,7 @@ function pairsFor(level) {
   if (level === 1) return [PAIRS_MEDIUM.filter(p => canPair(p, K))];
   return [PAIRS_HARD.filter(p => canPair(p, K)), PAIRS_MEDIUM.filter(p => canPair(p, K))];   // avval qiyinlari
 }
-const PAIRS = [0, 1, 2, 3].map(pairsFor);
+const PAIRS = [0, 1, 2, 3, 3].map(pairsFor);
 
 // Juftliklarni ko'rib chiqish tartibi (Qiyin darajada qiyin va o'rta juftliklar navbatma-navbat)
 function pairOrder(level, rand) {
@@ -188,11 +191,26 @@ function figRows(level, count, rand) {
   });
 }
 
+// «Katta bolalar»: rasmlar turida — so'z va ko'zgu qatorlari, shakllar turida — son va ko'zgu, aralashda — uchalasi
+function olderRows(mode, count, lang, rand) {
+  const K = LEVELS[4].K;
+  const kinds = { pictures: ['word', 'mpic'], shapes: ['num', 'mpic'], mixed: ['word', 'num', 'mpic'] }[mode];
+  const bag = [];
+  while (bag.length < count) bag.push(...shuffle(kinds.slice(), rand));
+  const usedW = { words: new Set(), cats: new Set() }, usedR = new Set(), usedP = new Set();
+  return shuffle(bag.slice(0, count), rand).map(k => (k === 'word' ? wordRow(K, lang, rand, usedW) : k === 'num' ? numRow(K, rand, usedR) : mirrorPicRow(K, rand, usedP)));
+}
+
 // ---------- Matnlar ----------
 const RULE_TEXT = {
   uz: 'Har bir qatorda boshqalaridan farq qiladigan bittasini top va uni aylana bilan belgila.',
   ru: 'В каждом ряду найди одну картинку, которая отличается от остальных, и обведи её.',
   en: 'In each row, find the one that does not belong and circle it.'
+};
+const RULE_OLDER = {
+  uz: "Har bir qatorda qolganlariga mos kelmaydigan bittasini top va uni aylana bilan belgila. So'zlarda ma'nosiga, sonlarda xossasiga (juft-toqligi, bo'linishi, raqamlari), rasmlarda ko'zgu aksiga e'tibor ber.",
+  ru: 'В каждом ряду найди лишнее и обведи его. В словах смотри на смысл, в числах — на свойства (чётность, делимость, цифры), в картинках — на зеркальное отражение.',
+  en: 'In each row, find the one that does not belong and circle it. For words think about meaning, for numbers about their properties (even or odd, divisibility, digits), for pictures look for a mirror image.'
 };
 const ruPlural = (n, one, few, many) => { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : (a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many); };
 const WHY = {
@@ -204,6 +222,7 @@ const WHY = {
   mirror: { uz: "ko'zgudagi aksi: burib ustiga tushirib bo'lmaydi", ru: 'зеркальное отражение: поворотом не совместить', en: 'a mirror image: no turn makes it match' }
 };
 function why(row, lang) {
+  if (row.t === 'word' || row.t === 'num' || row.t === 'mpic') return whyOlder(row, lang);
   if (row.t === 'pic') {
     const one = (CATS[row.b][lang] || CATS[row.b].uz)[0], many = (CATS[row.a][lang] || CATS[row.a].uz)[1];
     return { uz: `${one}, qolganlari — ${many}`, ru: `${one}, остальные — ${many}`, en: `${one}; the others are ${many}` }[lang];
@@ -251,8 +270,9 @@ export default {
   },
   fileBase: { uz: 'ortiqchasini top', ru: 'Найди лишнее', en: 'Odd one out' },
   defaultTitle: { uz: 'Ortiqchasini top!', ru: 'Найди лишнее!', en: 'Find the odd one out!' },
+  usesLang: true,                       // «Katta bolalar» darajasidagi so'zlar sahifa tilida
   options: [
-    { key: 'level', type: 'level', default: 0 },
+    { key: 'level', type: 'level', default: 0, older: true },
     {
       key: 'mode', type: 'choice', style: 'cards', pack: 'select', default: 'pictures',
       label: { uz: 'Turi', ru: 'Вид', en: 'Kind' },
@@ -260,27 +280,29 @@ export default {
     }
   ],
   levelHint: {
-    uz: ['4 tadan, farqi yaqqol', "5 tadan: shakl, rang, o'lcham, yo'nalish", '5 tadan, farqi nozikroq', "6 tadan: ko'zgu aksi va murakkab qoidalar"],
-    ru: ['по 4, отличие заметно сразу', 'по 5: форма, заливка, размер, направление', 'по 5, отличия тоньше', 'по 6: зеркальное отражение и сложные правила'],
-    en: ['4 per row, an obvious difference', '5 per row: shape, fill, size, direction', '5 per row, subtler differences', '6 per row: mirror images and tricky rules']
+    uz: ['4 tadan, farqi yaqqol', "5 tadan: shakl, rang, o'lcham, yo'nalish", '5 tadan, farqi nozikroq', "6 tadan: ko'zgu aksi va murakkab qoidalar", "So'zlar (rasmlar turida), sonlar (shakllar turida), burilgan rasmlar orasida ko'zgu aksi"],
+    ru: ['по 4, отличие заметно сразу', 'по 5: форма, заливка, размер, направление', 'по 5, отличия тоньше', 'по 6: зеркальное отражение и сложные правила', 'Слова (вид «картинки»), числа (вид «фигуры»), зеркальное отражение среди повёрнутых картинок'],
+    en: ['4 per row, an obvious difference', '5 per row: shape, fill, size, direction', '5 per row, subtler differences', '6 per row: mirror images and tricky rules', 'Words (pictures kind), numbers (shapes kind), a mirror image among turned pictures']
   },
 
   generate(opts, seed) {
-    const level = Math.max(0, Math.min(3, opts.level | 0));
+    const level = opts.level === 4 ? 4 : Math.max(0, Math.min(3, opts.level | 0));
     const mode = opts.mode in MODES ? opts.mode : 'pictures';
+    const lang = ['uz', 'ru', 'en'].includes(opts.lang) ? opts.lang : 'uz';
     const { K } = LEVELS[level];
     const small = opts.aspect === 'landscape' || opts.perPage > 1;          // varaqda 2 yoki 4 ta — joy kichik
     const N = small ? SMALL_ROWS : LEVELS[level].N;
     const rand = makeRng(seed);
     let rows;
-    if (mode === 'pictures') rows = picRows(level, N, rand);
+    if (level === 4) rows = olderRows(mode, N, lang, rand);
+    else if (mode === 'pictures') rows = picRows(level, N, rand);
     else if (mode === 'shapes') rows = figRows(level, N, rand);
     else {
       const nPic = Math.floor(N / 2);
       const pics = picRows(level, nPic, rand), figs = figRows(level, N - nPic, rand);
       rows = shuffle([...pics, ...figs], rand);
     }
-    return { level, seed, mode, K, rows };
+    return { level, seed, mode, lang, K, rows };
   },
 
   info(p, lang) {
@@ -294,7 +316,8 @@ export default {
     const scale = Math.max(0.6, Math.min(1, box.w / 186));
     const ruleFs = 10.5 * PT * scale;
     font(ctx, ruleFs, 400);
-    const ruleLines = wrapLines(ctx, RULE_TEXT[lang] || RULE_TEXT.uz, box.w);
+    const RT = p.level === 4 ? RULE_OLDER : RULE_TEXT;
+    const ruleLines = wrapLines(ctx, RT[lang] || RT.uz, box.w);
     const ruleLH = ruleFs * 1.35, ruleH = ruleLines.length * ruleLH, ruleGap = 4 * scale;
     const numFs = 12 * PT * scale;
     font(ctx, numFs, 800);
@@ -325,6 +348,17 @@ export default {
           ctx.font = `${cell * 0.6}px ${EMOJI_FONT}`;
           ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillText(row.items[j], cx, cy + cell * 0.03);
+        } else if (row.t === 'word' || row.t === 'num') {
+          const text = String(row.items[j]);
+          let fs = row.t === 'num' ? cell * 0.42 : cell * 0.27;
+          font(ctx, fs, 800);
+          const tw = ctx.measureText(text).width;
+          if (tw > cell * 0.88) { fs *= cell * 0.88 / tw; font(ctx, fs, 800); }
+          ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(text, cx, cy + cell * 0.02);
+        } else if (row.t === 'mpic') {
+          const it = row.items[j];
+          drawPic(ctx, row.pic, picMap(cx, cy, cell * 0.7, it.rot, it.flip), INK);
         } else drawFigure(ctx, row.items[j], cx, cy, cell);
       }
       if (showSolution) {
@@ -360,6 +394,10 @@ export default {
     p.rows.forEach((row, ri) => {
       if (row.items.length !== p.K) problems.push(`row ${ri}: ${row.items.length} items`);
       if (!(row.odd >= 0 && row.odd < row.items.length)) problems.push(`row ${ri}: bad odd index`);
+      if (row.t === 'word' || row.t === 'num' || row.t === 'mpic') {
+        checkOlder(row, p.lang || 'uz').forEach(m => problems.push(`row ${ri}: ${m}`));
+        return;
+      }
       if (row.t === 'pic') {
         if (new Set(row.items).size !== row.items.length) problems.push(`row ${ri}: repeated picture`);
         row.items.forEach((e, i) => {

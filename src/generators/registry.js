@@ -50,7 +50,19 @@ import missing from './missing.js';
 import wordchain from './wordchain.js';
 import xword from './xword.js';
 import syllables from './syllables.js';
+import skyscrapers from './skyscrapers.js';
+import matches from './matches.js';
+import tangram from './tangram.js';
+import opsigns from './opsigns.js';
+import symvalues from './symvalues.js';
+import newop from './newop.js';
+import hiddenop from './hiddenop.js';
+import letterseq from './letterseq.js';
+import cryptarith from './cryptarith.js';
+import countshapes from './countshapes.js';
+import numshapes from './numshapes.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots, pyramid, magic, numseq, chain, mathmaze, numpath, drill, scales, domino, kakuro, kenken, picsudoku, futoshiki, binary, killer, anagram, cipher, missing, wordchain, xword, syllables];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots, pyramid, magic, numseq, chain, mathmaze, numpath, drill, scales, domino, kakuro, kenken, picsudoku, futoshiki, binary, killer, skyscrapers, anagram, cipher, missing, wordchain, xword, syllables,
+  matches, tangram, numshapes, symvalues, opsigns, newop, hiddenop, cryptarith, letterseq, countshapes];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;

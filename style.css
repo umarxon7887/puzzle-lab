@@ -621,6 +621,21 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 @keyframes syA { 0%, 15% { transform: none; } 35%, 85% { transform: translateX(84px); } 100% { transform: none; } }
 @keyframes syB { 0%, 15% { transform: none; } 35%, 85% { transform: translateX(-84px); } 100% { transform: none; } }
 
+/* 49–58. Osmono'par binolar, gugurt, tangram va 4–7-sinf sonli mantiq (v2.8). Asosiy holat — tayyor rasm. */
+.gen-card-cover .cover-skyscrapers [class^="sk-"], .gen-card-cover .cover-matches .mt-b, .gen-card-cover .cover-numshapes [class^="nf-"],
+.gen-card-cover .cover-symvalues [class^="sv-"], .gen-card-cover .cover-opsigns [class^="os-"], .gen-card-cover .cover-newop [class^="no-"],
+.gen-card-cover .cover-hiddenop [class^="ho-"], .gen-card-cover .cover-cryptarith [class^="ca-"], .gen-card-cover .cover-letterseq [class^="ls-"],
+.gen-card-cover .cover-countshapes [class^="cs-"] { animation: cdWrite 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-skyscrapers .sk-b, .gen-card-cover .cover-opsigns .os-b, .gen-card-cover .cover-countshapes .cs-b { animation-delay: .35s; }
+.gen-card-cover .cover-skyscrapers .sk-c { animation-delay: .7s; }
+.gen-card-cover .cover-skyscrapers .sk-d { animation-delay: 1.05s; }
+/* Gugurt: bitta cho'p 9 dan olinib, minusga qo'yiladi */
+.gen-card-cover .cover-matches .mt-a { animation: mtOut 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-matches .mt-b { animation-delay: .5s; }
+@keyframes mtOut { 0%, 10% { opacity: 1; } 20%, 84% { opacity: 0; } 96%, 100% { opacity: 1; } }
+/* Tangram: kvadrat bo'lak tushib, joyiga o'tiradi */
+.gen-card-cover .cover-tangram .tg-a { animation: cbDrop 4s ease-in-out infinite; }
+
 /* 27. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
@@ -653,6 +668,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
   .cover-pyramid [class^="pyr-"], .cover-magic .mg-c, .cover-chain .ch-a, .cover-numpath .np-a, .cover-numpath .np-b, .cover-numseq [class^="ns-"], .cover-drill [class^="dr-"], .cover-kakuro [class^="kk-"], .cover-kenken [class^="kn-"], .cover-scales .sc-r, .cover-domino .dm-a { opacity: 1 !important; transform: none !important; }
   .cover-magic .mg-d, .cover-mathmaze .mz-path, .cover-numpath .np-path { stroke-dashoffset: 0 !important; }
   .cover-picsudoku [class^="ps-"], .cover-futoshiki [class^="ft-"], .cover-binary [class^="bn-"], .cover-killer [class^="kl-"], .cover-anagram [class^="an-"], .cover-cipher [class^="cp-"], .cover-missing [class^="ms-"], .cover-wordchain [class^="wc-"], .cover-xword [class^="xw-"], .cover-syllables [class^="sy-"] { opacity: 1 !important; transform: none !important; }
+  .cover-skyscrapers [class^="sk-"], .cover-matches .mt-b, .cover-tangram .tg-a, .cover-numshapes [class^="nf-"], .cover-symvalues [class^="sv-"], .cover-opsigns [class^="os-"], .cover-newop [class^="no-"], .cover-hiddenop [class^="ho-"], .cover-cryptarith [class^="ca-"], .cover-letterseq [class^="ls-"], .cover-countshapes [class^="cs-"] { opacity: 1 !important; transform: none !important; }
+  .cover-matches .mt-a { opacity: 0 !important; }
   .pack-card, .gen-card { transform: none !important; }
 }
 

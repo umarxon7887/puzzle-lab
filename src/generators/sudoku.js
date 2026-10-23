@@ -1,4 +1,4 @@
-// sudoku.js — Sudoku generatori: 4×4 dan 9×9 gacha, diagonal (X) va shaklli bloklar (jigsaw).
+// sudoku.js — Sudoku generatori: 4×4 dan 9×9 gacha, diagonal (X), shaklli bloklar (jigsaw) va 6×6 harfli (v2.8).
 // Kafolat: har bir topshiriqning yechimi YAGONA. "Oson" va "O'rta" darajalar faqat mantiq bilan
 // (taxminsiz) yechiladi: Oson — "yagona nomzod", O'rta — + "yashirin yagona".
 
@@ -11,19 +11,21 @@ const TYPES = {
   '4': { N: 4, br: 2, bc: 2 },
   '5': { N: 5, jig: true },
   '6': { N: 6, br: 2, bc: 3 },
+  '6L': { N: 6, br: 2, bc: 3, letters: true },
   '7': { N: 7, jig: true },
   '8': { N: 8, br: 2, bc: 4 },
   '9': { N: 9, br: 3, bc: 3 },
   '9x': { N: 9, br: 3, bc: 3, diag: true }
 };
 // Har bir daraja uchun berilgan katakchalar soni (maqsad) va yechish usuli talabi
-const LEVEL_CLUES = { '4': [11, 9, 7, 6], '5': [16, 13, 11, 9], '6': [24, 20, 17, 14], '7': [32, 27, 23, 19], '8': [40, 33, 28, 24], '9': [42, 34, 29, 25], '9x': [40, 32, 27, 23] };
+const LEVEL_CLUES = { '4': [11, 9, 7, 6], '5': [16, 13, 11, 9], '6': [24, 20, 17, 14], '6L': [24, 20, 17, 14], '7': [32, 27, 23, 19], '8': [40, 33, 28, 24], '9': [42, 34, 29, 25], '9x': [40, 32, 27, 23] };
 const LEVEL_MODE = ['naked', 'singles', 'none', 'none'];
 
 const TYPE_LABELS = {
   '4': { big: '4×4', sub: { uz: 'bloklar 2×2', ru: 'блоки 2×2', en: '2×2 boxes' } },
   '5': { big: '5×5', sub: { uz: 'shaklli bloklar', ru: 'фигурные блоки', en: 'jigsaw' } },
   '6': { big: '6×6', sub: { uz: 'bloklar 2×3', ru: 'блоки 2×3', en: '2×3 boxes' } },
+  '6L': { big: '6×6', sub: { uz: 'harflar A–F', ru: 'буквы А–Е', en: 'letters A–F' } },
   '7': { big: '7×7', sub: { uz: 'shaklli bloklar', ru: 'фигурные блоки', en: 'jigsaw' } },
   '8': { big: '8×8', sub: { uz: 'bloklar 2×4', ru: 'блоки 2×4', en: '2×4 boxes' } },
   '9': { big: '9×9', sub: { uz: 'klassik', ru: 'классика', en: 'classic' } },
@@ -191,6 +193,14 @@ function makePuzzle(key, level, seed) {
   return { spec, sol, puzzle: bestG, clues: bestClues, total };
 }
 
+// Harfli sudoku (v2.8, «Katta bolalar»): raqamlar o'rniga harflar; qolip — Az «Sudoku»
+const LETTERS = { uz: [...'ABCDEF'], ru: [...'АБВГДЕ'], en: [...'ABCDEF'] };
+const letterOf = (v, lang) => (LETTERS[lang] || LETTERS.uz)[v - 1];
+const RULE_L = {
+  uz: L => `Har bir qator, ustun va qalin chiziqli blokda ${L.join(', ')} harflari bittadan bo'lsin: hech biri takrorlanmasin.`,
+  ru: L => `В каждой строке, столбце и блоке с жирной границей буквы ${L.join(', ')} должны встречаться по одному разу.`,
+  en: L => `Each row, column and bold box must contain the letters ${L.join(', ')} exactly once.`
+};
 const RULE = {
   uz: (N, jig, diag) => `Har bir qator, ustun va ${jig ? 'qalin chiziq bilan chegaralangan shaklda' : 'qalin chiziqli blokda'} 1 dan ${N} gacha raqamlar takrorlanmasin.` + (diag ? ' Ikkala diagonalda ham.' : ''),
   ru: (N, jig, diag) => `В каждой строке, столбце и ${jig ? 'фигуре, обведённой жирной линией,' : 'блоке с жирной границей'} цифры от 1 до ${N} не должны повторяться.` + (diag ? ' То же — на обеих диагоналях.' : ''),
@@ -202,9 +212,9 @@ export default {
   skills: ['logic', 'attention'], // rivojlantiradigan ko'nikmalar (core/skills.js)
   name: { uz: 'Sudoku', ru: 'Судоку', en: 'Sudoku' },
   desc: {
-    uz: '4×4 dan 9×9 gacha: klassik, diagonal va shaklli bloklar',
-    ru: 'От 4×4 до 9×9: классика, диагональ и фигурные блоки',
-    en: 'From 4×4 to 9×9: classic, diagonal and jigsaw'
+    uz: '4×4 dan 9×9 gacha: klassik, diagonal, shaklli bloklar va harfli',
+    ru: 'От 4×4 до 9×9: классика, диагональ, фигурные блоки и буквы',
+    en: 'From 4×4 to 9×9: classic, diagonal, jigsaw and letters'
   },
   fileBase: { uz: 'sudoku', ru: 'Судоку', en: 'Sudoku' },
   defaultTitle: { uz: 'Sudokuni yech!', ru: 'Реши судоку!', en: 'Solve the sudoku!' },
@@ -221,11 +231,11 @@ export default {
     const key = opts.type in TYPES ? opts.type : '9';
     const level = Math.max(0, Math.min(3, opts.level | 0));
     const { spec, sol, puzzle, clues, total } = makePuzzle(key, level, seed);
-    return { type: key, level, seed, N: spec.N, region: spec.region, diag: !!spec.diag, jig: !!spec.jig, sol, puzzle, clues, total };
+    return { type: key, level, seed, N: spec.N, region: spec.region, diag: !!spec.diag, jig: !!spec.jig, letters: !!TYPES[key].letters, sol, puzzle, clues, total };
   },
 
   info(p) {
-    return TYPE_LABELS[p.type].big + (p.jig ? ' jigsaw' : '') + (p.diag ? ' X' : '');
+    return TYPE_LABELS[p.type].big + (p.jig ? ' jigsaw' : '') + (p.diag ? ' X' : '') + (p.letters ? ' ABC' : '');
   },
 
   draw(ctx, p, box, { showSolution, lang }) {
@@ -235,7 +245,8 @@ export default {
     const rulePt = Math.max(8, Math.min(11, box.w / 186 * 11.5));
     const ruleFs = rulePt * PT;
     font(ctx, ruleFs, 400);
-    const ruleLines = wrapLines(ctx, (RULE[lang] || RULE.uz)(N, p.jig, p.diag), box.w);
+    const ruleText = p.letters ? (RULE_L[lang] || RULE_L.uz)(LETTERS[lang] || LETTERS.uz) : (RULE[lang] || RULE.uz)(N, p.jig, p.diag);
+    const ruleLines = wrapLines(ctx, ruleText, box.w);
     const ruleH = ruleLines.length * ruleFs * 1.35;
     const gap = Math.min(7, box.h * 0.03);
 
@@ -284,7 +295,7 @@ export default {
       if (!v) continue;
       font(ctx, cellMm * 0.62, given ? 700 : 600);
       ctx.fillStyle = given ? INK : ANSWER;
-      ctx.fillText(String(v), cx(i % N) + cellMm / 2, cy(Math.floor(i / N)) + cellMm / 2 + cellMm * 0.04);
+      ctx.fillText(p.letters ? letterOf(v, lang) : String(v), cx(i % N) + cellMm / 2, cy(Math.floor(i / N)) + cellMm / 2 + cellMm * 0.04);
     }
 
     // Chiziqlar: yupqa (katakchalar) va qalin (bloklar)
@@ -317,7 +328,9 @@ export default {
   },
 
   hint(p, info, lang) {
-    const T = { uz: `Berilgan raqamlar: ${p.clues} / ${p.total}`, ru: `Заполнено клеток: ${p.clues} из ${p.total}`, en: `Given digits: ${p.clues} / ${p.total}` };
+    const T = p.letters
+      ? { uz: `Berilgan harflar: ${p.clues} / ${p.total}`, ru: `Заполнено клеток: ${p.clues} из ${p.total}`, en: `Given letters: ${p.clues} / ${p.total}` }
+      : { uz: `Berilgan raqamlar: ${p.clues} / ${p.total}`, ru: `Заполнено клеток: ${p.clues} из ${p.total}`, en: `Given digits: ${p.clues} / ${p.total}` };
     return { text: T[lang] || T.uz, warn: false };
   },
 

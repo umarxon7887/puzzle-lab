@@ -12,6 +12,7 @@ import { INK, MUTE, PT, font } from '../core/draw.js';
 import { drawFigure, SOLID } from '../core/figures.js';
 import { PIC_KEYS, picGroup, drawPic, picMap, silhouetteDistance } from '../core/pictures.js';
 import { scaleOf, measureRule, drawRule, cellBox, ring, questionCell, ruPlural } from '../core/parts.js';
+import { olderPuzzle, OLDER_KINDS, checkOlder, drawEl4 } from './matrix-older.js';
 
 const SHAPES = ['circle', 'square', 'triangle', 'star', 'heart', 'diamond', 'hexagon', 'plus'];
 const FILLS = ['empty', 'solid', 'stripes', 'dotted'];
@@ -21,7 +22,8 @@ const LEVELS = [
   { sets: [{ a: 'row', b: 'col' }, { a: 'col', b: 'row' }], opts: 3, corner: true, count: false },
   { sets: [{ a: 'latin', b: 'const' }, { a: 'row', b: 'col' }, { a: 'latin', b: 'row' }], opts: 4, corner: true, count: false },
   { sets: [{ a: 'latin', b: 'col' }, { a: 'row', b: 'latin' }, { a: 'row', b: 'col', c: 'col' }], opts: 4, corner: false, count: true },
-  { sets: [{ a: 'latin', b: 'latin' }, { a: 'latin', b: 'row', c: 'latin' }, { a: 'latin', b: 'col', c: 'latin' }], opts: 5, corner: false, count: true }
+  { sets: [{ a: 'latin', b: 'latin' }, { a: 'latin', b: 'row', c: 'latin' }, { a: 'latin', b: 'col', c: 'latin' }], opts: 5, corner: false, count: true },
+  { older: true }               // «Katta bolalar»: matrix-older.js (ustma-ust, burilish, tomonlar soni, siljish, harflar, 2×2)
 ];
 
 // Qiymat qoidaga ko'ra: r, c — qator va ustun; perm — 3 ta qiymat; shift — lotin kvadrati yo'nalishi
@@ -72,6 +74,11 @@ function drawEl(ctx, el, cx, cy, s) {
   }
 }
 
+const RULE_OLDER = {
+  uz: "Jadvaldagi qonuniyatni top: qatorlarda (yoki ustunlarda) nima o'zgaryapti? Bo'sh katakka nima keladi? Uni aylana bilan belgila. 2×2 jadvalda: birinchi rasm ikkinchisiga qanday aylangan bo'lsa, uchinchisi ham shunday o'zgaradi. Harflarda alifbo tartibiga qara.",
+  ru: 'Найди закономерность: что меняется в строках (или столбцах)? Что должно быть в пустой клетке? Обведи ответ. В таблице 2×2: третья картинка меняется так же, как первая превратилась во вторую. В буквах смотри на порядок алфавита.',
+  en: 'Find the rule: what changes along the rows (or columns)? What goes in the empty cell? Circle it. In a 2×2 grid, the third picture changes the same way the first one turned into the second. For letters, think of the alphabet order.'
+};
 const RULE = {
   uz: "Qator va ustunlardagi qonuniyatni top. Bo'sh katakka qaysi rasm keladi? Uni aylana bilan belgila.",
   ru: 'Найди закономерность в рядах и столбцах. Что должно быть в пустой клетке? Обведи ответ.',
@@ -85,6 +92,7 @@ const MODES = {
 export default {
   id: 'matrix',
   skills: ['patterns', 'logic'], // rivojlantiradigan ko'nikmalar (core/skills.js)
+  usesLang: true,                // «Katta bolalar» darajasidagi harfli jadvallar sahifa tilining alifbosida
   name: { uz: 'Yetishmayotgan qism', ru: 'Чего не хватает?', en: 'What is missing?' },
   desc: {
     uz: "3×3 jadvaldagi qonuniyatni topib, bo'sh katakka mos rasmni tanlang",
@@ -94,7 +102,7 @@ export default {
   fileBase: { uz: 'yetishmayotgan qism', ru: 'Чего не хватает', en: 'What is missing' },
   defaultTitle: { uz: 'Nima yetishmayapti?', ru: 'Чего не хватает?', en: 'What is missing?' },
   options: [
-    { key: 'level', type: 'level', default: 0 },
+    { key: 'level', type: 'level', default: 0, older: true },
     {
       key: 'mode', type: 'choice', style: 'cards', pack: 'select', default: 'shapes',
       label: { uz: 'Turi', ru: 'Вид', en: 'Kind' },
@@ -102,18 +110,23 @@ export default {
     }
   ],
   levelHint: {
-    uz: ["Qatorda — shakl, ustunda — rang; 3 ta variant", "Har qatorda uchala shakl bittadan; 4 ta variant", "Soni ham o'zgaradi, bo'sh katak istalgan joyda", "Ikki-uch qoida birga, 5 ta variant"],
-    ru: ['В ряду — форма, в столбце — цвет; 3 варианта', 'В каждом ряду все три формы; 4 варианта', 'Меняется и количество, пустая клетка где угодно', 'Два-три правила сразу, 5 вариантов'],
-    en: ['Rows set the shape, columns the fill; 3 options', 'Each row has all three shapes; 4 options', 'The number changes too; the gap can be anywhere', 'Two or three rules at once, 5 options']
+    uz: ["Qatorda — shakl, ustunda — rang; 3 ta variant", "Har qatorda uchala shakl bittadan; 4 ta variant", "Soni ham o'zgaradi, bo'sh katak istalgan joyda", "Ikki-uch qoida birga, 5 ta variant", "Ustma-ust qo'yish, burilish, siljish, tomonlar soni, harflar, 2×2 o'xshatish"],
+    ru: ['В ряду — форма, в столбце — цвет; 3 варианта', 'В каждом ряду все три формы; 4 варианта', 'Меняется и количество, пустая клетка где угодно', 'Два-три правила сразу, 5 вариантов', 'Наложение, поворот, сдвиг, число сторон, буквы, аналогия 2×2'],
+    en: ['Rows set the shape, columns the fill; 3 options', 'Each row has all three shapes; 4 options', 'The number changes too; the gap can be anywhere', 'Two or three rules at once, 5 options', 'Overlay, turning, sliding, number of sides, letters, 2×2 analogies']
   },
 
   generate(opts, seed) {
-    const level = Math.max(0, Math.min(3, opts.level | 0));
+    const level = opts.level === 4 ? 4 : Math.max(0, Math.min(3, opts.level | 0));
     const mode = opts.mode in MODES ? opts.mode : 'shapes';
     const L = LEVELS[level];
     const small = opts.perPage > 1 || opts.aspect === 'landscape';
     const count = opts.aspect === 'landscape' ? 2 : small ? 1 : 2;  // varaqda nechta jadval
     const rand = makeRng(seed);
+    if (L.older) {
+      const kinds = shuffle(OLDER_KINDS.slice(), rand);
+      const lang = ['uz', 'ru', 'en'].includes(opts.lang) ? opts.lang : 'uz';
+      return { level, seed, mode, older: true, puzzles: Array.from({ length: count }, (_, i) => olderPuzzle(rand, kinds[i % kinds.length], lang)) };
+    }
     const puzzles = [];
     for (let t = 0; t < count; t++) {
       const set = pickOne(rand, L.sets);
@@ -178,45 +191,47 @@ export default {
   draw(ctx, p, box, { showSolution, lang }) {
     ctx.save();
     const scale = scaleOf(box);
-    const rule = measureRule(ctx, RULE[lang] || RULE.uz, box.w, scale);
+    const RT = p.older ? RULE_OLDER : RULE;
+    const rule = measureRule(ctx, RT[lang] || RT.uz, box.w, scale);
     const gap = 4 * scale;
     const n = p.puzzles.length;
+    const DRAW = p.older ? drawEl4 : drawEl;
     const side = box.w / box.h > 1.3 && n === 2;                 // yotiq joyda — yonma-yon
     const availH = box.h - rule.h - gap;
     const pw = side ? (box.w - gap * 3) / 2 : box.w, ph = side ? availH : (availH - (n - 1) * gap * 2) / n;
     const numFs = 12 * PT * scale;
     p.puzzles.forEach((pz, t) => {
       const px = box.x + (side ? t * (pw + gap * 3) : 0), py = box.y + (side ? 0 : t * (ph + gap * 2));
-      const K = pz.options.length;
-      // jadval (3 katak) + variantlar qatori (K katak, kichikroq)
+      const K = pz.options.length, G = pz.g || 3;
+      // jadval (G katak) + variantlar qatori (K katak, kichikroq)
       const og = 0.16, opt = 0.7;                              // variant katagi = jadval katagining 0.7 qismi
-      const cH = ph / (3 + 2 * 0.06 + 0.5 + opt * 1.24);
-      const cW = Math.min(pw / 3.3, pw / (K * opt * (1 + og) + 0.2));
-      const c = Math.min(cH, cW, 34 * scale), oc = c * opt;
-      const gridW = 3 * c, x0 = px + (pw - gridW) / 2;
-      const blockH = 3 * c + c * 0.5 + oc * 1.24;
+      const cH = ph / (G + 2 * 0.06 + 0.5 + opt * 1.24);
+      const cW = Math.min(pw / (G + 0.3), pw / (K * opt * (1 + og) + 0.2));
+      const c = Math.min(cH, cW, (G === 2 ? 40 : 34) * scale), oc = c * opt;
+      const gridW = G * c, x0 = px + (pw - gridW) / 2;
+      const blockH = G * c + c * 0.5 + oc * 1.24;
       const y0 = py + Math.max(0, (ph - blockH) * 0.4);
       if (n > 1) { font(ctx, numFs, 800); ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'top'; ctx.fillText(`${t + 1}.`, px, y0); }
       // jadval: qalin tashqi ramka, ichki chiziqlar
-      for (let i = 0; i < 9; i++) {
-        const x = x0 + (i % 3) * c, y = y0 + Math.floor(i / 3) * c;
+      for (let i = 0; i < G * G; i++) {
+        const x = x0 + (i % G) * c, y = y0 + Math.floor(i / G) * c;
         if (i === pz.q) {
           questionCell(ctx, x + c * 0.08, y + c * 0.08, c * 0.84, scale, showSolution ? '#DC2626' : MUTE);
-          if (showSolution) { ctx.save(); ctx.fillStyle = '#fff'; ctx.fillRect(x + c * 0.16, y + c * 0.16, c * 0.68, c * 0.68); ctx.restore(); drawEl(ctx, pz.grid[i], x + c / 2, y + c / 2, c * 0.8); }
-        } else drawEl(ctx, pz.grid[i], x + c / 2, y + c / 2, c * 0.8);
+          if (showSolution) { ctx.save(); ctx.fillStyle = '#fff'; ctx.fillRect(x + c * 0.16, y + c * 0.16, c * 0.68, c * 0.68); ctx.restore(); DRAW(ctx, pz.grid[i], x + c / 2, y + c / 2, c * 0.8); }
+        } else DRAW(ctx, pz.grid[i], x + c / 2, y + c / 2, c * 0.8);
       }
       ctx.save(); ctx.strokeStyle = INK; ctx.lineWidth = Math.max(0.3, 0.45 * scale);
       ctx.strokeRect(x0, y0, gridW, gridW);
       ctx.lineWidth = Math.max(0.2, 0.25 * scale); ctx.strokeStyle = '#9CA3AF';
       ctx.beginPath();
-      for (let k = 1; k < 3; k++) { ctx.moveTo(x0 + k * c, y0); ctx.lineTo(x0 + k * c, y0 + gridW); ctx.moveTo(x0, y0 + k * c); ctx.lineTo(x0 + gridW, y0 + k * c); }
+      for (let k = 1; k < G; k++) { ctx.moveTo(x0 + k * c, y0); ctx.lineTo(x0 + k * c, y0 + gridW); ctx.moveTo(x0, y0 + k * c); ctx.lineTo(x0 + gridW, y0 + k * c); }
       ctx.stroke(); ctx.restore();
       // variantlar
       const ow = K * oc + (K - 1) * oc * og, ox = px + (pw - ow) / 2, oy = y0 + gridW + c * 0.5 + oc * 0.12;
       pz.options.forEach((el, i) => {
         const x = ox + i * oc * (1 + og);
         cellBox(ctx, x, oy, oc, oc, scale, { fill: '#F9FAFB' });
-        drawEl(ctx, el, x + oc / 2, oy + oc / 2, oc * 0.84);
+        DRAW(ctx, el, x + oc / 2, oy + oc / 2, oc * 0.84);
         if (showSolution && i === pz.ans) ring(ctx, x + oc / 2, oy + oc / 2, oc * 0.6, scale);
       });
     });
@@ -232,6 +247,7 @@ export default {
   },
 
   check(p) {
+    if (p.older) return p.puzzles.flatMap((pz, t) => checkOlder(pz).map(m => `grid ${t}: ${m}`));
     const problems = [];
     const attrs = ATTRS[p.mode];
     p.puzzles.forEach((pz, t) => {

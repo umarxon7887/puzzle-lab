@@ -2,7 +2,7 @@
 
 ![Topshiriqlar Lab](og.png)
 
-Bolalar uchun topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top»**, 10 ta vizual mantiq topshirig'i («Ortiqchasini top», «Farqlarni top», «Soyasini top» va boshqalar), **diqqat va xotira** mashqlari (Shulte jadvali, korrektura sinovi…) **chizish va katakli qog'oz** topshiriqlari (yapon krossvordi, grafik diktant, raqam bo'yicha bo'yash, nuqtalarni tutashtirish…) **matematik mantiq** (sonlar piramidasi, sehrli kvadrat, tarozi masalalari, kakuro, KenKen…), **sudokusimonlar** (rasmli sudoku, futoshiki, binar jumboq, killer sudoku) hamda **so'z va harf o'yinlari** (anagramma, shifrlar, krossvord, bo'g'inlar…) — jami **47 xil**.
+Bolalar uchun topshiriqlar generatori: **labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top»**, 10 ta vizual mantiq topshirig'i («Ortiqchasini top», «Farqlarni top», «Soyasini top» va boshqalar), **diqqat va xotira** mashqlari (Shulte jadvali, korrektura sinovi…) **chizish va katakli qog'oz** topshiriqlari (yapon krossvordi, grafik diktant, raqam bo'yicha bo'yash, nuqtalarni tutashtirish…) **matematik mantiq** (sonlar piramidasi, sehrli kvadrat, tarozi masalalari, kakuro, KenKen…), **sudokusimonlar** (rasmli sudoku, futoshiki, binar jumboq, killer sudoku, osmono'par binolar), **so'z va harf o'yinlari** (anagramma, shifrlar, krossvord, bo'g'inlar…), **mantiqiy masalalar** (gugurt cho'plari, tangram) hamda **4–7-sinf uchun sonli mantiq** (sonli shakllar, yashirin amal, harfli misollar…) — jami **58 xil**.
 Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'yxatdan o'tishsiz, internetsiz ham ishlaydi.
 
 **Sayt:** https://umarxon7887.github.io/puzzle-lab/
@@ -15,21 +15,21 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
 
 ### Imkoniyatlar
 
-- **47 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin (Futoshiki'da yana «Juda oson»).
+- **58 ta generator**, har birida 4 ta daraja: Oson, O'rta, Qiyin, Juda qiyin (Futoshiki'da yana «Juda oson»; «Ortiqchasini top», «Qonuniyatni davom ettir», «Yetishmayotgan qism» va «Aynan bir xil ikkitasi»da yana **«Katta bolalar»** — 4–7-sinf uchun).
   - **Labirint** — 8 xil shakl (to'rtburchak, doira, yulduz, yurak…), qahramon va manzil stikerlari, o'lchamni o'zingiz ham berishingiz mumkin.
   - **Sudoku** — 4×4 dan 9×9 gacha, diagonal (X) va shaklli bloklar (5×5, 7×7). Yechim har doim **yagona**; Oson va O'rta taxminsiz yechiladi.
   - **So'z qidiruv** — 11 ta mavzu (uch tilda) yoki o'zingiz yozgan so'zlar. Har bir so'z jadvalda **aynan bir marta** uchraydi. O'zbekcha **O‘** va **G‘** — bitta harf, bitta katakka yoziladi.
   - **Sonli krossvord** — kesishgan misollar (+, −, ×, ÷); har bir bo'sh katakcha mantiq bilan topiladi.
   - **Kodni top** — 3, 4 yoki 5 xonali kod va ishoralar; yechim yagona, ekranda javobni tekshirib ko'rish mumkin.
-  - **Ortiqchasini top** — har qatorda bittasi boshqalariga o'xshamaydi: rasmlar (mevalar, hayvonlar, transport, kiyimlar…), shakllar (shakli, bo'yalishi, o'lchami, yo'nalishi, nuqtalar soni, ichki shakl, ko'zgu aksi) yoki aralash. Ortiqchasi har doim **bitta**; javob varag'ida nega ortiqchaligi yozilgan.
+  - **Ortiqchasini top** — har qatorda bittasi boshqalariga o'xshamaydi: rasmlar (mevalar, hayvonlar, transport, kiyimlar…), shakllar (shakli, bo'yalishi, o'lchami, yo'nalishi, nuqtalar soni, ichki shakl, ko'zgu aksi) yoki aralash. Ortiqchasi har doim **bitta**; javob varag'ida nega ortiqchaligi yozilgan. «Katta bolalar»: so'zlar, sonlar va burilgan rasmlar orasida ko'zgu aksi.
   - **Ustma-ust rasmlar** — 3 tadan 7 tagacha buyumning konturi bir-birining ustiga chizilgan; bola ularni topadi va nomini aytadi (ro'yxat bilan yoki ro'yxatsiz). Javob varag'ida har bir buyum o'z rangida. 189 ta rasm: mevalar, hayvonlar, transport, kiyim, uy buyumlari, o'yinchoqlar va milliy buyumlar (non, do'ppi, dutor, lagan…).
-  - **Qonuniyatni davom ettir** — shakllar yoki rasmlar ketma-ketligida «?» o'rniga nima kelishini tanlash (AB, ABC, AABB, burilish, ko'payish).
-  - **Yetishmayotgan qism** — 3×3 jadvaldagi qator va ustun qoidasini topib, bo'sh katakni to'ldirish.
+  - **Qonuniyatni davom ettir** — shakllar yoki rasmlar ketma-ketligida «?» o'rniga nima kelishini tanlash (AB, ABC, AABB, burilish, ko'payish). «Katta bolalar»: nuqta siljishi, sektorlar, ichki shakl o'zgarishi.
+  - **Yetishmayotgan qism** — 3×3 jadvaldagi qator va ustun qoidasini topib, bo'sh katakni to'ldirish. «Katta bolalar»: ustma-ust qo'yish, burilish, tomonlar soni, siljish, harflar va 2×2 o'xshatish.
   - **Farqlarni top** — ikki rasm orasidagi 3–9 ta farq (yo'q, qo'shilgan, almashgan, kichraygan, ko'zgudagi aksi, burilgan).
   - **Soyasini top** — rasmga aynan mos soyani tanlash yoki rasmlarni soyalari bilan tutashtirish; tuzoqlar: o'xshash siluetlar va ko'zgu aksi.
   - **Juftini top** — bir xil rasmlar, rasm va uning nomi yoki rasmlar soni va raqamni chiziq bilan tutashtirish.
   - **Ko'rib top va sana** — aralash rasmlar orasidan berilganlarini sanash.
-  - **Aynan bir xil ikkitasi** — o'xshash kartochkalar orasidan to'liq bir xil ikkitasini topish.
+  - **Aynan bir xil ikkitasi** — o'xshash kartochkalar orasidan to'liq bir xil ikkitasini topish. «Katta bolalar»: murakkab chiziqli rasmning aynan nusxasi.
   - **Kubiklarni sana** — izometrik kubiklar uyumi; qiyin darajalarda ko'rinmaydigan kubiklar ham bor.
 - **Diqqat va xotira:**
   - **Shulte jadvali** — 4×4 dan 6×6 gacha va Gorbov jadvali (ikki qator navbatma-navbat); sonlar yoki harflar (alifbo sahifa tiliga qarab olinadi), vaqtni yozish uchun qator.
@@ -61,6 +61,8 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
   - **Futoshiki** — har qator va ustunda sonlar bir martadan, kataklar orasidagi «<» va «>» belgilari yordam beradi; 5 ta daraja («Juda oson» dan 7×7 gacha).
   - **Binar jumboq** — faqat 0 va 1: uchta bir xil raqam ketma-ket kelmaydi, har qator va ustunda teng sonda; qiyin darajalarda bir xil qator yoki ustun bo'lmaydi.
   - **Killer sudoku** — 4×4 dan 9×9 gacha; raqamlar o'rnida shtrix chiziqli guruhlar yig'indisi.
+  - **Nechta uy ko'rinadi?** (osmono'par binolar) — har qator va ustunda turli balandlikdagi uylar; chetdagi son o'sha tomondan nechta uy ko'rinishini aytadi.
+  - Sudokuda yana **6×6 harfli** tur (A–F).
 - **So'z va harf o'yinlari** (uch tilda, 11 ta mavzu; o'zbekchada O‘, G‘, SH, CH — bitta harf):
   - **Anagramma** — aralash harflardan so'z tuzish; eng qiyin darajada qatordagi ortiqcha so'zni topish.
   - **Shifrlangan so'z** — belgilar kaliti, sonli kod (A = 1), alifboda siljitish va so'zlarni kodlari bilan moslash.
@@ -68,6 +70,18 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
   - **Harflar zanjiri** — har so'z oldingisining oxirgi harfi bilan boshlanadi; eng qiyinida «so'z ko'prigi» (MAK·TAB·IAT).
   - **Savolli krossvord** — rasmli yoki matnli savollar (Eniga / Bo'yiga).
   - **Bo'g'inlardan so'z** — bo'g'in kartochkalaridan so'z yig'ish (ki-tob, mak-tab).
+- **Mantiqiy masalalar:**
+  - **Gugurt cho'plari** — noto'g'ri tenglikni bitta cho'pni ko'chirib, olib tashlab yoki ikkita cho'pni ko'chirib to'g'rilash; yechim **yagona**.
+  - **Tangram** — 7 bo'lakdan siluet yig'ish (buyumlar, hayvonlar, odamchalar, geometrik shakllar); varaq pastida qirqib olinadigan tangram kvadrati.
+- **4–7-sinf: sonli mantiq** (har birida javob **yagona**, javob varag'ida qoida yozilgan):
+  - **Sonli shakllar** — uchburchak, xoch, doira, gul, daraxt, 3×3 va X/Y/T jadval, kesmalar, kartalar halqasi va sakkizburchakdagi sonlar bitta qoidaga bo'ysunadi.
+  - **Belgilar qiymati** — jadvaldagi har bir belgi bitta son; qator va ustun yig'indilaridan «?» ni topish.
+  - **Amal belgilarini qo'y** — 6 □ 3 □ 2 = 20 kabi misollarga + − × ÷ qo'yish.
+  - **Yangi amal** — a ★ b = 2·a + b kabi ta'rif bo'yicha hisoblash, ichma-ich misollar, solishtirish va noma'lumni topish.
+  - **Yashirin amal** — misollardan (36 ◆ 16 = 10) yashirin qoidani topish; shakl-mashinalar, ichma-ich shakllar, X/Y o'rin almashtirishlar, ko'pburchak tomonlari.
+  - **Harfli misollar** — ustun bo'lib qo'shish, ayirish va ko'paytirishda harflar ortidagi raqamlarni topish.
+  - **Harf qatorlari** — alifbo bo'yicha harf qatorlari, harf jadvallari, yulduz va bloklar (alifbo sahifa tiliga qarab).
+  - **Shakllarni sana** — rasmdagi barcha kvadratlar yoki uchburchaklar sonini topish.
 - **To'plam** — turli generatorlardan aralash topshiriqlar: har turdan nechtadan kerakligini tanlang, ko'rib chiqing, keragini almashtiring yoki olib tashlang, so'ng **bitta PDF** (topshiriqlar, javoblar yoki ikkalasi) qilib oling.
 - **Savat** — internet-do'kondagidek: generator sahifasida topshiriqni o'zingizga moslab sozlang va 🛒+ tugmasi bilan savatga qo'shing. Savatda tartibini o'zgartiring, raqamini yangilang yoki olib tashlang va **bir klikda bitta PDF** oling.
   - **Variantlar** — har bir o'quvchiga alohida variant: turlari va sozlamalari bir xil, masalalari boshqa (bir-biridan ko'chira olmaydi).
@@ -96,9 +110,9 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 
 ## Русский
 
-Генератор заданий для детей — **47 видов**: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код»**, 10 заданий на зрительную логику («Найди лишнее», «Найди отличия», «Найди тень», «Чего не хватает?» и другие), задания на **внимание и память** (таблица Шульте, корректурная проба, «Шифровка», лабиринт по порядку), **рисование по клеточкам** (японский кроссворд, графический диктант, раскраска по номерам, по точкам, по координатам, симметрия, копирование) **математическую логику** (числовая пирамида, магический квадрат, цепочки примеров, математический лабиринт, числовая змейка, весы, домино, числовые ряды, лист примеров, какуро, кенкен), **судоку-головоломки** (судоку с картинками, футошики, бинарный пазл, киллер-судоку) и **игры со словами и буквами** (анаграммы, шифровки, пропущенные буквы, цепочка слов, кроссворд, слова из слогов). Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
+Генератор заданий для детей — **58 видов**: **лабиринт, судоку, «Найди слова», числовой кроссворд, «Взломай код»**, 10 заданий на зрительную логику («Найди лишнее», «Найди отличия», «Найди тень», «Чего не хватает?» и другие), задания на **внимание и память** (таблица Шульте, корректурная проба, «Шифровка», лабиринт по порядку), **рисование по клеточкам** (японский кроссворд, графический диктант, раскраска по номерам, по точкам, по координатам, симметрия, копирование) **математическую логику** (числовая пирамида, магический квадрат, цепочки примеров, математический лабиринт, числовая змейка, весы, домино, числовые ряды, лист примеров, какуро, кенкен), **судоку-головоломки** (судоку с картинками, футошики, бинарный пазл, киллер-судоку, небоскрёбы), **игры со словами и буквами** (анаграммы, шифровки, пропущенные буквы, цепочка слов, кроссворд, слова из слогов), **логические задачи** (спички, танграм) и **числовая логика для 4–7 классов** (числа в фигурах, значения символов, расставь знаки, новая операция, скрытое правило, шифрованные примеры, буквенные ряды, сосчитай фигуры). Каждое задание — за секунду, с листом ответов, в **PDF A4**. Бесплатно, без регистрации, работает без интернета.
 
-- 4 уровня сложности; у судоку, кроссворда, «Взломай код», «Найди лишнее», всех заданий по математической логике и судоку-головоломок решение всегда **единственное**.
+- 4 уровня сложности (у четырёх зрительных заданий есть ещё уровень **«Для старших»** — для 4–7 классов); у судоку, кроссворда, «Взломай код», «Найди лишнее», всех заданий по математической логике и судоку-головоломок решение всегда **единственное**.
 - **Набор**: задания разных видов в одном PDF (задания, ответы или оба), с просмотром, заменой и удалением.
 - **Корзина**: настройте задание на его странице и добавьте в корзину; в корзине меняйте порядок и получите один PDF в один клик. **Варианты** — отдельный вариант для каждого ученика; **шаблоны** — сохранённый набор, который в один клик собирается заново с новыми заданиями.
 - 1, 2 или 4 задания на листе, строка для имени и даты, свой текст заголовка.
@@ -107,9 +121,9 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 
 ## English
 
-A puzzle generator for kids with **47 puzzle types**: **maze, sudoku, word search, math crossword, crack the code**, 10 visual logic puzzles (odd one out, spot the difference, find the shadow, what is missing, and more), **attention and memory** drills (Schulte table, proofreading test, symbol coding, number-order maze) **drawing on grid paper** (nonograms, graphic dictation, paint by numbers, dot-to-dot, coordinates, symmetry, copying) **math logic** (number pyramid, magic square, number chains, math maze, number path, balance puzzles, domino puzzles, number sequences, arithmetic drill, kakuro, KenKen), **sudoku-style puzzles** (picture sudoku, futoshiki, binary puzzle, killer sudoku) and **word and letter games** (anagrams, secret codes, missing letters, word chain, crossword, syllable words). Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
+A puzzle generator for kids with **58 puzzle types**: **maze, sudoku, word search, math crossword, crack the code**, 10 visual logic puzzles (odd one out, spot the difference, find the shadow, what is missing, and more), **attention and memory** drills (Schulte table, proofreading test, symbol coding, number-order maze) **drawing on grid paper** (nonograms, graphic dictation, paint by numbers, dot-to-dot, coordinates, symmetry, copying) **math logic** (number pyramid, magic square, number chains, math maze, number path, balance puzzles, domino puzzles, number sequences, arithmetic drill, kakuro, KenKen), **sudoku-style puzzles** (picture sudoku, futoshiki, binary puzzle, killer sudoku, skyscrapers), **word and letter games** (anagrams, secret codes, missing letters, word chain, crossword, syllable words), **logic puzzles** (matchsticks, tangram) and **number logic for grades 4–7** (number shapes, symbol values, operation signs, new operation, hidden rule, letter sums, letter sequences, count the shapes). Every puzzle comes with an answer sheet as a print-ready **A4 PDF**. Free, no sign-up, works offline.
 
-- 4 difficulty levels; sudoku, math crossword, crack-the-code, odd-one-out, all math logic and sudoku-style puzzles always have a **unique** solution.
+- 4 difficulty levels (four visual puzzles also have an **"Older kids"** level for grades 4–7); sudoku, math crossword, crack-the-code, odd-one-out, all math logic and sudoku-style puzzles always have a **unique** solution.
 - **Pack**: mix different puzzles into one PDF (puzzles, answers or both), with review, replace and remove.
 - **Basket**: set up a puzzle on its page and add it to the basket; reorder there and get one PDF in one click. **Versions** give each student their own copy; **templates** save a set and rebuild it later with fresh puzzles in one click.
 - 1, 2 or 4 puzzles per page, a name/date line, custom title text.

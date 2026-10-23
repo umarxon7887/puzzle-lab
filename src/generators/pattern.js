@@ -31,7 +31,9 @@ const LEVELS = [
   { rows: 5, units: ['AB', 'AAB', 'ABB'], opts: 3, mid: false, extra: { shapes: [], pictures: [] } },
   { rows: 5, units: ['ABC', 'AABB', 'ABAC', 'AAB', 'ABB'], opts: 3, mid: false, extra: { shapes: ['grow'], pictures: ['flip'] } },
   { rows: 6, units: ['ABCD', 'AABC', 'ABCB', 'ABAC', 'ABC'], opts: 4, mid: true, extra: { shapes: ['rotate', 'grow'], pictures: ['flip', 'grow'] } },
-  { rows: 6, units: ['ABCD', 'AABC', 'ABCB', 'AABB', 'ABBC'], opts: 4, mid: true, extra: { shapes: ['rotate', 'rotate45', 'grow'], pictures: ['flip', 'grow'] } }
+  { rows: 6, units: ['ABCD', 'AABC', 'ABCB', 'AABB', 'ABBC'], opts: 4, mid: true, extra: { shapes: ['rotate', 'rotate45', 'grow'], pictures: ['flip', 'grow'] } },
+  // «Katta bolalar»: nuqtalar siljishi, aylanadigan sektorlar, tashqi va ichki shakl alohida takrorlanadi
+  { rows: 6, units: [], opts: 4, mid: true, older: ['dotmove', 'sector', 'inner'], extra: { shapes: [], pictures: [] } }
 ];
 const SMALL_ROWS = 4;
 
@@ -112,6 +114,33 @@ function flipRow(L, rand, usedPics) {
   return { kind: 'cycle', seq, q, alphabet: [...new Map(seq.map(s => [key(s), s])).values()] };
 }
 
+// ---------- «Katta bolalar» qatorlari ----------
+// dotmove: kvadrat chetida 8 ta joy (soat yo'nalishida 0..7); qora nuqta va oq nuqta har qadamda o'z qadamiga suriladi
+const mod8 = v => ((v % 8) + 8) % 8;
+function dotmoveRow(rand) {
+  const sa = pickOne(rand, [1, 2, 3, -1]), sb = pickOne(rand, [1, -1, 2, -2].filter(v => v !== sa));
+  const a0 = Math.floor(rand() * 8), b0 = Math.floor(rand() * 8), T = 6;
+  const seq = Array.from({ length: T }, (_, i) => ({ t: 'dm', a: mod8(a0 + sa * i), b: mod8(b0 + sb * i) }));
+  return { kind: 'dotmove', seq, q: 2 + Math.floor(rand() * (T - 2)) };
+}
+// sector: doira 8 bo'lakka bo'lingan, bo'yalgan bo'laklar har qadamda bir xil burchakka buriladi
+const rotSec = (on, k) => on.map(i => mod8(i + k)).sort((x, y) => x - y);
+function sectorRow(rand) {
+  const pat = pickOne(rand, [[0], [0, 1], [0, 2], [0, 3], [0, 1, 4], [0, 2, 3]]);
+  const k = pickOne(rand, [1, 2, 3, -1]), r0 = Math.floor(rand() * 8), T = 6;
+  const seq = Array.from({ length: T }, (_, i) => ({ t: 'sec', on: rotSec(pat, r0 + k * i) }));
+  return { kind: 'sector', seq, q: 2 + Math.floor(rand() * (T - 2)) };
+}
+// inner: tashqi shakl bir davr bilan, ichki shakl boshqa davr bilan takrorlanadi (2 va 3)
+function innerRow(rand) {
+  const [p1, p2] = shuffle([2, 3], rand);
+  const outs = shuffle(['circle', 'square', 'triangle', 'hexagon', 'diamond'], rand).slice(0, p1);
+  const ins = shuffle(['circle', 'square', 'triangle', 'star'], rand).slice(0, p2);
+  const T = 7;
+  const seq = Array.from({ length: T }, (_, i) => ({ t: 'fig', shape: outs[i % p1], inner: ins[i % p2] }));
+  return { kind: 'inner', seq, q: 3 + Math.floor(rand() * (T - 3)), outs, ins };
+}
+
 // Variantlar: to'g'ri javob + qatordagi boshqa belgilar + juda o'xshash "tuzoqlar"
 function addOptions(row, n, level, rand) {
   const ans = row.seq[row.q];
@@ -124,6 +153,15 @@ function addOptions(row, n, level, rand) {
     }
   } else if (row.kind === 'rotate') {
     [0, 45, 90, 135, 180, 225, 270, 315].forEach(rot => cands.push({ ...ans, rot }));
+  } else if (row.kind === 'dotmove') {
+    [-1, 1, 2].forEach(d => { cands.push({ ...ans, a: mod8(ans.a + d) }); cands.push({ ...ans, b: mod8(ans.b + d) }); });
+    cands.push({ ...ans, a: ans.b, b: ans.a });
+  } else if (row.kind === 'sector') {
+    [-1, 1, 2, 4].forEach(d => cands.push({ ...ans, on: rotSec(ans.on, d) }));
+    cands.push({ ...ans, on: ans.on.map(i => mod8(-i)).sort((x, y) => x - y) });
+  } else if (row.kind === 'inner') {
+    for (const shape of row.outs) for (const inner of row.ins) cands.push({ ...ans, shape, inner });
+    cands.push({ ...ans, shape: ans.inner, inner: ans.shape });                 // ichki va tashqi o'rin almashgan
   } else {
     [-2, -1, 1, 2].forEach(d => { if (ans.n + d >= 1 && ans.n + d <= 7) cands.push({ ...ans, n: ans.n + d }); });
   }
@@ -145,7 +183,7 @@ function addOptions(row, n, level, rand) {
   const at = Math.floor(rand() * (options.length + 1));
   options.splice(at, 0, ans);
   row.options = options; row.ans = at;
-  delete row.alphabet;
+  delete row.alphabet; delete row.outs; delete row.ins;
   return row;
 }
 
@@ -167,6 +205,30 @@ function cyclePredictions(seq, q) {
 function predict(row) {
   const { seq, q } = row;
   if (row.kind === 'cycle') return cyclePredictions(seq, q);
+  if (row.kind === 'inner') {
+    const po = cyclePredictions(seq.map(e => ({ s: e.shape })), q), pi = cyclePredictions(seq.map(e => ({ s: e.inner })), q);
+    if (po.size !== 1 || pi.size !== 1) return new Set();
+    return new Set([key({ t: 'fig', shape: JSON.parse([...po][0]).s, inner: JSON.parse([...pi][0]).s })]);
+  }
+  if (row.kind === 'dotmove' || row.kind === 'sector') {
+    const known = seq.map((e, i) => (i === q ? null : e));
+    const pairs = [];
+    for (let i = 0; i + 1 < seq.length; i++) if (known[i] && known[i + 1]) pairs.push([known[i], known[i + 1]]);
+    const out = new Set();
+    const base = known.findIndex(e => e);
+    if (row.kind === 'dotmove') {
+      for (let ka = 0; ka < 8; ka++) for (let kb = 0; kb < 8; kb++) {
+        if (!pairs.every(([x, y]) => mod8(x.a + ka) === y.a && mod8(x.b + kb) === y.b)) continue;
+        out.add(key({ t: 'dm', a: mod8(known[base].a + ka * (q - base)), b: mod8(known[base].b + kb * (q - base)) }));
+      }
+    } else {
+      for (let k = 0; k < 8; k++) {
+        if (!pairs.every(([x, y]) => key(rotSec(x.on, k)) === key(y.on))) continue;
+        out.add(key({ t: 'sec', on: rotSec(known[base].on, k * (q - base)) }));
+      }
+    }
+    return out;
+  }
   const known = seq.map((e, i) => (i === q ? null : e));
   const idx = known.map((e, i) => (e ? i : -1)).filter(i => i >= 0);
   if (row.kind === 'rotate') {
@@ -184,8 +246,33 @@ function predict(row) {
 }
 
 // ---------- Chizish ----------
+const DM_POS = [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]];
 function drawEl(ctx, el, cx, cy, s) {
   if (el.t === 'fig') { drawFigure(ctx, el, cx, cy, s); return; }
+  if (el.t === 'dm' || el.t === 'sec') {
+    ctx.save();
+    const R = s * 0.34, lw = Math.max(0.25, s * 0.025);
+    ctx.strokeStyle = INK; ctx.lineWidth = lw;
+    if (el.t === 'dm') {
+      ctx.strokeRect(cx - R, cy - R, 2 * R, 2 * R);
+      const r = s * 0.065;
+      const pa = DM_POS[el.b];
+      ctx.beginPath(); ctx.arc(cx + pa[0] * R, cy + pa[1] * R, r * (el.a === el.b ? 1.7 : 1.15), 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke();
+      const pb = DM_POS[el.a];
+      ctx.beginPath(); ctx.arc(cx + pb[0] * R, cy + pb[1] * R, r, 0, Math.PI * 2); ctx.fillStyle = INK; ctx.fill();
+    } else {
+      const a0 = -Math.PI / 2;
+      ctx.fillStyle = '#4B5563';
+      for (const i of el.on) { ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, R, a0 + i * Math.PI / 4, a0 + (i + 1) * Math.PI / 4); ctx.closePath(); ctx.fill(); }
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) { const a = a0 + i * Math.PI / 4; ctx.moveTo(cx - R * Math.cos(a), cy - R * Math.sin(a)); ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a)); }
+      ctx.lineWidth = lw * 0.8; ctx.stroke();
+    }
+    ctx.restore();
+    return;
+  }
   if (el.t === 'dots') { drawFigure(ctx, { shape: el.shape, dots: DICE[el.n] }, cx, cy, s); return; }
   if (el.t === 'pic') { drawPic(ctx, el.pic, picMap(cx, cy, s * 0.8, 0, el.flip), INK); return; }
   // many: n ta kichik rasm
@@ -220,7 +307,7 @@ export default {
   fileBase: { uz: 'qonuniyat', ru: 'Закономерность', en: 'Pattern' },
   defaultTitle: { uz: 'Qonuniyatni davom ettir!', ru: 'Продолжи закономерность!', en: 'Continue the pattern!' },
   options: [
-    { key: 'level', type: 'level', default: 0 },
+    { key: 'level', type: 'level', default: 0, older: true },
     {
       key: 'mode', type: 'choice', style: 'cards', pack: 'select', default: 'shapes',
       label: { uz: 'Turi', ru: 'Вид', en: 'Kind' },
@@ -228,13 +315,13 @@ export default {
     }
   ],
   levelHint: {
-    uz: ['AB, AAB: 3 ta variant', "ABC, AABB, nuqtalar ko'payadi", "4 ta variant, «?» o'rtada, burilish", "Murakkab bo'laklar, 45° burilish, o'xshash variantlar"],
-    ru: ['AB, AAB: 3 варианта', 'ABC, AABB, точек становится больше', '4 варианта, «?» в середине, поворот', 'Сложные звенья, поворот на 45°, похожие варианты'],
-    en: ['AB, AAB: 3 options', 'ABC, AABB, growing dots', '4 options, “?” in the middle, turning', 'Tricky units, 45° turns, look-alike options']
+    uz: ['AB, AAB: 3 ta variant', "ABC, AABB, nuqtalar ko'payadi", "4 ta variant, «?» o'rtada, burilish", "Murakkab bo'laklar, 45° burilish, o'xshash variantlar", "Ikki nuqta har xil qadam bilan siljiydi, sektorlar aylanadi, tashqi va ichki shakl alohida almashadi"],
+    ru: ['AB, AAB: 3 варианта', 'ABC, AABB, точек становится больше', '4 варианта, «?» в середине, поворот', 'Сложные звенья, поворот на 45°, похожие варианты', 'Две точки движутся с разным шагом, секторы вращаются, внешняя и внутренняя фигуры меняются отдельно'],
+    en: ['AB, AAB: 3 options', 'ABC, AABB, growing dots', '4 options, “?” in the middle, turning', 'Tricky units, 45° turns, look-alike options', 'Two dots move at different steps, sectors turn, outer and inner shapes change separately']
   },
 
   generate(opts, seed) {
-    const level = Math.max(0, Math.min(3, opts.level | 0));
+    const level = opts.level === 4 ? 4 : Math.max(0, Math.min(3, opts.level | 0));
     const mode = opts.mode in MODES ? opts.mode : 'shapes';
     const L = LEVELS[level];
     const small = opts.aspect === 'landscape' || opts.perPage > 1;
@@ -242,13 +329,15 @@ export default {
     const rand = makeRng(seed);
     const extras = L.extra[mode];
     // Qo'shimcha turlar: har biri bittadan (qatorlar soni yetsa), qolgani — takrorlanuvchi bo'laklar
-    const kinds = extras.slice(0, Math.max(0, N - 2));
+    let kinds = extras.slice(0, Math.max(0, N - 2));
     while (kinds.length < N) kinds.push('cycle');
+    if (L.older) { kinds = []; while (kinds.length < N) kinds.push(...shuffle(L.older.slice(), rand)); kinds = kinds.slice(0, N); }
     const rows = [], usedPics = new Set();
     for (const kind of shuffle(kinds, rand)) {
       let row;
       for (let attempt = 0; attempt < 30; attempt++) {
-        row = kind === 'rotate' ? rotateRow(90, rand) : kind === 'rotate45' ? rotateRow(45, rand)
+        row = kind === 'dotmove' ? dotmoveRow(rand) : kind === 'sector' ? sectorRow(rand) : kind === 'inner' ? innerRow(rand)
+          : kind === 'rotate' ? rotateRow(90, rand) : kind === 'rotate45' ? rotateRow(45, rand)
           : kind === 'grow' ? growRow(mode, rand, usedPics) : kind === 'flip' ? flipRow(L, rand, usedPics)
             : cycleRow(L, level, mode, rand, usedPics);
         const pr = predict(row);

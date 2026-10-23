@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.7.1';
+const VERSION = '2.8.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -74,6 +74,23 @@ const CORE = [
   'src/generators/xword.js',
   'src/generators/syllables.js',
   'src/generators/matrix.js',
+  'src/generators/countshapes.js',
+  'src/generators/cryptarith.js',
+  'src/generators/hiddenop.js',
+  'src/generators/letterseq-figs.js',
+  'src/generators/letterseq.js',
+  'src/generators/matches.js',
+  'src/generators/matrix-older.js',
+  'src/generators/newop.js',
+  'src/generators/numkit.js',
+  'src/generators/numshapes.js',
+  'src/generators/oddone-older.js',
+  'src/generators/opsigns.js',
+  'src/generators/skyscrapers.js',
+  'src/generators/symvalues.js',
+  'src/generators/tangram-figs.js',
+  'src/generators/tangram.js',
+  'src/generators/twins-lines.js',
   'src/generators/maze.js',
   'src/generators/oddone-items.js',
   'src/generators/oddone.js',

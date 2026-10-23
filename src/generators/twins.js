@@ -6,10 +6,11 @@
 // Kafolat (check()): aynan bir xil juftlik faqat bitta; qolgan kartochkalar hammasi bir-biridan farq qiladi.
 
 import { makeRng, shuffle, pickOne } from '../core/rng.js';
-import { INK } from '../core/draw.js';
+import { INK, MUTE, font } from '../core/draw.js';
 import { drawFigure } from '../core/figures.js';
 import { PIC_KEYS, picGroup, drawPic, picMap, isAsymmetric, silhouetteDistance } from '../core/pictures.js';
 import { scaleOf, measureRule, drawRule, cellBox, ring, ringEllipse, ruPlural } from '../core/parts.js';
+import { linesPuzzle, drawLineFig, checkLines } from './twins-lines.js';
 
 // cards — kartochkalar soni; cols — ustunlar (rasmlar turida — pcols); diff — boshqa kartochkalar
 // juftlikdan nechta joyda farq qiladi [eng kam, eng ko'p]
@@ -17,7 +18,8 @@ const LEVELS = [
   { cards: 6, cols: 3, pcols: 2, diff: [2, 3] },
   { cards: 9, cols: 3, pcols: 3, diff: [1, 2] },
   { cards: 12, cols: 4, pcols: 3, diff: [1, 2] },
-  { cards: 16, cols: 4, pcols: 3, diff: [1, 1], pdiff: [1, 2] }
+  { cards: 16, cols: 4, pcols: 3, diff: [1, 1], pdiff: [1, 2] },
+  { lines: true, rows: [4, 2, 1] }               // «Katta bolalar»: namuna + 5 ta chiziqli rasm (twins-lines.js)
 ];
 const SMALL = { cards: 6, cols: 3, pcols: 2 };
 const SHAPES = ['circle', 'square', 'triangle', 'star', 'heart', 'diamond'];
@@ -72,10 +74,55 @@ const RULE = {
   ru: 'Найди среди карточек две совершенно одинаковые и обведи их.',
   en: 'Find the two cards that are exactly the same and circle them.'
 };
+const RULE_LINES = {
+  uz: "Har qatorda chapdagi namunaga aynan o'xshash rasmni top va uni aylana bilan belgila. Qolgan rasmlar bitta mayda joyda farq qiladi: chiziq, doiracha yoki yo'nalish.",
+  ru: 'В каждом ряду найди рисунок, точно такой же, как образец слева, и обведи его. Остальные отличаются одной мелочью: линией, кружком или направлением.',
+  en: 'In each row, find the drawing that is exactly the same as the sample on the left and circle it. The others differ in one small detail: a line, a dot or the direction.'
+};
+const SAMPLE = { uz: 'Namuna', ru: 'Образец', en: 'Sample' };
 const MODES = {
   shapes: { big: '🔶', label: { uz: 'Shakllar', ru: 'Фигуры', en: 'Shapes' } },
   pictures: { big: '🐤', label: { uz: 'Rasmlar', ru: 'Картинки', en: 'Pictures' } }
 };
+
+// «Katta bolalar»: har qatorda namuna | 5 ta variant (tor joyda — ikki qatorga bo'linadi)
+function drawLinesPage(ctx, p, box, showSolution, lang) {
+  ctx.save();
+  const scale = scaleOf(box);
+  const rule = measureRule(ctx, RULE_LINES[lang] || RULE_LINES.uz, box.w, scale);
+  const gap = 4 * scale, n = p.puzzles.length, G0 = 0.16, SEP = 0.55, LAB = 0.3;
+  const H = box.h - rule.h - gap;
+  const c1 = Math.min(box.w / (6 + 4 * G0 + SEP + 0.2), H / (n * (1 + LAB + 0.35)), 32 * scale);
+  const c2 = Math.min(box.w / (3 + 2 * G0 + 0.2), H / (n * (2 + G0 + LAB + 0.35)), 32 * scale);
+  const two = c2 > c1 * 1.15, c = two ? c2 : c1, g = c * G0;
+  const rowH = (two ? 2 * c + g : c) + c * LAB + c * 0.35;
+  const rowW = two ? 3 * c + 2 * g : 6 * c + 4 * g + c * SEP;
+  const x0 = box.x + (box.w - rowW) / 2;
+  let y = box.y + Math.max(0, (H - n * rowH) * 0.35) + c * LAB;
+  p.puzzles.forEach(pz => {
+    font(ctx, Math.min(c * 0.2, 3.6 * scale), 800); ctx.fillStyle = MUTE; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(SAMPLE[lang] || SAMPLE.uz, x0 + c / 2, y - c * 0.05);
+    cellBox(ctx, x0, y, c, c, scale, { fill: '#EEF2FF', stroke: '#6366F1', r: c * 0.1 });
+    drawLineFig(ctx, pz.sample, x0, y, c);
+    pz.options.forEach((f, i) => {
+      const slot = i + 1;
+      const x = two ? x0 + (slot % 3) * (c + g) : x0 + c + c * SEP + i * (c + g);
+      const yy = two ? y + Math.floor(slot / 3) * (c + g) : y;
+      cellBox(ctx, x, yy, c, c, scale, { stroke: '#9CA3AF', r: c * 0.1 });
+      drawLineFig(ctx, f, x, yy, c);
+      if (showSolution && i === pz.ans) ring(ctx, x + c / 2, yy + c / 2, c * 0.62, scale);
+    });
+    if (!two) {
+      ctx.save(); ctx.strokeStyle = MUTE; ctx.lineWidth = Math.max(0.25, 0.35 * scale); ctx.setLineDash([c * 0.05, c * 0.05]);
+      const sx = x0 + c + c * SEP / 2;
+      ctx.beginPath(); ctx.moveTo(sx, y - c * 0.05); ctx.lineTo(sx, y + c * 1.05); ctx.stroke(); ctx.restore();
+    }
+    y += rowH;
+  });
+  drawRule(ctx, rule, box.x + box.w / 2, y - c * LAB - c * 0.35 + gap * 1.5);
+  ctx.restore();
+  return {};
+}
 
 export default {
   id: 'twins',
@@ -89,7 +136,7 @@ export default {
   fileBase: { uz: 'aynan bir xil ikkitasi', ru: 'Две одинаковые', en: 'Find the twins' },
   defaultTitle: { uz: 'Aynan bir xil ikkitasini top!', ru: 'Найди две одинаковые!', en: 'Find the twins!' },
   options: [
-    { key: 'level', type: 'level', default: 0 },
+    { key: 'level', type: 'level', default: 0, older: true },
     {
       key: 'mode', type: 'choice', style: 'cards', pack: 'select', default: 'shapes',
       label: { uz: 'Turi', ru: 'Вид', en: 'Kind' },
@@ -97,15 +144,20 @@ export default {
     }
   ],
   levelHint: {
-    uz: ["6 ta kartochka, farqi 2–3 joyda", "9 ta, farqi 1–2 joyda", "12 ta, rasmlarning yo'nalishi ham farq qiladi", "16 ta, har biri faqat bitta joyda farq qiladi"],
-    ru: ['6 карточек, отличия в 2–3 местах', '9 карточек, отличия в 1–2 местах', '12 карточек, отличается и направление', '16 карточек, каждая отличается лишь в одном месте'],
-    en: ['6 cards, 2–3 differences each', '9 cards, 1–2 differences', '12 cards, direction can differ too', '16 cards, each differs in just one spot']
+    uz: ["6 ta kartochka, farqi 2–3 joyda", "9 ta, farqi 1–2 joyda", "12 ta, rasmlarning yo'nalishi ham farq qiladi", "16 ta, har biri faqat bitta joyda farq qiladi", "Namunaga aynan o'xshashini top: murakkab chiziqli rasmlar, farqi bitta mayda joyda"],
+    ru: ['6 карточек, отличия в 2–3 местах', '9 карточек, отличия в 1–2 местах', '12 карточек, отличается и направление', '16 карточек, каждая отличается лишь в одном месте', 'Найди точно такой же, как образец: сложные линейные рисунки, отличие в одной мелочи'],
+    en: ['6 cards, 2–3 differences each', '9 cards, 1–2 differences', '12 cards, direction can differ too', '16 cards, each differs in just one spot', 'Match the sample exactly: complex line drawings, one tiny difference']
   },
 
   generate(opts, seed) {
-    const level = Math.max(0, Math.min(3, opts.level | 0));
+    const level = opts.level === 4 ? 4 : Math.max(0, Math.min(3, opts.level | 0));
     const mode = opts.mode in MODES ? opts.mode : 'shapes';
     const L = LEVELS[level];
+    if (L.lines) {
+      const rand = makeRng(seed);
+      const n = L.rows[opts.perPage === 4 ? 2 : opts.perPage === 2 ? 1 : 0];
+      return { level, seed, mode, kind: 'lines', puzzles: Array.from({ length: n }, () => linesPuzzle(rand)) };
+    }
     const small = opts.perPage > 1 || opts.aspect === 'landscape';
     const nCards = small ? Math.min(L.cards, SMALL.cards) : L.cards;
     const rand = makeRng(seed);
@@ -131,11 +183,13 @@ export default {
   },
 
   info(p, lang) {
+    if (p.kind === 'lines') { const k = p.puzzles.length; return { uz: `${k} ta qator, namuna va 5 ta rasm`, ru: `${k} ${ruPlural(k, 'ряд', 'ряда', 'рядов')}: образец и 5 рисунков`, en: `${k} row${k > 1 ? 's' : ''}: a sample and 5 drawings` }[lang] || ''; }
     const n = p.cards.length, m = MODES[p.mode].label[lang] || MODES[p.mode].label.uz;
     return { uz: `${n} ta kartochka, ${m.toLowerCase()}`, ru: `${n} ${ruPlural(n, 'карточка', 'карточки', 'карточек')}, ${m.toLowerCase()}`, en: `${n} cards, ${m.toLowerCase()}` }[lang] || '';
   },
 
   draw(ctx, p, box, { showSolution, lang }) {
+    if (p.kind === 'lines') return drawLinesPage(ctx, p, box, showSolution, lang);
     ctx.save();
     const scale = scaleOf(box);
     const rule = measureRule(ctx, RULE[lang] || RULE.uz, box.w, scale);
@@ -173,11 +227,13 @@ export default {
   },
 
   hint(p, info, lang) {
+    if (p.kind === 'lines') { const T = { uz: `Qatorlar: ${p.puzzles.length} · 5 tadan rasm`, ru: `Рядов: ${p.puzzles.length} · по 5 рисунков`, en: `Rows: ${p.puzzles.length} · 5 drawings each` }; return { text: T[lang] || T.uz, warn: false }; }
     const T = { uz: `Kartochkalar: ${p.cards.length}`, ru: `Карточек: ${p.cards.length}`, en: `Cards: ${p.cards.length}` };
     return { text: T[lang] || T.uz, warn: false };
   },
 
   check(p) {
+    if (p.kind === 'lines') return p.puzzles.flatMap((pz, i) => checkLines(pz).map(m => `row ${i}: ${m}`));
     const problems = [];
     let pairs = 0;
     for (let i = 0; i < p.cards.length; i++) for (let j = i + 1; j < p.cards.length; j++) {
