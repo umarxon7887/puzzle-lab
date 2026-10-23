@@ -40,7 +40,17 @@ import scales from './scales.js';
 import domino from './domino.js';
 import kakuro from './kakuro.js';
 import kenken from './kenken.js';
+import picsudoku from './picsudoku.js';
+import futoshiki from './futoshiki.js';
+import binary from './binary.js';
+import killer from './killer.js';
+import anagram from './anagram.js';
+import cipher from './cipher.js';
+import missing from './missing.js';
+import wordchain from './wordchain.js';
+import xword from './xword.js';
+import syllables from './syllables.js';
 
-export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots, pyramid, magic, numseq, chain, mathmaze, numpath, drill, scales, domino, kakuro, kenken];
+export const GENERATORS = [maze, sudoku, words, cross, code, odd, overlap, pattern, count, pairs, shadow, matrix, twins, cubes, diff, schulte, proof, coding, seqmaze, symmetry, copy, nonogram, dictation, paintnum, coords, dots, pyramid, magic, numseq, chain, mathmaze, numpath, drill, scales, domino, kakuro, kenken, picsudoku, futoshiki, binary, killer, anagram, cipher, missing, wordchain, xword, syllables];
 
 export const getGenerator = id => GENERATORS.find(g => g.id === id) || null;

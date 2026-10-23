@@ -4,6 +4,7 @@
 
 import { h } from './dom.js';
 import { t, pick, lvl } from '../core/i18n.js';
+import { levelsOf } from '../core/levels.js';
 
 let uid = 0;
 
@@ -20,16 +21,17 @@ export function buildOptions(gen, opts, onChange, { advanced = false } = {}) {
     const labelEl = h('span', { class: 'field-label', id: id + '-l' }, label);
 
     if (op.type === 'level') {
-      const seg = h('div', { class: 'seg seg-4', role: 'radiogroup', 'aria-labelledby': id + '-l' });
+      const levels = levelsOf(gen);
+      const seg = h('div', { class: 'seg seg-' + levels.length, role: 'radiogroup', 'aria-labelledby': id + '-l' });
       const note = gen.levelHint ? h('p', { class: 'field-note' }) : null;
-      const btns = [0, 1, 2, 3].map(i => h('button', {
-        type: 'button', role: 'radio', class: 'seg-btn lvl-' + i,
+      const btns = levels.map(i => h('button', {
+        type: 'button', role: 'radio', class: 'seg-btn lvl-' + (i < 0 ? 've' : i),
         onclick: () => { opts.level = i; for (const o of gen.options) if (o.fromLevel) delete opts[o.key]; onChange('level'); syncAll(); }
       }, lvl(i)));
       btns.forEach(b => seg.appendChild(b));
       const sync = () => {
-        btns.forEach((b, i) => { b.setAttribute('aria-checked', String(opts.level === i)); b.tabIndex = opts.level === i ? 0 : -1; });
-        if (note) note.textContent = pick(gen.levelHint)[opts.level] || '';
+        btns.forEach((b, j) => { const on = opts.level === levels[j]; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+        if (note) note.textContent = pick(gen.levelHint)[levels.indexOf(opts.level)] || '';
       };
       radioKeys(seg, btns);
       syncers.push(sync);

@@ -73,7 +73,7 @@ function makeJigsaw(N, rand) {
 }
 
 const specCache = new Map();
-function buildSpec(key, seed) {
+export function buildSpec(key, seed) {
   const t = TYPES[key], N = t.N;
   const ck = t.jig ? key + '|' + seed : key;
   if (specCache.has(ck)) return specCache.get(ck);

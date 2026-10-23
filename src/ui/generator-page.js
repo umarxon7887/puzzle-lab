@@ -10,6 +10,7 @@ import { buildOptions } from './options.js';
 import { getPuzzle, makeSlot, defaultOpts, isCached } from './puzzles.js';
 import { loadFonts } from './fonts.js';
 import { t, pick, getLang } from '../core/i18n.js';
+import { levelsOf } from '../core/levels.js';
 import { store } from '../core/storage.js';
 import { newSeed, deriveSeed } from '../core/rng.js';
 import { drawPage, slotAspect, PER_PAGE } from '../core/sheet.js';
@@ -25,7 +26,7 @@ function loadState(gen) {
   for (const op of gen.options) {                      // eskirgan/buzilgan qiymatlarni tuzatamiz
     if (op.type === 'choice' && !op.choices.some(c => c.value === opts[op.key])) opts[op.key] = op.default;
     if (op.type === 'emoji' && !op.choices.includes(opts[op.key])) opts[op.key] = op.default;
-    if (op.type === 'level' && ![0, 1, 2, 3].includes(opts.level)) opts.level = op.default;
+    if (op.type === 'level' && !levelsOf(gen).includes(opts.level)) opts.level = op.default;
   }
   return {
     opts,

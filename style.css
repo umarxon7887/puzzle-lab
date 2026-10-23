@@ -180,6 +180,8 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 /* Segmentli tanlov (daraja, 1/2/4) */
 .seg { display: grid; gap: 6px; }
 .seg-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.seg-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 420px) { .seg-5 { grid-template-columns: repeat(6, minmax(0, 1fr)); } .seg-5 .seg-btn { grid-column: span 2; } .seg-5 .seg-btn:nth-child(n+4) { grid-column: span 3; } }
 .seg-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .seg-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .seg-btn {
@@ -599,6 +601,26 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
 /* Domino: bo'sh dominoga nuqtalar chiziladi */
 .gen-card-cover .cover-domino .dm-a { animation: ngFill 4s ease-in-out infinite; }
 
+/* 39–48. Sudokusimonlar va so'z o'yinlari (v2.7). Asosiy holat — tayyor rasm. */
+.gen-card-cover .cover-picsudoku [class^="ps-"], .gen-card-cover .cover-futoshiki [class^="ft-"], .gen-card-cover .cover-binary [class^="bn-"],
+.gen-card-cover .cover-killer [class^="kl-"], .gen-card-cover .cover-anagram [class^="an-"], .gen-card-cover .cover-cipher [class^="cp-"],
+.gen-card-cover .cover-missing [class^="ms-"], .gen-card-cover .cover-wordchain [class^="wc-"], .gen-card-cover .cover-xword [class^="xw-"],
+.gen-card-cover .cover-syllables .sy-w { animation: cdWrite 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-picsudoku .ps-b, .gen-card-cover .cover-futoshiki .ft-b, .gen-card-cover .cover-binary .bn-b, .gen-card-cover .cover-killer .kl-b,
+.gen-card-cover .cover-anagram .an-x, .gen-card-cover .cover-cipher .cp-b, .gen-card-cover .cover-missing .ms-b, .gen-card-cover .cover-wordchain .wc-b,
+.gen-card-cover .cover-xword .xw-b { animation-delay: .35s; }
+.gen-card-cover .cover-futoshiki .ft-c, .gen-card-cover .cover-binary .bn-c, .gen-card-cover .cover-killer .kl-c, .gen-card-cover .cover-anagram .an-y,
+.gen-card-cover .cover-cipher .cp-c, .gen-card-cover .cover-missing .ms-c, .gen-card-cover .cover-wordchain .wc-c, .gen-card-cover .cover-xword .xw-c { animation-delay: .7s; }
+.gen-card-cover .cover-xword .xw-d { animation-delay: 1.05s; }
+.gen-card-cover .cover-xword .xw-e { animation-delay: 1.4s; }
+.gen-card-cover .cover-xword .xw-f { animation-delay: 1.75s; }
+/* Bo'g'inlar: kartochkalar o'rin almashadi, keyin so'z yoziladi */
+.gen-card-cover .cover-syllables .sy-a { animation: syA 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-syllables .sy-b { animation: syB 4.4s ease-in-out infinite; }
+.gen-card-cover .cover-syllables .sy-w { animation-delay: 1.1s; }
+@keyframes syA { 0%, 15% { transform: none; } 35%, 85% { transform: translateX(84px); } 100% { transform: none; } }
+@keyframes syB { 0%, 15% { transform: none; } 35%, 85% { transform: translateX(-84px); } 100% { transform: none; } }
+
 /* 27. To'plam: varaqlar yelpig'ichdek ochiladi */
 .pack-card-cover .pk-s3 { animation: pk3 4s ease-in-out infinite; }
 .pack-card-cover .pk-s2 { animation: pk2 4s ease-in-out infinite; }
@@ -630,6 +652,7 @@ select { appearance: none; -webkit-appearance: none; padding-right: 32px; cursor
   .cover-schulte .sh-hl rect, .cover-coding [class^="cd-"], .cover-nonogram [class^="ng-"], .cover-paintnum .pn-fill { opacity: 1 !important; }
   .cover-pyramid [class^="pyr-"], .cover-magic .mg-c, .cover-chain .ch-a, .cover-numpath .np-a, .cover-numpath .np-b, .cover-numseq [class^="ns-"], .cover-drill [class^="dr-"], .cover-kakuro [class^="kk-"], .cover-kenken [class^="kn-"], .cover-scales .sc-r, .cover-domino .dm-a { opacity: 1 !important; transform: none !important; }
   .cover-magic .mg-d, .cover-mathmaze .mz-path, .cover-numpath .np-path { stroke-dashoffset: 0 !important; }
+  .cover-picsudoku [class^="ps-"], .cover-futoshiki [class^="ft-"], .cover-binary [class^="bn-"], .cover-killer [class^="kl-"], .cover-anagram [class^="an-"], .cover-cipher [class^="cp-"], .cover-missing [class^="ms-"], .cover-wordchain [class^="wc-"], .cover-xword [class^="xw-"], .cover-syllables [class^="sy-"] { opacity: 1 !important; transform: none !important; }
   .pack-card, .gen-card { transform: none !important; }
 }
 

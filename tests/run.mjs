@@ -17,6 +17,7 @@ import { ICONS as OVL_ICONS } from '../src/core/picture-data.js';
 import { picPolys, computeMirrorDiff } from '../src/core/pictures.js';
 import { ITEMS as ODD_ITEMS, CATS as ODD_CATS, PAIRS_MEDIUM as ODD_PAIRS_MEDIUM, PAIRS_HARD as ODD_PAIRS_HARD, eligible as oddEligible } from '../src/generators/oddone-items.js';
 import { _dict, LANGS } from '../src/core/i18n.js';
+import { levelsOf, levelName } from '../src/core/levels.js';
 import { buildPdf } from '../src/core/pdf.js';
 import { slotRects, drawPage, PAGE_W, PAGE_H } from '../src/core/sheet.js';
 
@@ -134,6 +135,9 @@ await test('har bir generatorda kerakli maydonlar bor', () => {
     for (const fn of ['generate', 'draw', 'info', 'hint', 'check']) assert(typeof g[fn] === 'function', `${g.id}.${fn} missing`);
     assert(typeof g.cover === 'string' && g.cover.startsWith('<svg'), g.id + ' cover');
     assert(g.options.some(o => o.type === 'level'), g.id + ' has no level option');
+    // darajalar izohi har bir daraja uchun (v2.7 dan «Juda oson» bo'lishi mumkin) va daraja nomlari uch tilda
+    if (g.levelHint) for (const l of LANG_CODES) eq(g.levelHint[l]?.length, levelsOf(g).length, `${g.id}.levelHint.${l} length`);
+    for (const lv of levelsOf(g)) for (const l of LANG_CODES) assert(levelName(lv, l), `level name ${lv}/${l}`);
     for (const o of g.options) {
       assert(o.key && o.type, g.id + ' option without key/type');
       if (o.type !== 'level') for (const l of LANG_CODES) assert(o.label?.[l], `${g.id}.${o.key}.label.${l}`);
@@ -173,7 +177,7 @@ for (const g of GENERATORS) {
     for (const lang of langs) {
       const label = Object.values(v).join('') + (g.usesLang ? '/' + lang : '');
       await test(`${label || 'standart'}: barcha darajalar to'g'ri (${SEEDS} tadan)`, () => {
-        for (let level = 0; level < 4; level++) {
+        for (const level of levelsOf(g)) {
           for (let s = 0; s < SEEDS; s++) {
             const seed = 1 + s * 7919 + level * 104729 + label.length;
             const p = g.generate({ level, ...v, lang }, seed);
@@ -192,7 +196,7 @@ for (const g of GENERATORS) {
   });
   await test('chizish: varaqning 1, 2 va 4 qismiga sig\'adi', () => {
     for (const [name, box] of Object.entries(BOXES)) {
-      for (let level = 0; level < 4; level++) {
+      for (const level of levelsOf(g)) {
         for (const v of variants) {
           // 4 tadan: shu o'lcham uchun yaratilgan va 1 tadan uchun yaratilgan (to'plamdagi javoblar) topshiriq
           for (const perPage of name === 'quarter' ? [4, 1] : [name === 'half' ? 2 : 1]) {

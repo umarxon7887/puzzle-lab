@@ -10,6 +10,7 @@ import { getPuzzle, makeSlot, defaultOpts } from './puzzles.js';
 import { loadFonts } from './fonts.js';
 import { GENERATORS, getGenerator } from '../generators/registry.js';
 import { t, pick, getLang, lvl } from '../core/i18n.js';
+import { levelsOf } from '../core/levels.js';
 import { store } from '../core/storage.js';
 import { makeRng, newSeed, shuffle, pickOne } from '../core/rng.js';
 import { drawPage, slotAspect, PER_PAGE } from '../core/sheet.js';
@@ -33,7 +34,7 @@ function loadState() {
   GENERATORS.forEach((gen, i) => {
     const r = { ...defaultRow(gen, i), ...((s.rows || {})[gen.id] || {}) };
     r.count = Math.max(0, Math.min(MAX_COUNT, r.count | 0));
-    if (!(r.level === 'mix' || [0, 1, 2, 3].includes(r.level))) r.level = 1;
+    if (!(r.level === 'mix' || levelsOf(gen).includes(r.level))) r.level = 1;
     const mo = mainOption(gen);
     if (mo && r.main !== 'mix' && !packChoices(mo).some(c => c.value === r.main)) r.main = mo.default;
     rows[gen.id] = r;
@@ -53,7 +54,7 @@ function loadState() {
 function makeItem(gen, row, seed = newSeed()) {
   const rand = makeRng(seed ^ 0x2545F491);
   const opts = defaultOpts(gen);
-  opts.level = row.level === 'mix' ? Math.floor(rand() * 4) : row.level;
+  opts.level = row.level === 'mix' ? pickOne(rand, [0, 1, 2, 3]) : row.level;   // «Aralash» — asosiy 4 daraja
   for (const op of gen.options) {
     if (op.pack === 'select') {
       const ch = packChoices(op);
@@ -92,7 +93,7 @@ export function mountPack(main) {
     const minus = h('button', { type: 'button', class: 'stepper-btn', 'aria-label': '−1', html: ICONS.minus });
     const plus = h('button', { type: 'button', class: 'stepper-btn', 'aria-label': '+1', html: ICONS.plus });
     const lvlSel = h('select', { 'aria-label': t('level') },
-      [0, 1, 2, 3].map(i => h('option', { value: String(i) }, lvl(i))),
+      levelsOf(gen).map(i => h('option', { value: String(i) }, lvl(i))),
       h('option', { value: 'mix' }, t('packMixed')));
     lvlSel.value = String(row.level);
     const mo = mainOption(gen);
