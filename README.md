@@ -86,6 +86,7 @@ Bir zumda yarating, javob varag'i bilan **A4 PDF** qilib chop eting. Bepul, ro'y
 - **Savat** — internet-do'kondagidek: generator sahifasida topshiriqni o'zingizga moslab sozlang va 🛒+ tugmasi bilan savatga qo'shing. Savatda tartibini o'zgartiring, raqamini yangilang yoki olib tashlang va **bir klikda bitta PDF** oling.
   - **Variantlar** — har bir o'quvchiga alohida variant: turlari va sozlamalari bir xil, masalalari boshqa (bir-biridan ko'chira olmaydi).
   - **Shablonlar** — savatni nom bilan saqlang («2-sinf, haftalik»); keyingi safar bir klikda xuddi shunday to'plam yangi masalalar bilan yig'iladi.
+- **Saqlanganlar** — yoqqan generatorlarni ★ belgisi bilan saqlang: ular bosh sahifaning tepasida alohida turadi (akkauntsiz, shu brauzerda saqlanadi).
 - Bir varaqda **1, 2 yoki 4 ta** topshiriq (qirqish chiziqlari bilan), **ism va sana** uchun qator.
 - Varaq tepasidagi matnni o'zgartirish va o'lchamini tanlash mumkin.
 - **Topshiriq raqami**: bir xil raqam va sozlamalar har doim aynan bir xil topshiriqni beradi — raqamni yozib qo'ysangiz, keyin javobini ham topasiz. Raqam varaq pastida va fayl nomida ko'rsatiladi.
@@ -115,6 +116,7 @@ Chrome'da saytni oching → menyu (⋮) → **Bosh ekranga qo'shish**. Safari'da
 - 4 уровня сложности (у четырёх зрительных заданий есть ещё уровень **«Для старших»** — для 4–7 классов); у судоку, кроссворда, «Взломай код», «Найди лишнее», всех заданий по математической логике и судоку-головоломок решение всегда **единственное**.
 - **Набор**: задания разных видов в одном PDF (задания, ответы или оба), с просмотром, заменой и удалением.
 - **Корзина**: настройте задание на его странице и добавьте в корзину; в корзине меняйте порядок и получите один PDF в один клик. **Варианты** — отдельный вариант для каждого ученика; **шаблоны** — сохранённый набор, который в один клик собирается заново с новыми заданиями.
+- **Сохранённые**: отметьте понравившиеся генераторы звёздочкой ★ — они будут вверху главной страницы (без регистрации, хранятся в этом браузере).
 - 1, 2 или 4 задания на листе, строка для имени и даты, свой текст заголовка.
 - **Номер задания**: тот же номер и настройки всегда дают то же задание.
 - Языки: узбекский, русский, английский.
@@ -126,6 +128,7 @@ A puzzle generator for kids with **58 puzzle types**: **maze, sudoku, word searc
 - 4 difficulty levels (four visual puzzles also have an **"Older kids"** level for grades 4–7); sudoku, math crossword, crack-the-code, odd-one-out, all math logic and sudoku-style puzzles always have a **unique** solution.
 - **Pack**: mix different puzzles into one PDF (puzzles, answers or both), with review, replace and remove.
 - **Basket**: set up a puzzle on its page and add it to the basket; reorder there and get one PDF in one click. **Versions** give each student their own copy; **templates** save a set and rebuild it later with fresh puzzles in one click.
+- **Saved**: star ★ the generators you like and they stay at the top of the home page (no account, stored in this browser).
 - 1, 2 or 4 puzzles per page, a name/date line, custom title text.
 - **Puzzle number**: the same number and settings always produce the same puzzle.
 - Languages: Uzbek, Russian, English.

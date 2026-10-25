@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.8.0';
+const VERSION = '2.8.1';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -34,6 +34,7 @@ const CORE = [
   'src/core/gridpics.js',
   'src/core/skills.js',
   'src/core/cart.js',
+  'src/core/favs.js',
   'src/generators/code.js',
   'src/generators/count.js',
   'src/generators/crossword.js',
@@ -112,6 +113,7 @@ const CORE = [
   'src/ui/options.js',
   'src/ui/pack-page.js',
   'src/ui/cart-page.js',
+  'src/ui/fav-button.js',
   'src/ui/preview.js',
   'src/ui/puzzles.js'
 ];

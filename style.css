@@ -126,6 +126,26 @@ main:focus { outline: none; }
 .gen-card-body { display: grid; gap: 3px; }
 .gen-card-name { font-size: 16px; font-weight: 900; line-height: 1.2; }
 .gen-card-desc { font-size: 12.5px; color: var(--muted); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+/* Saqlanganlar (★, v2.8.1): tugma karta havolasining yonida, burchakda */
+.gen-card-wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.gen-card-wrap > .gen-card { height: 100%; }
+.fav-btn {
+  position: absolute; top: 8px; right: 8px; width: 38px; height: 38px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  color: #9CA3AF; background: rgba(255, 255, 255, .94); border: 1px solid var(--border); border-radius: 50%;
+  transition: transform .15s ease, color .15s ease, background .15s ease;
+}
+.fav-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.fav-btn:hover { color: #F59E0B; transform: scale(1.08); }
+.fav-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.fav-btn[aria-pressed="true"] { color: #F59E0B; background: #FFFBEB; border-color: #FDE68A; }
+.fav-btn[aria-pressed="true"] svg { fill: currentColor; }
+.page-title .fav-btn { position: static; flex: none; margin-left: 2px; }
+.section-count { display: inline-block; margin-left: 8px; padding: 0 7px; border-radius: 999px; background: #FEF3C7; color: #92400E; letter-spacing: 0; }
+.fav-grid { margin-bottom: 24px; }
+.fav-hint { display: flex; align-items: center; gap: 8px; margin: 0 2px 18px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.fav-hint-star { flex: none; display: grid; }
+.fav-hint-star svg { width: 18px; height: 18px; fill: none; stroke: #F59E0B; stroke-width: 2; stroke-linejoin: round; }
 .site-foot { text-align: center; color: var(--muted); font-size: 12.5px; margin: 26px 0 0; }
 
 /* ---------- Sahifa sarlavhasi ---------- */

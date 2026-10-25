@@ -17,6 +17,8 @@ import { drawPage, slotAspect, PER_PAGE } from '../core/sheet.js';
 import { renderPdf } from '../core/pdf.js';
 import { download } from '../core/files.js';
 import { addToCart } from '../core/cart.js';
+import { isFav, toggleFav } from '../core/favs.js';
+import { favButton } from './fav-button.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -47,11 +49,18 @@ export function mountGenerator(main, gen) {
   let showAnswer = false, slots = [], infos = [], token = 0, exporting = false, lastInteractive = null;
 
   // ---------- Sarlavha ----------
+  // ★ — generatorni «Saqlanganlar»ga qo'shish (bosh sahifa tepasida turadi)
+  const favBtn = favButton(gen.id, isFav(gen.id), id => {
+    const on = toggleFav(id);
+    favBtn.sync(on);
+    toast(on ? t('favAdded') : t('favRemoved'));
+  });
   const head = h('div', { class: 'page-head' },
     h('a', { class: 'back-link', href: '#/' }, h('span', { class: 'bl-icon', html: ICONS.back }), t('back')),
     h('div', { class: 'page-title' },
       h('span', { class: 'page-cover', html: gen.cover }),
-      h('h1', null, pick(gen.name))));
+      h('h1', null, pick(gen.name)),
+      favBtn));
 
   // ---------- Sozlamalar paneli ----------
   const optsUI = buildOptions(gen, st.opts, () => { save(); regenerate(); });

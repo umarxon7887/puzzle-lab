@@ -412,6 +412,16 @@ await test('shablon: turlar va sozlamalar saqlanadi, raqamlar yangilanadi', asyn
   saveTemplate(cart, '2-sinf');
   eq(cart.templates.length, 1, 'same name replaces the template');
 });
+await test('saqlanganlar: tozalash va almashtirish (takrorsiz, faqat mavjud generatorlar, yangisi boshida)', async () => {
+  const { cleanFavs, toggleIn, FAV_MAX } = await import('../src/core/favs.js');
+  const ids = GENERATORS.map(g => g.id);
+  eq(json(cleanFavs(['maze', 'maze', 7, null, 'yoq', 'sudoku'], ids)), json(['maze', 'sudoku']), 'clean');
+  eq(json(cleanFavs('buzilgan', ids)), '[]', 'not an array');
+  let l = toggleIn([], 'maze'); l = toggleIn(l, 'sudoku');
+  eq(json(l), json(['sudoku', 'maze']), 'newest first');
+  eq(json(toggleIn(l, 'maze')), json(['sudoku']), 'toggle removes');
+  eq(cleanFavs(Array.from({ length: FAV_MAX + 20 }, (_, i) => 'g' + i)).length, FAV_MAX, 'capped');
+});
 await test('savat elementlari tekshiriladi (buzilganlari tashlab yuboriladi)', async () => {
   const { addToCart } = await import('../src/core/cart.js');
   const r = addToCart([{ gen: 'maze', opts: { level: 1 }, seed: 5 }, { gen: 'maze', seed: -1, opts: {} }, null]);
