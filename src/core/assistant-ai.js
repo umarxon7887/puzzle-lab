@@ -24,7 +24,7 @@ export const setKey = k => (k ? store.set('ai-key', String(k).trim()) : store.re
 export const aiAvailable = () => !!(AI_ENDPOINT || getKey());
 
 // ---------- Kesh ----------
-const cacheKey = (lang, ctx, q) => [lang, ctx.genId || ctx.route || 'home', norm(q)].join('|');
+const cacheKey = (lang, ctx, q) => ['v2', lang, ctx.genId || ctx.route || 'home', norm(q)].join('|');
 function cacheGet(k) { const c = store.get('ai-cache', {}) || {}; return c[k]?.a || null; }
 function cachePut(k, a) {
   const c = store.get('ai-cache', {}) || {};
