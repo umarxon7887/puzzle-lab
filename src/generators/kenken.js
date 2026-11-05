@@ -44,7 +44,7 @@ function cages(n, L, rand) {
   return list;
 }
 
-const evalCage = (op, vals) => {
+export const evalCage = (op, vals) => {
   if (op === '=') return vals[0];
   if (op === '+') return vals.reduce((a, b) => a + b, 0);
   if (op === MUL) return vals.reduce((a, b) => a * b, 1);
@@ -168,8 +168,10 @@ export default {
     const { cols, rows, cs } = best, side = n * cs;
     const gridW = cols * side + (cols - 1) * gap * 2, gridH = rows * side + (rows - 1) * gap;
     const gx = box.x + (box.w - gridW) / 2, gy = box.y + Math.max(0, (H - gridH) * 0.35);
+    let geo = null;
     p.items.forEach((it, idx) => {
       const ox = gx + (idx % cols) * (side + gap * 2), oy = gy + Math.floor(idx / cols) * (side + gap);
+      if (!idx) geo = { x: ox, y: oy, cell: cs, cols: n, valY: 0.58 };
       const cageOf = new Int16Array(n * n);
       it.cages.forEach((c, i) => c.cells.forEach(k => { cageOf[k] = i; }));
       // ingichka chiziqlar
@@ -201,7 +203,7 @@ export default {
     });
     drawRule(ctx, rule, box.x + box.w / 2, gy + gridH + gap);
     ctx.restore();
-    return {};
+    return { geo };
   },
 
   hint(p, info, lang) {

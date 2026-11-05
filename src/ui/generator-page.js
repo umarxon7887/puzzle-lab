@@ -20,6 +20,7 @@ import { addToCart } from '../core/cart.js';
 import { isFav, toggleFav } from '../core/favs.js';
 import { favButton } from './fav-button.js';
 import { setPageContext } from '../core/page-context.js';
+import { EXPLAIN_IDS, buildSteps, drawSteps } from '../core/explain.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -48,6 +49,8 @@ export function mountGenerator(main, gen) {
   const save = () => store.set('gen:' + gen.id, st);
   save();                                              // raqam saqlanadi: qayta kirganda o'sha topshiriq chiqadi
   let showAnswer = false, slots = [], infos = [], token = 0, exporting = false, lastInteractive = null;
+  let ex = null;                                       // «Tushuntir» rejimi: { steps, at }
+  const canExplain = EXPLAIN_IDS.includes(gen.id);
 
   // ---------- Sarlavha ----------
   // ★ — generatorni «Saqlanganlar»ga qo'shish (bosh sahifa tepasida turadi)
@@ -92,12 +95,70 @@ export function mountGenerator(main, gen) {
   });
   const preview = createPreview((ctx, k) => {
     if (!slots.length) { ctx.setTransform(k, 0, 0, k, 0, 0); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 210, 297); return; }
-    infos = drawPage(ctx, k, pageSpec(showAnswer));
+    infos = drawPage(ctx, k, pageSpec(showAnswer && !ex));
+    if (ex) drawSteps(ctx, infos[0]?.geo, ex.steps, ex.at);   // faqat ekranda: PDF o'zi alohida chiziladi
     updateHint();
   }, { label: t('previewAlt') + ': ' + pick(gen.name) });
   const busy = h('div', { class: 'busy', hidden: true }, h('span', { class: 'spinner', 'aria-hidden': 'true' }), t('busy'));
   const interactive = h('div', { class: 'interactive' });
+
+  // ---------- «Shu topshiriqni tushuntir»: varaqdagi topshiriq qadamma-qadam ----------
+  const exBtn = h('button', { type: 'button', class: 'ex-start', hidden: !canExplain }, h('span', { class: 'ex-ic', html: ICONS.bulb }), t('explainBtn'));
+  const exTitle = h('strong', { class: 'ex-title' });
+  const exText = h('p', { class: 'ex-text', 'aria-live': 'polite' });
+  const exPrev = h('button', { type: 'button', class: 'btn ex-nav' }, h('span', { class: 'btn-icon', html: ICONS.back }), t('explainPrev'));
+  const exNext = h('button', { type: 'button', class: 'btn btn-primary ex-nav' }, t('explainNext'), h('span', { class: 'btn-icon', html: ICONS.next }));
+  const exAsk = h('button', { type: 'button', class: 'link-btn ex-ask' }, t('explainAsk'));
+  const exClose = h('button', { type: 'button', class: 'icon-btn ghost ex-close', title: t('explainClose'), 'aria-label': t('explainClose'), html: ICONS.close });
+  const exCard = h('div', { class: 'ex-card', hidden: true },
+    h('div', { class: 'ex-head' }, h('span', { class: 'ex-ic', html: ICONS.bulb }), exTitle, exClose),
+    exText,
+    h('div', { class: 'ex-row' }, exPrev, exNext),
+    h('div', { class: 'ex-foot' }, h('span', { class: 'ex-note' }, t('explainNote')), exAsk));
+  function exSync() {
+    exBtn.hidden = !canExplain || !!ex;
+    exCard.hidden = !ex;
+    if (ex) {
+      const s = ex.steps[ex.at];
+      exTitle.textContent = t('explainTitle', ex.at + 1, ex.steps.length);
+      exText.textContent = s.text;
+      exPrev.disabled = ex.at === 0;
+      exNext.disabled = ex.at === ex.steps.length - 1;
+    }
+    pushContext();
+    preview.redraw();
+  }
+  function exCmd(cmd) {
+    if (!canExplain || !slots.length) return;
+    if (cmd === 'start') {
+      if (!ex) ex = { steps: buildSteps(gen.id, slots[0].puzzle, getLang()), at: 0 };
+      showAnswer = false; syncEye();
+      exSync();
+      exCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (cmd === 'answer') { ex = null; showAnswer = true; syncEye(); exSync(); return; }
+    if (!ex) return;
+    if (cmd === 'next') ex.at = Math.min(ex.steps.length - 1, ex.at + 1);
+    else if (cmd === 'prev') ex.at = Math.max(0, ex.at - 1);
+    else if (cmd === 'stop') ex = null;
+    exSync();
+  }
+  exBtn.addEventListener('click', () => exCmd('start'));
+  exNext.addEventListener('click', () => exCmd('next'));
+  exPrev.addEventListener('click', () => exCmd('prev'));
+  exClose.addEventListener('click', () => exCmd('stop'));
+  exAsk.addEventListener('click', () => import('./assistant.js').then(m => m.askAssistant(t('explainAskQ'))).catch(console.error));
+  window.addEventListener('pl:explain', e => exCmd(e.detail?.cmd), { signal });
+  // Klaviatura: ← → qadamlar (matn kiritilayotganda emas)
+  document.addEventListener('keydown', e => {
+    if (!ex || e.target.closest?.('input, textarea, select, .ai-panel')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); exCmd('next'); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); exCmd('prev'); }
+  }, { signal });
+
   const previewCol = h('section', { class: 'preview-col' },
+    exBtn, exCard,
     h('div', { class: 'sheet-frame' }, preview.canvas, busy),
     h('p', { class: 'preview-note' }, t('previewNote')),
     interactive);
@@ -108,7 +169,7 @@ export function mountGenerator(main, gen) {
     h('span', { class: 'lbl-full' }, t('newPuzzle')), h('span', { class: 'lbl-short', 'aria-hidden': 'true' }, t('newPuzzleShort')));
   newBtn.addEventListener('click', () => { st.seed = newSeed(); save(); regenerate(); });
   const eyeBtn = h('button', { type: 'button', class: 'icon-btn', 'aria-pressed': 'false' });
-  eyeBtn.addEventListener('click', () => { showAnswer = !showAnswer; syncEye(); preview.redraw(); });
+  eyeBtn.addEventListener('click', () => { showAnswer = !showAnswer; if (showAnswer && ex) { ex = null; exSync(); } syncEye(); preview.redraw(); });
   const pdfBtn = h('button', { type: 'button', class: 'icon-btn', title: t('pdf'), 'aria-label': t('pdf'), html: ICONS.download });
   const setBtn = h('button', { type: 'button', class: 'icon-btn', title: t('settings'), 'aria-label': t('settings'), html: ICONS.settings });
   // Savatga: varaqdagi topshiriq(lar) aynan shu sozlamalar va raqamlar bilan qo'shiladi
@@ -158,7 +219,15 @@ export function mountGenerator(main, gen) {
     // Yordamchi uchun: qaysi topshiriq ochiq (AI'ga faqat shu qisqa ma'lumot boradi)
     let info = '';
     try { info = gen.info ? gen.info(slots[0].puzzle, getLang()) : ''; } catch { /* e'tibor bermaymiz */ }
-    setPageContext({ route: gen.id, genId: gen.id, level: st.opts.level, seed: st.seed, info });
+    pageInfo = info;
+    if (ex) ex = { steps: buildSteps(gen.id, slots[0].puzzle, getLang()), at: 0 };   // yangi topshiriq — tushuntirish boshidan
+    exSync();
+  }
+
+  let pageInfo = '';
+  function pushContext() {
+    const explain = !canExplain ? null : ex ? { active: true, at: ex.at + 1, total: ex.steps.length, text: ex.steps[ex.at].text } : { available: true };
+    setPageContext({ route: gen.id, genId: gen.id, level: st.opts.level, seed: st.seed, info: pageInfo, explain });
   }
 
   function updateHint() {

@@ -202,8 +202,10 @@ export default {
     const { cols, rows, cs } = best, side = unit * cs, step = cs * (1 + G);
     const gridW = cols * (side + 2 * pad) + (cols - 1) * gap * 2, gridH = rows * (side + 2 * pad) + (rows - 1) * gap;
     const gx = box.x + (box.w - gridW) / 2, gy = box.y + Math.max(0, (H - gridH) * 0.35);
+    let geo = null;
     p.items.forEach((it, idx) => {
       const ox = gx + pad + (idx % cols) * (side + 2 * pad + gap * 2), oy = gy + pad + Math.floor(idx / cols) * (side + 2 * pad + gap);
+      if (!idx) geo = { x: ox, y: oy, cell: cs, step, cols: n };
       const X = k => ox + (k % n) * step, Y = k => oy + Math.floor(k / n) * step;
       // har bir to'r alohida ramkada (yonma-yon to'rlar qo'shilib ketmasin)
       if (cnt > 1) {
@@ -233,7 +235,7 @@ export default {
     });
     drawRule(ctx, rule, box.x + box.w / 2, gy + gridH + gap);
     ctx.restore();
-    return {};
+    return { geo };
   },
 
   hint(p, info, lang) {

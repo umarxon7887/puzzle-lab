@@ -520,6 +520,34 @@ await test('tayyor tugmalar AI\'siz javob oladi, har generator nomi bilan topila
   }
 });
 
+await test("«Tushuntir»: qadamlar varaqdagi topshiriqqa mos va oxiriga yetadi", async () => {
+  const { EXPLAIN_IDS, buildSteps } = await import('../src/core/explain.js');
+  const kb = await import('../src/core/assistant-kb.js');
+  for (const id of EXPLAIN_IDS) {
+    const g = getGenerator(id);
+    assert(g, 'explain id ' + id);
+    for (const level of levelsOf(g)) for (const seed of [11, 4242]) {
+      const opts = Object.fromEntries(g.options.map(o => [o.key, o.default]));
+      Object.assign(opts, { level, perPage: 1, aspect: 'portrait' });
+      const p = g.generate(opts, seed);
+      for (const l of LANG_CODES) {
+        const steps = buildSteps(id, p, l);
+        assert(steps.length >= 2 && steps.every(s => s.text && !s.text.includes('undefined')), `${id} L${level} ${l} texts`);
+        const sol = id === 'sudoku' && !p.letters ? p.sol : id === 'futoshiki' ? p.items[0].sol : id === 'kenken' || id === 'magic' ? p.items[0].sq : null;
+        if (!sol) continue;
+        const put = new Map(steps.flatMap(s => s.put || []));
+        for (let i = 0; i < sol.length; i++) {
+          const given = id === 'sudoku' ? p.puzzle[i] : id === 'futoshiki' ? p.items[0].given[i] : id === 'magic' ? p.items[0].given[i] : 0;
+          if (!given) eq(put.get(i), String(sol[i]), `${id} L${level} cell ${i}`);
+        }
+      }
+    }
+  }
+  const r = kb.localAnswer('Bu topshiriq qanday yechiladi?', 'uz', { genId: 'sudoku', explain: { available: true } });
+  eq(r?.action, 'start', 'explain via helper');
+  assert(kb.pageNote('uz', { genId: 'sudoku', explain: { active: true, at: 2, total: 9, text: 'X' } }).includes('explaining step 2/9'), 'page note step');
+});
+
 section('Oflayn rejim (sw.js)');
 await test("sw.js ro'yxatida barcha fayllar bor va ular mavjud", () => {
   const sw = readFileSync(join(ROOT, 'sw.js'), 'utf8');

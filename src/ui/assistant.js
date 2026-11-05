@@ -58,6 +58,22 @@ let log = [];
 try { log = JSON.parse(sessionStorage.getItem('pl2:ai-log') || '[]'); } catch { log = []; }
 const saveLog = () => { try { sessionStorage.setItem('pl2:ai-log', JSON.stringify(log.slice(-40))); } catch { /* yopiq */ } };
 
+// Boshqa joydan savol berish (masalan, «Tushuntir» kartochkasidagi «Yordamchidan so'rash»)
+export function askAssistant(q) {
+  if (!panel) openPanel(document.querySelector('.ai-fab'));
+  panel?.ask(q);
+}
+
+// Sahifadagi amallar (tool): AI javobidagi [[do:...]] yoki tayyor javobdagi action → generator sahifasiga buyruq
+const DO_RE = /\[\[do:(explain|next|prev|answer|stop)\]\]/g;
+const CMD = { explain: 'start', next: 'next', prev: 'prev', answer: 'answer', stop: 'stop' };
+function runAction(cmd) {
+  if (!cmd) return;
+  window.dispatchEvent(new CustomEvent('pl:explain', { detail: { cmd } }));
+  // Varaq ko'rinsin: tushuntirish boshlanganda oyna yopiladi (kartochkadagi tugma bilan qaytsa bo'ladi)
+  if (cmd === 'start' || cmd === 'answer') closePanel();
+}
+
 export function toggleAssistant(fab) {
   if (panel) { closePanel(); return; }
   openPanel(fab);
@@ -191,7 +207,7 @@ function openPanel(fab) {
     log.push({ who: 'me', text: q, ts: Date.now() });
     const c = ctx();
     const local = fresh ? null : localAnswer(q, lang, c);
-    if (local) { log.push({ who: 'bot', local: true, ts: Date.now(), ...local }); saveLog(); render(); return; }
+    if (local) { log.push({ who: 'bot', local: true, ts: Date.now(), ...local }); saveLog(); render(); if (local.action) setTimeout(() => runAction(local.action), 450); return; }
     if (!aiAvailable()) { log.push({ who: 'bot', err: true, ts: Date.now(), text: T('noAi') }); saveLog(); render(); return; }
 
     busy = true; sendBtn.disabled = true;
@@ -202,7 +218,10 @@ function openPanel(fab) {
     const history = prev.filter(m => !m.err).map(m => ({ role: m.who === 'me' ? 'user' : 'model', text: m.text }));
     try {
       const r = await askAI({ question: q, note: pageNote(lang, c), lang, ctx: c, system: systemPrompt(lang), history, fresh });
-      log.push({ who: 'bot', text: r.text || T('aiErr'), ai: !!r.text, err: !r.text, cached: r.cached, ts: Date.now() });
+      const acts = [...String(r.text || '').matchAll(DO_RE)].map(x => CMD[x[1]]);
+      const text = String(r.text || '').replace(DO_RE, '').trim();
+      log.push({ who: 'bot', text: text || T('aiErr'), ai: !!text, err: !text, cached: r.cached, ts: Date.now() });
+      if (acts.length && !r.cached) setTimeout(() => runAction(acts[acts.length - 1]), 450);
     } catch (e) {
       log.push({ who: 'bot', err: true, ts: Date.now(), text: e.code === 'limit' ? T('aiLimit') : e.code === 'offline' ? T('offline') : e.code === 'no-ai' ? T('noAi') : T('aiErr') });
     } finally {
@@ -236,7 +255,7 @@ function openPanel(fab) {
   document.addEventListener('keydown', onKey, true);
   window.addEventListener('hashchange', onRoute);
   window.addEventListener('langchange', onLang);
-  panel = { el, onKey, onRoute, onLang, fab };
+  panel = { el, onKey, onRoute, onLang, fab, ask };
   fab?.setAttribute('aria-expanded', 'true');
   render();
   input.focus({ preventScroll: true });

@@ -205,6 +205,7 @@ export default {
     const { cols, rows, cs } = best, side = n * cs;
     const gridW = cols * side + (cols - 1) * gap * 2, gridH = rows * (side + labH) + (rows - 1) * gap;
     const gx = box.x + (box.w - gridW) / 2, gy = box.y + Math.max(0, (H - gridH) * 0.35);
+    let geo = null;
     p.items.forEach((it, k) => {
       const ox = gx + (k % cols) * (side + gap * 2), oy = gy + Math.floor(k / cols) * (side + labH + gap);
       // Sehrli son
@@ -222,6 +223,7 @@ export default {
       ctx.fillStyle = p.showSum ? INK : ANSWER; ctx.fillText(val, lx + wl, ly);
       // Kataklar
       const ty = oy + labH;
+      if (!k) geo = { x: ox, y: ty, cell: cs, cols: n, sumAt: { x: ox + side / 2, y: oy + labH - 2 * scale } };
       for (let i = 0; i < n * n; i++) {
         const x = ox + (i % n) * cs, y = ty + Math.floor(i / n) * cs;
         ctx.fillStyle = it.given[i] ? '#EEF2FF' : '#fff'; ctx.fillRect(x, y, cs, cs);
@@ -242,7 +244,7 @@ export default {
     });
     drawRule(ctx, rule, box.x + box.w / 2, gy + gridH + gap);
     ctx.restore();
-    return {};
+    return { geo };
   },
 
   hint(p, info, lang) {

@@ -291,7 +291,7 @@ export default {
     ctx.fillText(m.hero, sp[0], sp[1]);
     ctx.fillText(m.goal, ep[0], ep[1]);
     ctx.restore();
-    return { cell };
+    return { cell, geo: { x: ox, y: oy, cell, cols: W } };
   },
 
   // Ekrandagi qisqa izoh (katak juda kichik bo'lsa ogohlantiradi)

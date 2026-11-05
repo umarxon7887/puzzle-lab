@@ -324,7 +324,7 @@ export default {
     ctx.fillStyle = MUTE; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     ruleLines.forEach((ln, i) => ctx.fillText(ln, box.x + box.w / 2, gy + size + gap + i * ruleFs * 1.35));
     ctx.restore();
-    return { cell: cellMm };
+    return { cell: cellMm, geo: { x: gx, y: gy, cell: cellMm, cols: N } };
   },
 
   hint(p, info, lang) {

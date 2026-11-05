@@ -24,6 +24,7 @@ export const UI = {
     hello: "Salom! Men Topshiriqlar Lab yordamchisiman. Qaysi topshiriqni tanlash, PDF va savat bilan ishlash yoki topshiriqni qanday yechish haqida so'rang.",
     placeholder: 'Savolingizni yozing…', send: 'Yuborish', thinking: 'O\'ylayapman…',
     openGen: 'Ochish', close: 'Yopish', clear: 'Suhbatni tozalash', settings: 'AI sozlamalari',
+    exStart: "Mana, varaqning o'zida qadamma-qadam ko'rsataman. Rangli kataklarga qarang va «Keyingi» tugmasini bosing. Biror qadam tushunarsiz bo'lsa, «Yordamchidan so'rash»ni bosing.",
     offTopic: "Kechirasiz, men faqat Topshiriqlar Lab sayti va undagi topshiriqlar bo'yicha yordam bera olaman. Masalan, qaysi topshiriq qaysi yoshga mos, PDF qanday olinadi yoki topshiriq qanday yechiladi, deb so'rang.",
     noAi: "Bu savolga tayyor javobim yo'q, AI esa hali ulanmagan. Savolni boshqacha yozib ko'ring yoki tugmalardan birini tanlang.",
     aiErr: "AI hozir javob bera olmadi. Birozdan keyin qayta urinib ko'ring.",
@@ -40,6 +41,7 @@ export const UI = {
     hello: 'Здравствуйте! Я помощник Topshiriqlar Lab. Спросите, какое задание выбрать, как работать с PDF и корзиной или как решать задание.',
     placeholder: 'Напишите вопрос…', send: 'Отправить', thinking: 'Думаю…',
     openGen: 'Открыть', close: 'Закрыть', clear: 'Очистить чат', settings: 'Настройки ИИ',
+    exStart: 'Показываю прямо на листе, шаг за шагом. Смотрите на цветные клетки и нажимайте «Дальше». Если шаг непонятен — нажмите «Спросить помощника».',
     offTopic: 'Извините, я помогаю только с сайтом «Лаборатория заданий» и его заданиями. Спросите, например, какое задание подходит по возрасту, как скачать PDF или как решать задание.',
     noAi: 'Готового ответа нет, а ИИ пока не подключён. Попробуйте сформулировать иначе или выберите кнопку.',
     aiErr: 'ИИ сейчас не ответил. Попробуйте чуть позже.',
@@ -56,6 +58,7 @@ export const UI = {
     hello: 'Hi! I am the Topshiriqlar Lab helper. Ask which puzzle to pick, how PDFs and the basket work, or how to solve a puzzle.',
     placeholder: 'Type your question…', send: 'Send', thinking: 'Thinking…',
     openGen: 'Open', close: 'Close', clear: 'Clear chat', settings: 'AI settings',
+    exStart: "I'll show it right on the sheet, step by step. Watch the coloured cells and press «Next». If a step is unclear, press «Ask the helper».",
     offTopic: "Sorry, I can only help with the Puzzle Lab site and its puzzles. Try asking which puzzle fits an age, how to get a PDF, or how to solve a puzzle.",
     noAi: "I don't have a ready answer and AI isn't connected yet. Try rephrasing or pick a button.",
     aiErr: "AI couldn't answer right now. Please try again a bit later.",
@@ -148,6 +151,7 @@ const RECOMMEND_K = ['qaysi', 'tavsiya', 'tanlay', 'kerak', 'uchun', 'какое
 const OLDER_K = ['katta bola', '4-sinf', '5-sinf', '6-sinf', '7-sinf', '4 7', 'старш', '4 класс', '5 класс', '6 класс', '7 класс', 'older', 'grade 4', 'grade 5', 'grade 6', 'grade 7'];
 const DEEP_K = ['batafsil', 'haqida', 'tushunmad', 'nega', 'nima uchun', 'farqi nima', 'misol', 'подробн', 'не понял', 'почему', 'пример', 'detail', 'explain', "don't understand", 'why', 'example', 'more about'];
 const HELLO_K = [' salom ', ' assalomu', ' привет ', ' здравств', ' hello ', ' hi ', ' hey '];
+const EXPLAIN_K = ['tushuntir', 'yechib ber', "ko'rsat", 'qadam', 'объясн', 'покажи', 'по шагам', 'explain', 'show me', 'step by step'];
 const SOLVE_K = ['qanday yechi', 'yechish', 'qanday ishla', 'qoida', 'tushuntir', 'как решать', 'как реша', 'правил', 'объясн', 'how to solve', 'how do i solve', 'rules', 'explain', 'strategy', 'yordam ber', 'помог', 'help me'];
 
 // Kalit so'z ham savol kabi normallashtiriladi (chetidagi bo'shliq saqlanadi: 'son ' — «sonlar» emas, «son»)
@@ -176,6 +180,10 @@ export function localAnswer(question, lang, ctx = {}) {
   if (!q) return null;
   const T = (k, ...a) => ui(lang, k, ...a);
   // «Qanday yechiladi?», uzun yoki «batafsil/tushunmadim» kabi savollar — AI (to'liq bilim bilan)
+  // Generator sahifasida «tushuntir / qanday yechiladi» — varaqdagi topshiriqni qadamma-qadam ko'rsatamiz (0 token)
+  if (ctx.explain?.available && (has(q, SOLVE_K) || has(q, EXPLAIN_K)) && !(findGenerator(q) && findGenerator(q).id !== ctx.genId)) {
+    return { text: ui(lang, 'exStart'), action: 'start' };
+  }
   if (has(q, SOLVE_K) || has(q, DEEP_K) || q.split(' ').length > 8) return null;
   // Salomlashish — AI'siz
   if (has(q, HELLO_K) && q.split(' ').length <= 3) return { text: ui(lang, 'hello'), chips: chipsFor(ctx, lang) };
@@ -270,7 +278,14 @@ Rules:
 - When you mention a puzzle type, write its id in double brackets like [[kenken]] (the site turns it into a button). Recommend at most 5.
 - If the user's message is unclear or just says they did not understand (e.g. "tushunmadim"), look at the previous messages, explain the last answer more simply with an example, or ask one short clarifying question.
 - Formatting: short paragraphs, "- " bullets, **bold** for button names. No headings, no tables. Keep it under about 150 words unless the user asks for details.
-- Messages may start with [Page: ...] describing what the user has open; use it as context.`;
+- Messages may start with [Page: ...] describing what the user has open; use it as context.
+
+TOOLS (the site runs them)
+On some puzzle pages the site can solve THIS sheet step by step on the preview, highlighting the cells. [Page] says "explain: available" or "explaining step i/n: <step text>". Only then you may end your reply with ONE tag:
+[[do:explain]] start the step-by-step explanation; [[do:next]] next step; [[do:prev]] previous step; [[do:answer]] show the answer on the sheet; [[do:stop]] stop explaining.
+- If the user asks to explain or solve this sheet, say in one sentence what you will show and add [[do:explain]].
+- While explaining, answer about the current step: retell its step text more simply for a child, with the reason. Never contradict the step text and never invent cell values.
+- If the user says "next", "davom", "keyingi" add [[do:next]]; "back", "orqaga" add [[do:prev]].`;
 
 const catCache = {};
 export function systemPrompt(lang) {
@@ -293,7 +308,8 @@ export function pageNote(lang, ctx = {}) {
   const gen = ctx.genId ? getGenerator(ctx.genId) : null;
   if (gen) {
     const lv = levelsOf(gen).includes(ctx.level) ? `, level ${levelName(ctx.level, lang)}` : '';
-    return `[Page: puzzle [[${gen.id}]] ${P(gen.name, lang)}${lv}${ctx.info ? ', current sheet: ' + ctx.info : ''}]`;
+    const ex = ctx.explain?.active ? `; explaining step ${ctx.explain.at}/${ctx.explain.total}: "${ctx.explain.text}"` : ctx.explain?.available ? '; explain: available' : '';
+    return `[Page: puzzle [[${gen.id}]] ${P(gen.name, lang)}${lv}${ctx.info ? ', current sheet: ' + ctx.info : ''}${ex}]`;
   }
   return `[Page: ${ctx.route === 'cart' ? 'Basket' : ctx.route === 'pack' ? 'Make a pack' : 'Home page'}]`;
 }
