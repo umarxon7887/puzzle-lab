@@ -15,4 +15,4 @@ Bu papka saytga kirmaydi (sw.js ro'yxatida yo'q).
 ## Cheklovlar (ai-proxy.js boshida o'zgartirsa bo'ladi)
 - faqat `https://umarxon7887.github.io` dan so'rov qabul qilinadi;
 - har IP kuniga 40 ta, hammasi kuniga 1000 ta savol;
-- javob ≤ 400 token, savol va kontekst ≤ 9000 belgi.
+- javob ≤ 700 token, loyiha bilimi ≤ 40 000 belgi, suhbat ≤ 12 000 belgi.

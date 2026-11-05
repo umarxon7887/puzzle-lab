@@ -6,8 +6,8 @@
 //   2) Foydalanuvchining o'z kaliti (yordamchi sozlamalarida) — faqat shu brauzerda, to'g'ridan-to'g'ri Google'ga.
 // Ikkalasi ham bo'lmasa — AI o'chiq, faqat tayyor javoblar ishlaydi.
 //
-// Token tejash: qisqa tizim ko'rsatmasi (assistant-kb.js), tarixdan oxirgi 4 xabar, javob ≤ 320 token,
-// «o'ylash» o'chiq, bir xil savolga javob brauzerda saqlanadi (kesh).
+// Token tejash: tizim ko'rsatmasi (loyiha bilimi) o'zgarmas — Gemini uni keshlaydi; tarixdan oxirgi 6 xabar,
+// javob ≤ 600 token, «o'ylash» o'chiq, bir xil birinchi savolga javob brauzerda saqlanadi (kesh).
 
 import { store } from './storage.js';
 import { norm } from './assistant-kb.js';
@@ -15,8 +15,8 @@ import { norm } from './assistant-kb.js';
 // Worker manzili (masalan 'https://puzzle-lab-ai.<nom>.workers.dev'). Bo'sh — Worker yo'q.
 export const AI_ENDPOINT = 'https://puzzle-lab-ai.garrihiskill.workers.dev';
 export const MODEL = 'gemini-flash-lite-latest';
-const MAX_OUT = 320;
-const HISTORY = 4;
+const MAX_OUT = 600;
+const HISTORY = 6;
 const CACHE_MAX = 60;
 
 export const getKey = () => store.get('ai-key', '') || '';
@@ -34,16 +34,19 @@ function cachePut(k, a) {
   store.set('ai-cache', c);
 }
 
-// history: [{role:'user'|'model', text}] — faqat AI suhbati (tayyor javoblar kiritilmaydi)
-export async function askAI({ question, lang, ctx, system, history = [] }) {
+// history: [{role:'user'|'model', text}] — oxirgi xabarlar (tayyor javoblar ham — «tushunmadim» uchun kerak)
+// note — sahifa haqida qisqa ma'lumot, savol oldiga qo'shiladi (keshlash kalitiga kirmaydi)
+export async function askAI({ question, note = '', lang, ctx, system, history = [], fresh = false }) {
   const firstTurn = history.length === 0;
   const ck = cacheKey(lang, ctx, question);
-  const hit = cacheGet(ck);                             // aynan shu savol shu sahifada avval berilgan bo'lsa — tokensiz
+  const hit = fresh ? null : cacheGet(ck);                             // aynan shu savol shu sahifada avval berilgan bo'lsa — tokensiz
   if (hit) return { text: hit, cached: true };
   if (typeof navigator !== 'undefined' && navigator.onLine === false) { const e = new Error('offline'); e.code = 'offline'; throw e; }
 
-  const contents = [...history.slice(-HISTORY), { role: 'user', text: question }]
-    .map(m => ({ role: m.role, parts: [{ text: String(m.text).slice(0, 1200) }] }));
+  const turns = history.slice(-HISTORY);
+  while (turns.length && turns[0].role !== 'user') turns.shift();   // Gemini: suhbat foydalanuvchidan boshlanadi
+  const contents = [...turns, { role: 'user', text: (note ? note + '\n' : '') + question }]
+    .map(m => ({ role: m.role, parts: [{ text: String(m.text).slice(0, 2000) }] }));
   const key = getKey();
   const text = key ? await direct(key, system, contents) : await viaWorker(system, contents);
   if (firstTurn && text) cachePut(ck, text);

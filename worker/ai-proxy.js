@@ -3,7 +3,7 @@
 //
 // Himoya:
 //  • faqat ruxsat etilgan saytdan (ALLOWED_ORIGIN) so'rov qabul qilinadi;
-//  • so'rov hajmi cheklangan (matn ≤ 9000 belgi, ≤ 9 xabar, javob ≤ 400 token);
+//  • so'rov hajmi cheklangan (loyiha bilimi ≤ 40 000 belgi, suhbat ≤ 12 000 belgi, ≤ 9 xabar, javob ≤ 700 token);
 //  • kunlik limit: har IP uchun PER_IP_DAY, hammasi uchun ALL_DAY (KV bog'langan bo'lsa — LIMITS);
 //  • tavsiya: kalitni billing ulanmagan Google loyihasidan oling — shunda pul sarfi umuman bo'lmaydi.
 
@@ -38,20 +38,20 @@ export default {
 
     let body;
     try { body = await req.json(); } catch { return json({ error: 'json' }, 400, origin); }
-    const system = String(body.system || '').slice(0, 4000);
+    const system = String(body.system || '').slice(0, 40000);
     const contents = Array.isArray(body.contents) ? body.contents.slice(-9) : [];
     const clean = contents.map(m => ({
       role: m.role === 'model' ? 'model' : 'user',
-      parts: [{ text: String(m.parts?.[0]?.text || '').slice(0, 1200) }]
+      parts: [{ text: String(m.parts?.[0]?.text || '').slice(0, 2000) }]
     }));
-    const size = system.length + clean.reduce((n, m) => n + m.parts[0].text.length, 0);
-    if (!clean.length || clean[clean.length - 1].role !== 'user' || size > 9000) return json({ error: 'size' }, 400, origin);
+    const size = clean.reduce((n, m) => n + m.parts[0].text.length, 0);
+    if (!clean.length || clean[clean.length - 1].role !== 'user' || size > 12000) return json({ error: 'size' }, 400, origin);
 
     const day = new Date().toISOString().slice(0, 10);
     const ip = req.headers.get('cf-connecting-ip') || 'x';
     if (!(await bump(env, `all:${day}`, ALL_DAY)) || !(await bump(env, `ip:${day}:${ip}`, PER_IP_DAY))) return json({ error: 'limit' }, 429, origin);
 
-    const maxTokens = Math.min(400, Math.max(50, body.maxTokens | 0 || 320));
+    const maxTokens = Math.min(700, Math.max(50, body.maxTokens | 0 || 600));
     const call = think => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${env.MODEL || MODEL}:generateContent`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_KEY },

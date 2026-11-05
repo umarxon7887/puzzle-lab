@@ -20,8 +20,8 @@ export function norm(s) {
 // ---------- Oyna matnlari ----------
 export const UI = {
   uz: {
-    name: 'Yordamchi', sub: 'Sayt va topshiriqlar bo\'yicha savollar', open: 'Yordamchini ochish',
-    hello: "Salom! Men sayt bo'yicha yordamchiman. Savol yozing yoki pastdagi tugmalardan birini tanlang.",
+    name: 'Yordamchi', full: 'Katta ekranda ochish', small: 'Kichik oynaga qaytish', tagline: 'Sayt va topshiriqlar bo\'yicha yordam', me: 'Siz', copy: 'Nusxa olish', retry: 'Qayta javob', tagErr: 'xato', tagLocal: 'tayyor javob', sub: 'Sayt va topshiriqlar bo\'yicha savollar', open: 'Yordamchini ochish',
+    hello: "Salom! Men Topshiriqlar Lab yordamchisiman. Qaysi topshiriqni tanlash, PDF va savat bilan ishlash yoki topshiriqni qanday yechish haqida so'rang.",
     placeholder: 'Savolingizni yozing…', send: 'Yuborish', thinking: 'O\'ylayapman…',
     openGen: 'Ochish', close: 'Yopish', clear: 'Suhbatni tozalash', settings: 'AI sozlamalari',
     noAi: "Bu savolga tayyor javobim yo'q, AI esa hali ulanmagan. Savolni boshqacha yozib ko'ring yoki tugmalardan birini tanlang.",
@@ -35,8 +35,8 @@ export const UI = {
     genLead: (name) => `«${name}» — `
   },
   ru: {
-    name: 'Помощник', sub: 'Вопросы о сайте и заданиях', open: 'Открыть помощника',
-    hello: 'Здравствуйте! Я помощник по сайту. Напишите вопрос или выберите кнопку ниже.',
+    name: 'Помощник', full: 'Открыть на весь экран', small: 'Свернуть в окно', tagline: 'Помощь по сайту и заданиям', me: 'Вы', copy: 'Копировать', retry: 'Ответить заново', tagErr: 'ошибка', tagLocal: 'готовый ответ', sub: 'Вопросы о сайте и заданиях', open: 'Открыть помощника',
+    hello: 'Здравствуйте! Я помощник Topshiriqlar Lab. Спросите, какое задание выбрать, как работать с PDF и корзиной или как решать задание.',
     placeholder: 'Напишите вопрос…', send: 'Отправить', thinking: 'Думаю…',
     openGen: 'Открыть', close: 'Закрыть', clear: 'Очистить чат', settings: 'Настройки ИИ',
     noAi: 'Готового ответа нет, а ИИ пока не подключён. Попробуйте сформулировать иначе или выберите кнопку.',
@@ -50,8 +50,8 @@ export const UI = {
     genLead: (name) => `«${name}» — `
   },
   en: {
-    name: 'Helper', sub: 'Questions about the site and puzzles', open: 'Open helper',
-    hello: 'Hi! I help with this site. Type a question or pick a button below.',
+    name: 'Helper', full: 'Open full screen', small: 'Back to small window', tagline: 'Help with the site and puzzles', me: 'You', copy: 'Copy', retry: 'Answer again', tagErr: 'error', tagLocal: 'ready answer', sub: 'Questions about the site and puzzles', open: 'Open helper',
+    hello: 'Hi! I am the Topshiriqlar Lab helper. Ask which puzzle to pick, how PDFs and the basket work, or how to solve a puzzle.',
     placeholder: 'Type your question…', send: 'Send', thinking: 'Thinking…',
     openGen: 'Open', close: 'Close', clear: 'Clear chat', settings: 'AI settings',
     noAi: "I don't have a ready answer and AI isn't connected yet. Try rephrasing or pick a button.",
@@ -114,7 +114,7 @@ const FAQ = [
     a: { uz: "«Yangi topshiriq» tugmasi (pastki panelda) shu sozlamalar bilan boshqa topshiriq yaratadi. Har biri tekshirilgan: javobi bitta va to'g'ri.",
       ru: 'Кнопка «Новое задание» (внизу) создаёт другое задание с теми же настройками. Каждое проверено: ответ один и верный.',
       en: '“New puzzle” (bottom bar) makes another puzzle with the same settings. Each one is checked to have a single correct answer.' } },
-  { id: 'offline', k: ['internet', 'oflayn', 'offline', 'интернет', "o'rnat", 'telefon', 'установ', 'install', 'ilova', 'приложен', 'app'],
+  { id: 'offline', k: ['internet', 'oflayn', 'offline', 'интернет', "o'rnat", 'установ', 'install', 'bosh ekran', 'home screen'],
     a: { uz: "Sayt bir marta ochilgandan keyin internetsiz ham ishlaydi. Telefonga ilova qilib qo'yish: brauzer menyusidan «Bosh ekranga qo'shish» (Add to Home screen).",
       ru: 'После первого открытия сайт работает и без интернета. Чтобы поставить как приложение: меню браузера → «Добавить на главный экран».',
       en: 'After the first visit the site works offline. To install it as an app: browser menu → “Add to Home screen”.' } },
@@ -143,6 +143,7 @@ const SKILL_K = {
 };
 const RECOMMEND_K = ['qaysi', 'tavsiya', 'tanlay', 'kerak', 'uchun', 'какое', 'какие', 'посовет', 'для ', 'which', 'recommend', 'suggest', 'for '];
 const OLDER_K = ['katta bola', '4-sinf', '5-sinf', '6-sinf', '7-sinf', '4 7', 'старш', '4 класс', '5 класс', '6 класс', '7 класс', 'older', 'grade 4', 'grade 5', 'grade 6', 'grade 7'];
+const DEEP_K = ['batafsil', 'haqida', 'tushunmad', 'nega', 'nima uchun', 'farqi nima', 'misol', 'подробн', 'не понял', 'почему', 'пример', 'detail', 'explain', "don't understand", 'why', 'example', 'more about'];
 const HELLO_K = [' salom ', ' assalomu', ' привет ', ' здравств', ' hello ', ' hi ', ' hey '];
 const SOLVE_K = ['qanday yechi', 'yechish', 'qanday ishla', 'qoida', 'tushuntir', 'как решать', 'как реша', 'правил', 'объясн', 'how to solve', 'how do i solve', 'rules', 'explain', 'strategy', 'yordam ber', 'помог', 'help me'];
 
@@ -171,8 +172,8 @@ export function localAnswer(question, lang, ctx = {}) {
   const q = norm(question);
   if (!q) return null;
   const T = (k, ...a) => ui(lang, k, ...a);
-  // «Qanday yechiladi?» — AI kerak (kesh bilan), generator konteksti AI'ga beriladi
-  if (has(q, SOLVE_K)) return null;
+  // «Qanday yechiladi?», uzun yoki «batafsil/tushunmadim» kabi savollar — AI (to'liq bilim bilan)
+  if (has(q, SOLVE_K) || has(q, DEEP_K) || q.split(' ').length > 8) return null;
   // Salomlashish — AI'siz
   if (has(q, HELLO_K) && q.split(' ').length <= 3) return { text: ui(lang, 'hello'), chips: chipsFor(ctx, lang) };
 
@@ -228,26 +229,63 @@ export function chipsFor(ctx, lang) {
   return [{ label: P(choose, lang), q: P(choose, lang), menu: 'skills' }, c('pdf'), c('cart'), c('levels')].map(x => typeof x === 'string' ? { label: x, q: x } : x);
 }
 
-// ---------- AI uchun qisqa kontekst ----------
-// Tizim ko'rsatmasi inglizcha (kamroq token), javob foydalanuvchi tilida.
-const LANG_NAME = { uz: "Uzbek (Latin script)", ru: 'Russian', en: 'English' };
-export function systemPrompt(lang, ctx = {}) {
+// ---------- AI uchun loyiha bilimi ----------
+// Tizim ko'rsatmasi har til uchun O'ZGARMAS (sahifa ma'lumoti savol bilan birga boradi) — shunda Gemini
+// takrorlanayotgan boshini keshlaydi (implicit caching) va har savol arzonroq tushadi.
+// Generatorlar ro'yxati registry'dan olinadi: yangi generator qo'shilsa, AI ham avtomatik biladi.
+const LANG_NAME = { uz: 'Uzbek (Latin script)', ru: 'Russian', en: 'English' };
+const GUIDE = `ABOUT THE SITE
+"Topshiriqlar Lab" (umarxon7887.github.io/puzzle-lab) is a free website that generates printable logic puzzles and worksheets for children (about 4 to 13 years old, up to grade 7). No sign-up, no ads. Made by an Uzbek teacher; used mostly by teachers, tutors and parents who print tasks for lessons and homework. Languages: Uzbek, Russian, English (UZ/RU/EN switch at top right; word games are built in the chosen language). Works offline after the first visit and can be installed on a phone (browser menu > Add to Home screen).
+
+HOW IT WORKS
+- Home page: "To'plam yaratish" (Make a pack) card, "Saqlanganlar" (Saved, ★) section, then all puzzle generators as cards. Tap a card to open it.
+- Puzzle page: left = settings (Level buttons with a short note under them, other options of this generator, "Topshiriq matni" = the instruction printed on top of the sheet, "Matn o'lchami" = its font size). Right = live A4 preview, exactly as it will print.
+- Bottom bar: "Yangi topshiriq" (New puzzle: same settings, new puzzle), eye button (shows/hides the answer in red), document button (PDF: "Topshiriq" puzzle sheet, "Javob varag'i" answer sheet, or "Ikkalasi" both in one file), basket+ (add this sheet to the Basket), gear (Settings: puzzles per page 1/2/4, name and date line, puzzle number).
+- Puzzle number (seed): printed at the bottom of each sheet. Same number + same settings = exactly the same puzzle, so a teacher can note the number and regenerate the answer later.
+- Levels: most generators have Easy / Medium / Hard / Expert; some also have "Juda oson" (Very easy, little kids) and "Katta bolalar" (Older kids, grades 4-7).
+- Every puzzle is checked by the program: exactly one correct answer.
+- Basket (🛒 at the top): collect different puzzles into one worksheet; choose puzzles per page, how many variants (each student gets different numbers so they cannot copy), name line, then download one PDF with answers. A set can be saved as a Template and rebuilt later with fresh puzzles.
+- Pack ("To'plam yaratish"): quick mixed set from several types at one level, one PDF + answers.
+- Saved (★): star a card to keep it at the top of the home page (stored in this browser only).
+- Data stays in the browser (no account).
+
+TEACHER TIPS
+- For a class: use Basket with variants = number of students, 2 puzzles per page, name line on.
+- Start one level lower than the child's age suggests; move up when the child solves 2-3 sheets without help.
+- Mix skills during a week (attention, logic, counting, spatial, words) rather than one type.
+- Print the answer sheet separately for checking.
+
+YOUR JOB
+You are "Yordamchi", the friendly helper inside this site. Help users find the right puzzle, use the site, and understand how to solve a puzzle type (explain the rule, a step-by-step method and a hint; do not invent the answer of the user's specific sheet: the eye button shows it).
+Rules:
+- Use the knowledge above and the catalog below. Never invent features, buttons or puzzles that are not listed. If something is not supported, say so and suggest the closest option.
+- When you mention a puzzle type, write its id in double brackets like [[kenken]] (the site turns it into a button). Recommend at most 5.
+- If the user's message is unclear or just says they did not understand (e.g. "tushunmadim"), look at the previous messages, explain the last answer more simply with an example, or ask one short clarifying question.
+- Formatting: short paragraphs, "- " bullets, **bold** for button names. No headings, no tables. Keep it under about 150 words unless the user asks for details.
+- Messages may start with [Page: ...] describing what the user has open; use it as context.`;
+
+const catCache = {};
+export function systemPrompt(lang) {
+  if (catCache[lang]) return catCache[lang];
+  const skillName = k => P(SKILLS[k], 'en') || k;
+  const lines = GENERATORS.map(g => {
+    const hints = P(g.levelHint, lang) || [];
+    const ls = levelsOf(g);
+    // darajalar izohi bo'lmasa, faqat qo'shimcha darajalar aytiladi (4 ta odatiy daraja hammada bor)
+    const lv = hints.length ? ls.map((l, i) => `${levelName(l, lang)}: ${hints[i] ?? ''}`).join('; ')
+      : [ls.includes(-1) && levelName(-1, lang), ls.includes(4) && levelName(4, lang)].filter(Boolean).join(', ');
+    return `[[${g.id}]] ${P(g.name, lang)} — ${P(g.desc, lang)}. Skills: ${(g.skills || []).map(skillName).join(', ')}.` + (lv ? ` Levels: ${lv}` : '');
+  });
+  catCache[lang] = `${GUIDE}\n- Always reply in ${LANG_NAME[lang] || LANG_NAME.uz}.\n\nCATALOG (${GENERATORS.length} puzzle generators; id, name, description, skills, levels)\n${lines.join('\n')}`;
+  return catCache[lang];
+}
+
+// Savol oldiga qo'shiladigan qisqa sahifa ma'lumoti
+export function pageNote(lang, ctx = {}) {
   const gen = ctx.genId ? getGenerator(ctx.genId) : null;
-  const lines = [
-    'You are the helper inside "Topshiriqlar Lab", a free site that generates printable logic puzzles for kids (A4 PDF + answer sheet). Users are mostly teachers and parents.',
-    `Reply in ${LANG_NAME[lang] || LANG_NAME.uz}. Be short and friendly: max 5 sentences or 5 bullets, plain text, no markdown headings.`,
-    'Site UI: bottom bar = New puzzle, eye (show answer), ⬇ PDF (puzzle/answer/both), 🛒+ (add to basket), ⚙ settings (puzzles per page 1/2/4, name line, puzzle number). Top: ★ saved, 🛒 basket (variants, templates), UZ/RU/EN. Same number + settings = same puzzle.',
-    'To point to a puzzle type write [[id]] using ids below. Never invent features. If unsure, say so. When explaining how to solve, give the method and a tip, not the final answer of a specific puzzle (the eye button shows it).'
-  ];
   if (gen) {
-    const li = levelsOf(gen).indexOf(ctx.level);
-    lines.push(`Open page: [[${gen.id}]] ${P(gen.name, lang)} — ${P(gen.desc, lang)}. Levels: ${(P(gen.levelHint, lang) || []).join(' | ')}.` +
-      (li >= 0 ? ` Current level: ${levelName(ctx.level, lang)}.` : '') + (ctx.info ? ` Current puzzle: ${ctx.info}.` : ''));
-    const sk = gen.skills?.[0];
-    const near = GENERATORS.filter(g => g.id !== gen.id && g.skills?.[0] === sk).slice(0, 8);
-    if (near.length) lines.push('Similar: ' + near.map(g => `${g.id}=${P(g.name, lang)}`).join('; '));
-  } else {
-    lines.push('Puzzle types: ' + GENERATORS.map(g => `${g.id}=${P(g.name, lang)}`).join('; '));
+    const lv = levelsOf(gen).includes(ctx.level) ? `, level ${levelName(ctx.level, lang)}` : '';
+    return `[Page: puzzle [[${gen.id}]] ${P(gen.name, lang)}${lv}${ctx.info ? ', current sheet: ' + ctx.info : ''}]`;
   }
-  return lines.join('\n');
+  return `[Page: ${ctx.route === 'cart' ? 'Basket' : ctx.route === 'pack' ? 'Make a pack' : 'Home page'}]`;
 }
