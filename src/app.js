@@ -12,6 +12,8 @@ import { loadFonts } from './ui/fonts.js';
 import { closeAllModals } from './ui/modal.js';
 import { getGenerator } from './generators/registry.js';
 import { LANGS, getLang, setLang, applyDocumentLang, t } from './core/i18n.js';
+import { setPageContext } from './core/page-context.js';
+import { ui } from './core/assistant-kb.js';
 
 const header = document.querySelector('.topbar');
 const main = document.getElementById('main');
@@ -53,6 +55,7 @@ function route({ keepScroll = false } = {}) {
   if (view) { view.destroy(); view = null; }
   main.innerHTML = '';
   document.body.classList.remove('no-scroll');
+  setPageContext({ route: r || 'home' });             // generator sahifasi o'zi to'ldiradi
   if (!r) view = mountHome(main);
   else if (r === 'pack') view = mountPack(main);
   else if (r === 'cart') view = mountCart(main);
@@ -68,13 +71,24 @@ function route({ keepScroll = false } = {}) {
   currentRoute = r;
 }
 
+// Yordamchi tugmasi (pastki o'ng burchak). Oynaning kodi faqat birinchi bosilganda yuklanadi.
+const fab = document.createElement('button');
+fab.type = 'button';
+fab.className = 'ai-fab';
+fab.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
+const syncFab = () => { const l = ui(getLang(), 'open'); fab.setAttribute('aria-label', l); fab.title = l; };
+fab.setAttribute('aria-expanded', 'false');
+fab.addEventListener('click', () => import('./ui/assistant.js').then(m => m.toggleAssistant(fab)).catch(console.error));
+document.body.appendChild(fab);
+
 applyDocumentLang();
 renderHeader();
+syncFab();
 route();
 loadFonts();
 
 window.addEventListener('hashchange', () => route());
-window.addEventListener('langchange', () => { renderHeader(); route({ keepScroll: true }); });
+window.addEventListener('langchange', () => { renderHeader(); syncFab(); route({ keepScroll: true }); });
 window.addEventListener('cartchange', () => {
   header.syncCart?.();
   const b = header.querySelector('.cart-link');

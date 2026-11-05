@@ -497,6 +497,24 @@ await test("PDF tuzilishi to'g'ri (xref manzillari obyektlarga mos)", async () =
 });
 
 // ---------------------------------------------------------------------------
+section('Yordamchi (tayyor javoblar)');
+await test('tayyor tugmalar AI\'siz javob oladi, har generator nomi bilan topiladi', async () => {
+  const kb = await import('../src/core/assistant-kb.js');
+  for (const l of LANG_CODES) {
+    for (const k of Object.keys(kb.UI.uz)) assert(k in kb.UI[l], `${l}: assistant UI key ${k}`);
+    for (const ctx of [{ route: 'home' }, { route: 'cart' }, { genId: 'kenken', level: 1 }]) {
+      for (const c of kb.chipsFor(ctx, l)) {
+        if (c.menu) continue;
+        const r = kb.localAnswer(c.q, l, ctx);
+        const solve = /qanday yechiladi|Как решать|How do I solve/.test(c.q);
+        assert(solve ? r === null : r && r.text, `${l} chip «${c.q}»`);
+      }
+    }
+    for (const g of GENERATORS) eq(kb.findGenerator(g.name[l] + '?')?.id, g.id, `${l} name ${g.name[l]}`);
+    assert(kb.systemPrompt(l, {}).length < 4000 && kb.systemPrompt(l, { genId: 'maze', level: 0 }).length < 2000, 'system prompt size');
+  }
+});
+
 section('Oflayn rejim (sw.js)');
 await test("sw.js ro'yxatida barcha fayllar bor va ular mavjud", () => {
   const sw = readFileSync(join(ROOT, 'sw.js'), 'utf8');

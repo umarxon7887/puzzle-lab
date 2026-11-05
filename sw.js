@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.8.1';
+const VERSION = '2.9.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -19,6 +19,10 @@ const CORE = [
   'icon-maskable-512.png',
   'apple-touch-icon.png',
   'src/app.js',
+  'src/core/assistant-ai.js',
+  'src/core/assistant-kb.js',
+  'src/core/page-context.js',
+  'src/ui/assistant.js',
   'src/core/draw.js',
   'src/core/figures.js',
   'src/core/files.js',
