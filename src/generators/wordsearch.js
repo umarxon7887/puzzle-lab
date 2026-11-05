@@ -353,7 +353,7 @@ export default {
     ctx.fillStyle = MUTE; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     ruleLines.forEach((ln, i) => ctx.fillText(ln, box.x + box.w / 2, listTop + listH + gap2 + i * ruleFs * 1.35));
     ctx.restore();
-    return { cell };
+    return { cell, geo: { x: gx, y: gy, cell, cols: N } };
   },
 
   hint(p, info, lang) {

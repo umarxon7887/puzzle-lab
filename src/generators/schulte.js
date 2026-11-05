@@ -19,7 +19,7 @@ const LEVELS = {
   ]
 };
 // Harfli jadval uchun 25 ta harf (alifbo tartibida). Rus tilida klassik to'plam: Ё, Й, Ъ, Ы, Ь, Э, Ю, Я kirmaydi.
-const ALPHABET = {
+export const ALPHABET = {
   uz: ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', 'Oʻ'],
   ru: ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ'],
   en: 'ABCDEFGHIJKLMNOPQRSTUVWXY'.split('')
@@ -194,7 +194,7 @@ export default {
 
     drawRule(ctx, rule, box.x + box.w / 2, top + side + gap + timeH + gap);
     ctx.restore();
-    return {};
+    return { geo: { x: left, y: top, cell: cs, cols: p.n } };
   },
 
   hint(p, info, lang) {

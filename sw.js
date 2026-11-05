@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.10.2';
+const VERSION = '2.11.0';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',
@@ -23,6 +23,7 @@ const CORE = [
   'src/core/assistant-kb.js',
   'src/core/page-context.js',
   'src/core/theme.js',
+  'src/core/explain.js',
   'src/ui/assistant.js',
   'src/core/draw.js',
   'src/core/figures.js',
