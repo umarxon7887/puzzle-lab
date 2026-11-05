@@ -19,6 +19,7 @@ import { download } from '../core/files.js';
 import { addToCart } from '../core/cart.js';
 import { isFav, toggleFav } from '../core/favs.js';
 import { favButton } from './fav-button.js';
+import { setPageContext } from '../core/page-context.js';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -154,6 +155,10 @@ export function mountGenerator(main, gen) {
     slots = puzzles.map((p, i) => makeSlot(gen, p, { number: st.perPage > 1 ? String(i + 1) : '' }));
     preview.redrawNow();
     updateInteractive();
+    // Yordamchi uchun: qaysi topshiriq ochiq (AI'ga faqat shu qisqa ma'lumot boradi)
+    let info = '';
+    try { info = gen.info ? gen.info(slots[0].puzzle, getLang()) : ''; } catch { /* e'tibor bermaymiz */ }
+    setPageContext({ route: gen.id, genId: gen.id, level: st.opts.level, seed: st.seed, info });
   }
 
   function updateHint() {
