@@ -1,6 +1,6 @@
 {
   "name": "puzzle-lab",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "private": true,
   "description": "Bolalar uchun mantiqiy topshiriqlar generatori (58 xil): labirint, sudoku, so'z qidiruv, sonli krossvord, «Kodni top», «Farqlarni top», «Soyasini top», gugurt cho'plari, tangram, 4–7-sinf sonli mantiq va boshqalar — A4 PDF va javob varaqlari bilan",
   "type": "module",
