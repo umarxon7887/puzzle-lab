@@ -13,7 +13,7 @@ import { store } from './storage.js';
 import { norm } from './assistant-kb.js';
 
 // Worker manzili (masalan 'https://puzzle-lab-ai.<nom>.workers.dev'). Bo'sh — Worker yo'q.
-export const AI_ENDPOINT = '';
+export const AI_ENDPOINT = 'https://puzzle-lab-ai.garrihiskill.workers.dev';
 export const MODEL = 'gemini-flash-lite-latest';
 const MAX_OUT = 320;
 const HISTORY = 4;
