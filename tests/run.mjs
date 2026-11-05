@@ -514,6 +514,7 @@ await test('tayyor tugmalar AI\'siz javob oladi, har generator nomi bilan topila
     // Worker loyiha bilimini 40 000 belgigacha qabul qiladi (worker/ai-proxy.js)
     const sp = kb.systemPrompt(l);
     assert(sp.length < 36000, `system prompt size ${sp.length}`);
+    assert(sp.startsWith('STRICT SCOPE') && sp.includes('OFF-TOPIC REPLY: ' + kb.ui(l, 'offTopic')), 'off-topic rule');
     for (const g of GENERATORS) assert(sp.includes(`[[${g.id}]]`), `catalog misses ${g.id}`);
     assert(kb.pageNote(l, { genId: 'maze', level: 0 }).includes('[[maze]]'), 'page note');
   }
