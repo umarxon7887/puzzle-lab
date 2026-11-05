@@ -103,7 +103,7 @@ export function mountGenerator(main, gen) {
   const interactive = h('div', { class: 'interactive' });
 
   // ---------- «Shu topshiriqni tushuntir»: varaqdagi topshiriq qadamma-qadam ----------
-  const exBtn = h('button', { type: 'button', class: 'ex-start', hidden: !canExplain }, h('span', { class: 'ex-ic', html: ICONS.bulb }), t('explainBtn'));
+  // Varaqda alohida tugma yo'q: faqat yordamchidan so'ralganda ochiladi (pl:explain hodisasi).
   const exTitle = h('strong', { class: 'ex-title' });
   const exText = h('p', { class: 'ex-text', 'aria-live': 'polite' });
   const exPrev = h('button', { type: 'button', class: 'btn ex-nav' }, h('span', { class: 'btn-icon', html: ICONS.back }), t('explainPrev'));
@@ -116,7 +116,6 @@ export function mountGenerator(main, gen) {
     h('div', { class: 'ex-row' }, exPrev, exNext),
     h('div', { class: 'ex-foot' }, h('span', { class: 'ex-note' }, t('explainNote')), exAsk));
   function exSync() {
-    exBtn.hidden = !canExplain || !!ex;
     exCard.hidden = !ex;
     if (ex) {
       const s = ex.steps[ex.at];
@@ -144,7 +143,6 @@ export function mountGenerator(main, gen) {
     else if (cmd === 'stop') ex = null;
     exSync();
   }
-  exBtn.addEventListener('click', () => exCmd('start'));
   exNext.addEventListener('click', () => exCmd('next'));
   exPrev.addEventListener('click', () => exCmd('prev'));
   exClose.addEventListener('click', () => exCmd('stop'));
@@ -158,7 +156,7 @@ export function mountGenerator(main, gen) {
   }, { signal });
 
   const previewCol = h('section', { class: 'preview-col' },
-    exBtn, exCard,
+    exCard,
     h('div', { class: 'sheet-frame' }, preview.canvas, busy),
     h('p', { class: 'preview-note' }, t('previewNote')),
     interactive);
