@@ -4,6 +4,7 @@
 // Savol → avval tayyor javob (assistant-kb.js, 0 token) → topilmasa AI (assistant-ai.js, loyiha bilimi bilan).
 
 import { h } from './dom.js';
+import { ASSISTANT_ICON } from './icons.js';
 import { getLang } from '../core/i18n.js';
 import { store } from '../core/storage.js';
 import { getGenerator } from '../generators/registry.js';
@@ -14,6 +15,7 @@ import { askAI, aiAvailable, getKey, setKey } from '../core/assistant-ai.js';
 const P = (o, l) => o?.[l] ?? o?.uz ?? '';
 // Ikonkalar — gemini-chat'dagi chiziqli to'plamdan
 const PATHS = {
+  bot: ASSISTANT_ICON,
   sparkle: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16v4M17 18h4"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',
   send: '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
@@ -92,7 +94,7 @@ function openPanel(fab) {
 
   const el = h('section', { class: 'ai-panel', role: 'dialog', 'aria-label': T('name') },
     h('header', { class: 'ai-top' }, h('div', { class: 'ai-wrap ai-top-in' },
-      h('span', { class: 'ai-tile gem', html: ic('sparkle') }),
+      h('span', { class: 'ai-tile gem', html: ic('bot') }),
       h('div', { class: 'ai-title' }, h('strong', null, T('name')), h('span', null, T('tagline'))),
       fullBtn, clearBtn, keyBtn, closeBtn)),
     keyBox, msgs,
@@ -120,7 +122,7 @@ function openPanel(fab) {
     const me = m.who === 'me';
     const tag = me ? '' : m.err ? T('tagErr') : m.cached ? T('fromCache') : m.ai ? 'AI' : m.local ? T('tagLocal') : '';
     const meta = h('div', { class: 'ai-meta' },
-      h('span', { class: 'ai-tile sm ' + (me ? 'me' : 'gem'), html: ic(me ? 'user' : 'sparkle') }),
+      h('span', { class: 'ai-tile sm ' + (me ? 'me' : 'gem'), html: ic(me ? 'user' : 'bot') }),
       h('span', { class: 'ai-who' }, me ? T('me') : T('name')),
       h('span', null, time(m.ts)),
       tag && h('span', { class: 'ai-tag' + (m.err ? ' warn' : '') }, tag));
@@ -164,7 +166,7 @@ function openPanel(fab) {
     inner.innerHTML = '';
     if (!log.length) {
       inner.append(h('div', { class: 'ai-hero' },
-        h('span', { class: 'ai-tile big gem', html: ic('sparkle') }),
+        h('span', { class: 'ai-tile big gem', html: ic('bot') }),
         h('h2', null, T('name')),
         h('p', null, T('hello'))));
     }
