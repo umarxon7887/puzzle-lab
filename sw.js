@@ -4,7 +4,7 @@
 // Yangi fayl qo'shsangiz, uni CORE ro'yxatiga yozing va VERSION ni oshiring
 // (npm test buni tekshiradi).
 
-const VERSION = '2.11.1';
+const VERSION = '2.11.2';
 const CACHE = 'puzzle-lab-' + VERSION;
 const CORE = [
   './',

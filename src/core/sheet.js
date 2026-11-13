@@ -26,6 +26,12 @@ export const PER_PAGE = [1, 2, 4];
 
 const NAME = { uz: ['Ism:', 'Sana:'], ru: ['Имя:', 'Дата:'], en: ['Name:', 'Date:'] };
 const ANSWER_MARK = { uz: 'JAVOB', ru: 'ОТВЕТ', en: 'ANSWER' };
+// Har bir varaq pastidagi litsenziya qatori (o'quv maqsadida bepul, sotish mumkin emas)
+const LICENSE = {
+  uz: "puzzle-lab · o'quv maqsadida bepul · sotish taqiqlanadi",
+  ru: 'puzzle-lab · бесплатно для обучения · продажа запрещена',
+  en: 'puzzle-lab · free for teaching · not for resale'
+};
 
 function drawNameLine(ctx, x, y, w, lang, scale) {
   const [n, d] = NAME[lang] || NAME.uz;
@@ -110,7 +116,12 @@ export function drawPage(ctx, k, page) {
   ctx.fillStyle = '#9CA3AF'; ctx.textBaseline = 'alphabetic';
   const footer = single ? page.slots[0].footer : page.footer;
   if (footer) { ctx.textAlign = 'right'; ctx.fillText(footer, PAGE_W - M, footBase); }
-  if (page.pageLabel) { ctx.textAlign = 'left'; ctx.fillText(page.pageLabel, M, footBase); }
+  // Chap tomonda: varaq raqami (bo'lsa) va litsenziya qatori. Sig'masa, shrift kichrayadi.
+  const left = [page.pageLabel, LICENSE[page.lang] || LICENSE.uz].filter(Boolean).join('   ·   ');
+  const room = PAGE_W - 2 * M - (footer ? ctx.measureText(footer).width + 6 : 0);
+  let size = 8;
+  while (size > 5 && ctx.measureText(left).width > room) { size -= 0.5; font(ctx, size * PT, 400); }
+  ctx.textAlign = 'left'; ctx.fillText(left, M, footBase);
 
   const area = { x: M, y: M + (single && page.showSolution ? 4 : 0), w: PAGE_W - 2 * M, h: footBase - FOOT_GAP - M - (single && page.showSolution ? 4 : 0) };
   const rects = slotRects(n, area);
