@@ -117,11 +117,13 @@ export function drawPage(ctx, k, page) {
   const footer = single ? page.slots[0].footer : page.footer;
   if (footer) { ctx.textAlign = 'right'; ctx.fillText(footer, PAGE_W - M, footBase); }
   // Chap tomonda: varaq raqami (bo'lsa) va litsenziya qatori. Sig'masa, shrift kichrayadi.
+  // Litsenziya qatori qog'ozda aniq ko'rinsin: kattaroq, to'qroq va qalinroq.
   const left = [page.pageLabel, LICENSE[page.lang] || LICENSE.uz].filter(Boolean).join('   ·   ');
   const room = PAGE_W - 2 * M - (footer ? ctx.measureText(footer).width + 6 : 0);
-  let size = 8;
-  while (size > 5 && ctx.measureText(left).width > room) { size -= 0.5; font(ctx, size * PT, 400); }
-  ctx.textAlign = 'left'; ctx.fillText(left, M, footBase);
+  let size = 10;
+  font(ctx, size * PT, 600);
+  while (size > 6 && ctx.measureText(left).width > room) { size -= 0.5; font(ctx, size * PT, 600); }
+  ctx.fillStyle = '#4B5563'; ctx.textAlign = 'left'; ctx.fillText(left, M, footBase);
 
   const area = { x: M, y: M + (single && page.showSolution ? 4 : 0), w: PAGE_W - 2 * M, h: footBase - FOOT_GAP - M - (single && page.showSolution ? 4 : 0) };
   const rects = slotRects(n, area);
