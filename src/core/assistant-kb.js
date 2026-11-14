@@ -169,7 +169,7 @@ export function findGenerator(q) {
 
 export const levelLines = (gen, lang) => {
   const ls = levelsOf(gen), hints = P(gen.levelHint, lang) || [];
-  return ls.map((l, i) => `• ${levelName(l, lang)}: ${hints[i] ?? ''}`).join('\n');
+  return ls.map((l, i) => hints[i] ? `• ${levelName(l, lang)}: ${hints[i]}` : `• ${levelName(l, lang)}`).join('\n');
 };
 const gensBy = pred => GENERATORS.filter(pred).map(g => g.id);
 
