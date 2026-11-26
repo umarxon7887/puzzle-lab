@@ -1,0 +1,982 @@
+{
+ "format": "mantiqjon-bank",
+ "versiya": 1,
+ "savollar": [
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Avstraliyada yashovchi yoqimtoy hayvon fransuz tilida **KANGOUROU**, rus tilida esa **КЕНГУРУ** deb ataladi. Fransuzcha nomida ruschasiga qaraganda nechta harf ko‘p?\nA) 4\nB) 2\nC) 3\nD) 5\nE) 7",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 1-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0001",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:40:08"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Bugun 21-mart, juma. Quyidagi kunlardan qaysi biri ham juma bo‘lgan?\nA) 1-mart\nB) 17-mart\nC) 13-mart\nD) 8-mart\nE) 14-mart",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 2-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0002",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "1 000 000 – 1 ayirmaning yozuvida nechta 9 raqami bor?\nA) 1\nB) 3\nC) 5\nD) 6\nE) 7",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 3-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0003",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Katakli qog‘ozga Pyer chiziqlar chizdi. Qaysi chiziq eng uzun?\nA) [rasm: rasm1.svg]\nB) [rasm: rasm2.svg]\nC) [rasm: rasm3.svg]\nD) [rasm: rasm4.svg]\nE) [rasm: rasm5.svg]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjggLTAuOCAzLjYgMy42Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuNyIgeTI9IjIuNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC43IiB5Mj0iMi43Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjciIHkyPSIyLjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjciIHgyPSIyLjciIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuNyIgeDI9IjIuNyIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC43IiB4Mj0iMi43IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWxpbmUgZmlsbD0ibm9uZSIgcG9pbnRzPSIwLDEgMCwwIDEsMCAxLDEgMiwxIDIsMCIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4xMSI+PC9wb2x5bGluZT48L3N2Zz4=",
+    "rasm2.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjggLTAuOCAzLjYgMy42Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuNyIgeTI9IjIuNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC43IiB5Mj0iMi43Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjciIHkyPSIyLjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjciIHgyPSIyLjciIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuNyIgeDI9IjIuNyIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC43IiB4Mj0iMi43IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWxpbmUgZmlsbD0ibm9uZSIgcG9pbnRzPSIwLDEgMCwwIDEsMCAxLDEgMiwxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjExIj48L3BvbHlsaW5lPjwvc3ZnPg==",
+    "rasm3.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjggLTAuOCAzLjYgMy42Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuNyIgeTI9IjIuNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC43IiB5Mj0iMi43Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjciIHkyPSIyLjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjciIHgyPSIyLjciIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuNyIgeDI9IjIuNyIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC43IiB4Mj0iMi43IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWxpbmUgZmlsbD0ibm9uZSIgcG9pbnRzPSIwLDIgMCwwIDEsMCAxLDIgMiwyIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjExIj48L3BvbHlsaW5lPjwvc3ZnPg==",
+    "rasm4.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjggLTAuOCAzLjYgMy42Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuNyIgeTI9IjIuNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC43IiB5Mj0iMi43Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjciIHkyPSIyLjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjciIHgyPSIyLjciIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuNyIgeDI9IjIuNyIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC43IiB4Mj0iMi43IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjEsMSAwLDEgMCwyIDIsMiAyLDAgMSwwIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjExIj48L3BvbHlnb24+PC9zdmc+",
+    "rasm5.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjggLTAuOCAzLjYgMy42Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuNyIgeTI9IjIuNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC43IiB5Mj0iMi43Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjciIHkyPSIyLjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjciIHgyPSIyLjciIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuNyIgeDI9IjIuNyIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC43IiB4Mj0iMi43IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWxpbmUgZmlsbD0ibm9uZSIgcG9pbnRzPSIxLDIgMCwyIDAsMCAxLDAgMSwxIDIsMSAyLDAiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMTEiPjwvcG9seWxpbmU+PC9zdmc+"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 4-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0004",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "O‘n million besh ming o‘ttiz soni raqamlar bilan yozildi. Qaysi yozuv to‘g‘ri?\nA) 1 005 030\nB) 10 005 030\nC) 10 050 030\nD) 10 500 300\nE) 10 005 300",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 5-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0005",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Uch xonali sonning birlari o‘nlaridan ikki marta kam, yuzlari esa o‘nlaridan ikki marta ko‘p. Agar sonda 4 ta o‘nlik bo‘lsa, shu sonni toping.\nA) 248\nB) 842\nC) 421\nD) 246\nE) 428",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 6-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0006",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Kvadratning burchaklari va tomonlari bo‘ylab bir-biridan 2 m masofada qoziqlar qoqilgan. Kvadratning tomoni 10 m bo‘lsa, nechta qoziq qoqilgan?\nA) 24\nB) 22\nC) 16\nD) 20\nE) 18",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 7-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0007",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Quyidagi beshta sondan eng kichigini tanlang.\nA) 900 087\nB) 908 070\nC) 908 007\nD) 900 078\nE) 900 708",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 8-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0008",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Rasmda 5 ta figura bo‘yalgan. Qaysi figuraning yuzi qolganlarinikidan farq qiladi?\n[rasm-past: rasm1.svg, 60%]\nA) A\nB) B\nC) C\nD) D\nE) E",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjEgLTAuMSAxMy4yIDcuMiI+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMCIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIxIiB4Mj0iMSIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI0IiB4Mj0iNCIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI1IiB4Mj0iNSIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI2IiB4Mj0iNiIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI3IiB4Mj0iNyIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI4IiB4Mj0iOCIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI5IiB4Mj0iOSIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIxMCIgeDI9IjEwIiB5MT0iMCIgeTI9IjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjExIiB4Mj0iMTEiIHkxPSIwIiB5Mj0iNyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMTIiIHgyPSIxMiIgeTE9IjAiIHkyPSI3Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIxMyIgeDI9IjEzIiB5MT0iMCIgeTI9IjciPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIxMyIgeTE9IjAiIHkyPSIwIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTMiIHkxPSIxIiB5Mj0iMSI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMCIgeDI9IjEzIiB5MT0iMiIgeTI9IjIiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIxMyIgeTE9IjMiIHkyPSIzIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTMiIHkxPSI0IiB5Mj0iNCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMCIgeDI9IjEzIiB5MT0iNSIgeTI9IjUiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIxMyIgeTE9IjYiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTMiIHkxPSI3IiB5Mj0iNyI+PC9saW5lPjxwb2x5Z29uIGZpbGw9IiNlY2VjZWMiIHBvaW50cz0iMywwIDQsMCA0LDIgNSwyIDUsMyA0LDMgNCw0IDMsNCAzLDMgMiwzIDIsMiAzLDIiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA5Ij48L3BvbHlnb24+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYyIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIzLjUiIHk9IjIuNzEiPkE8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2VjZWNlYyIgcG9pbnRzPSIwLDIgMSwyIDEsNyAwLDciIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA5Ij48L3BvbHlnb24+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYyIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIwLjUiIHk9IjQuNzEiPkI8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2VjZWNlYyIgcG9pbnRzPSI1LDMgNiwzIDYsNCA3LDQgNyw1IDYsNSA2LDYgNyw2IDcsNyA1LDciIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA5Ij48L3BvbHlnb24+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYyIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSI1LjUiIHk9IjUuMjEiPkM8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2VjZWNlYyIgcG9pbnRzPSI4LDAgMTIsMCAxMiwxIDExLDEgMTEsMiA5LDIgOSwxIDgsMSIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMDkiPjwvcG9seWdvbj48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjAuNjIiIGZvbnQtd2VpZ2h0PSI3MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjEwLjAiIHk9IjEuMjEiPkQ8L3RleHQ+PHBvbHlnb24gZmlsbD0iI2VjZWNlYyIgcG9pbnRzPSIxMCwzIDExLDMgMTEsNCAxMiw0IDEyLDYgMTEsNiAxMSw1IDEwLDUgMTAsNiA5LDYgOSw0IDEwLDQiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA5Ij48L3BvbHlnb24+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYyIiBmb250LXdlaWdodD0iNzAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIxMC41IiB5PSI0LjcxIj5FPC90ZXh0Pjwvc3ZnPg=="
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 9-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0009",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "«Kenguru» tanlovi 4500 soniya davom etadi. Shu vaqt ichida sen 25 ta, beshinchi sinf o‘quvchisi esa 30 ta topshiriqni bajarishi kerak. Sen har bir masalaga beshinchi sinf o‘quvchisidan necha soniya ko‘proq vaqt sarflashing mumkin?\nA) 10 soniya\nB) 20 soniya\nC) 30 soniya\nD) 40 soniya\nE) 60 soniya",
+   "javob": "C",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 10-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0010",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Sakkizta sonning yig‘indisi 1997 ga teng. Shu sonlardan biri 997. Agar uni 799 ga almashtirsak, yangi yig‘indi nechaga teng bo‘ladi?\nA) 2195\nB) 1799\nC) 1899\nD) 1979\nE) 1998",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 11-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0011",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Elektr poyezdi Sankt-Peterburgdan Lugagacha 210 daqiqa yuradi. U Sankt-Peterburgdan soat 9:30 da jo‘nagan bo‘lsa, Lugaga qachon yetib keladi?\nA) soat 15:30 da\nB) tushdan bir soat keyin\nC) soat 13:30 da\nD) tushdan bir soat oldin\nE) yarim tunda",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 12-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0012",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Uchburchak rasmda ko‘rsatilganidek qirqildi. Hosil bo‘lgan bo‘laklardan quyidagi shakllarning qaysi birini tuzib bo‘lmaydi?\n[rasm: rasm1.svg, 30%]\nA) [rasm: rasm2.svg]\nB) [rasm: rasm3.svg]\nC) [rasm: rasm4.svg]\nD) [rasm: rasm5.svg]\nE) [rasm: rasm6.svg]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjkgLTAuOSAzLjggMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIwIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMSIgeDI9IjEiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjgiIHgyPSIyLjgiIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iLTAuOCIgeDI9IjIuOCIgeTE9IjEiIHkyPSIxIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSItMC44IiB4Mj0iMi44IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjAsMCAwLDIgMiwyIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjExIj48L3BvbHlnb24+PHBvbHlsaW5lIGZpbGw9Im5vbmUiIHBvaW50cz0iMCwxIDEsMSAxLDIiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMTEiPjwvcG9seWxpbmU+PC9zdmc+",
+    "rasm2.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjMgLTAuOSA0LjQgMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjEiIHgyPSIxIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMiIgeDI9IjIiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMCIgeTI9IjAiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjAsMSAyLDEgMywyIDEsMiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4xMSI+PC9wb2x5Z29uPjwvc3ZnPg==",
+    "rasm3.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjMgLTAuOSA0LjQgMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjEiIHgyPSIxIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMiIgeDI9IjIiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMCIgeTI9IjAiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjEsMSAzLDEgMywyIDEsMiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4xMSI+PC9wb2x5Z29uPjwvc3ZnPg==",
+    "rasm4.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjMgLTAuOSA0LjQgMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjEiIHgyPSIxIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMiIgeDI9IjIiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMCIgeTI9IjAiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjAsMiAxLDEgMiwxIDMsMiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4xMSI+PC9wb2x5Z29uPjwvc3ZnPg==",
+    "rasm5.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjMgLTAuOSA0LjQgMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjEiIHgyPSIxIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMiIgeDI9IjIiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMCIgeTI9IjAiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjEsMSAyLDAgMywxIDIsMiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4xMSI+PC9wb2x5Z29uPjwvc3ZnPg==",
+    "rasm6.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjMgLTAuOSA0LjQgMy44Ij48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjEiIHgyPSIxIiB5MT0iLTAuOCIgeTI9IjIuOCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMiIgeDI9IjIiIHkxPSItMC44IiB5Mj0iMi44Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9Ii0wLjgiIHkyPSIyLjgiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMCIgeTI9IjAiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9Ii0wLjIiIHgyPSI0IiB5MT0iMiIgeTI9IjIiPjwvbGluZT48cG9seWdvbiBmaWxsPSJub25lIiBwb2ludHM9IjEsMiAxLDEgMiwwIDMsMSAyLDEgMiwyIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjExIj48L3BvbHlnb24+PC9zdmc+"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 13-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0013",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "**KENGURU** so‘zida qo‘shni harflarning o‘rnini almashtirish mumkin. Barcha unli harflarni yonma-yon to‘plash uchun eng kamida nechta shunday almashtirish kerak?\nA) 1\nB) 2\nC) 3\nD) 4\nE) 5",
+   "javob": "C",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 14-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0014",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Qaysi rasmda doiraning roppa-rosa to‘rtdan bir qismi bo‘yalgan?\nA) [rasm: rasm1.svg]\nB) [rasm: rasm2.svg]\nC) [rasm: rasm3.svg]\nD) [rasm: rasm4.svg]\nE) [rasm: rasm5.svg]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjEgLTEuMSAyLjIgMi4yIj48cGF0aCBkPSJNMCwwIEwwLjAwMDAsLTEuMDAwMCBBMSwxIDAgMCAxIDAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC43MDcxLC0wLjcwNzEgQTEsMSAwIDAgMSAxLjAwMDAsLTAuMDAwMCBaIiBmaWxsPSIjY2ZjZmNmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDEuMDAwMCwtMC4wMDAwIEExLDEgMCAwIDEgMC43MDcxLDAuNzA3MSBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAwLjAwMDAsMS4wMDAwIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC4wMDAwLDEuMDAwMCBBMSwxIDAgMCAxIC0wLjcwNzEsMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAtMS4wMDAwLDAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTC0xLjAwMDAsMC4wMDAwIEExLDEgMCAwIDEgLTAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwtMC43MDcxIEExLDEgMCAwIDEgLTAuMDAwMCwtMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PGNpcmNsZSBmaWxsPSJub25lIiByPSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9jaXJjbGU+PC9zdmc+",
+    "rasm2.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjEgLTEuMSAyLjIgMi4yIj48cGF0aCBkPSJNMCwwIEwwLjAwMDAsLTEuMDAwMCBBMSwxIDAgMCAxIDAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC43MDcxLC0wLjcwNzEgQTEsMSAwIDAgMSAxLjAwMDAsLTAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDEuMDAwMCwtMC4wMDAwIEExLDEgMCAwIDEgMC43MDcxLDAuNzA3MSBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAwLjAwMDAsMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC4wMDAwLDEuMDAwMCBBMSwxIDAgMCAxIC0wLjcwNzEsMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAtMS4wMDAwLDAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTC0xLjAwMDAsMC4wMDAwIEExLDEgMCAwIDEgLTAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwtMC43MDcxIEExLDEgMCAwIDEgLTAuMDAwMCwtMS4wMDAwIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PGNpcmNsZSBmaWxsPSJub25lIiByPSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9jaXJjbGU+PC9zdmc+",
+    "rasm3.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjEgLTEuMSAyLjIgMi4yIj48cGF0aCBkPSJNMCwwIEwwLjAwMDAsLTEuMDAwMCBBMSwxIDAgMCAxIDAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC43MDcxLC0wLjcwNzEgQTEsMSAwIDAgMSAxLjAwMDAsLTAuMDAwMCBaIiBmaWxsPSIjY2ZjZmNmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDEuMDAwMCwtMC4wMDAwIEExLDEgMCAwIDEgMC43MDcxLDAuNzA3MSBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAwLjAwMDAsMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC4wMDAwLDEuMDAwMCBBMSwxIDAgMCAxIC0wLjcwNzEsMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAtMS4wMDAwLDAuMDAwMCBaIiBmaWxsPSIjY2ZjZmNmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTC0xLjAwMDAsMC4wMDAwIEExLDEgMCAwIDEgLTAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwtMC43MDcxIEExLDEgMCAwIDEgLTAuMDAwMCwtMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PGNpcmNsZSBmaWxsPSJub25lIiByPSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9jaXJjbGU+PC9zdmc+",
+    "rasm4.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjEgLTEuMSAyLjIgMi4yIj48cGF0aCBkPSJNMCwwIEwwLjAwMDAsLTEuMDAwMCBBMSwxIDAgMCAxIDAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC43MDcxLC0wLjcwNzEgQTEsMSAwIDAgMSAxLjAwMDAsLTAuMDAwMCBaIiBmaWxsPSIjY2ZjZmNmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDEuMDAwMCwtMC4wMDAwIEExLDEgMCAwIDEgMC43MDcxLDAuNzA3MSBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAwLjAwMDAsMS4wMDAwIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC4wMDAwLDEuMDAwMCBBMSwxIDAgMCAxIC0wLjcwNzEsMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAtMS4wMDAwLDAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTC0xLjAwMDAsMC4wMDAwIEExLDEgMCAwIDEgLTAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwtMC43MDcxIEExLDEgMCAwIDEgLTAuMDAwMCwtMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PGNpcmNsZSBmaWxsPSJub25lIiByPSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9jaXJjbGU+PC9zdmc+",
+    "rasm5.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjEgLTEuMSAyLjIgMi4yIj48cGF0aCBkPSJNMCwwIEwwLjAwMDAsLTEuMDAwMCBBMSwxIDAgMCAxIDAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC43MDcxLC0wLjcwNzEgQTEsMSAwIDAgMSAxLjAwMDAsLTAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDEuMDAwMCwtMC4wMDAwIEExLDEgMCAwIDEgMC43MDcxLDAuNzA3MSBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTDAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAwLjAwMDAsMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMMC4wMDAwLDEuMDAwMCBBMSwxIDAgMCAxIC0wLjcwNzEsMC43MDcxIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwwLjcwNzEgQTEsMSAwIDAgMSAtMS4wMDAwLDAuMDAwMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNCI+PC9wYXRoPjxwYXRoIGQ9Ik0wLDAgTC0xLjAwMDAsMC4wMDAwIEExLDEgMCAwIDEgLTAuNzA3MSwtMC43MDcxIFoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PHBhdGggZD0iTTAsMCBMLTAuNzA3MSwtMC43MDcxIEExLDEgMCAwIDEgLTAuMDAwMCwtMS4wMDAwIFoiIGZpbGw9IiNjZmNmY2YiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA0Ij48L3BhdGg+PGNpcmNsZSBmaWxsPSJub25lIiByPSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9jaXJjbGU+PC9zdmc+"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 15-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0015",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Mashaning 3 ta aka-ukasi va 2 ta opa-singlisi bor. Uning aka-ukasi Mishaning nechta aka-ukasi va opa-singlisi bor?\nA) 3 ta aka-uka va 2 ta opa-singil\nB) 2 ta aka-uka va 3 ta opa-singil\nC) 2 ta aka-uka va 2 ta opa-singil\nD) 3 ta aka-uka va 3 ta opa-singil\nE) aniqlab bo‘lmaydi",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 16-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0016",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Birinchi tarozi muvozanatda. Ikkinchi tarozi ham muvozanatga kelishi uchun uning bo‘sh pallasiga nechta olma qo‘yish kerak?\n[rasm-past: rasm1.png, 60%]\nA) 1\nB) 2\nC) 3\nD) 4\nE) aniqlab bo‘lmaydi",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.png": "data:image/png;base64,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"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 17-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0017",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Elektron soat ikkita sonni ko‘rsatadi: soat va daqiqani, masalan 14:05. Bir sutkada (24 soatda) soat necha marta ikkita bir xil sonni ko‘rsatadi?\nA) 12\nB) 25\nC) 23\nD) 24\nE) 13",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 18-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0018",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Kovboyning kurtkasida 5 ta cho‘ntak bor. U har bir cho‘ntakka kamida 1 ta va ko‘pi bilan 5 ta patron soladi. Barcha cho‘ntaklardagi patronlar soni har xil bo‘lsa, kovboyda nechta patron bor?\nA) 12\nB) 15\nC) 16\nD) 30\nE) 39",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 19-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0019",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Bu rasmda uchlari belgilangan nuqtalarda bo‘lgan nechta kesmani topish mumkin?\nA) 5\nB) 7\nC) 9\nD) 13\nE) 18\n[rasm: rasm1.svg, 30%]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii04IC04IDI0OSAxNjQiPjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyLjQiIHgxPSI3NSIgeDI9IjAiIHkxPSIwIiB5Mj0iMTQ4Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjIuNCIgeDE9Ijc1IiB4Mj0iMjMzIiB5MT0iMCIgeTI9IjEzNSI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyLjQiIHgxPSIwIiB4Mj0iMjMzIiB5MT0iMTQ4IiB5Mj0iMTM1Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjIuNCIgeDE9IjM5IiB4Mj0iMjMzIiB5MT0iNzMiIHkyPSIxMzUiPjwvbGluZT48bGluZSBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMi40IiB4MT0iMCIgeDI9IjE1NiIgeTE9IjE0OCIgeTI9IjY3Ij48L2xpbmU+PGNpcmNsZSBjeD0iNzUiIGN5PSIwIiBmaWxsPSIjMTExIiByPSI0LjIiPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjM5IiBjeT0iNzMiIGZpbGw9IiMxMTEiIHI9IjQuMiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTU2IiBjeT0iNjciIGZpbGw9IiMxMTEiIHI9IjQuMiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTAzIiBjeT0iOTUiIGZpbGw9IiMxMTEiIHI9IjQuMiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMCIgY3k9IjE0OCIgZmlsbD0iIzExMSIgcj0iNC4yIj48L2NpcmNsZT48Y2lyY2xlIGN4PSIyMzMiIGN5PSIxMzUiIGZpbGw9IiMxMTEiIHI9IjQuMiI+PC9jaXJjbGU+PC9zdmc+"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 20-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0020",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Ma’lumki, 12 345 679 × 9 = 111 111 111 va 12 345 679 × 18 = 222 222 222. 12 345 679 × 36 ko‘paytma nimaga teng?\nA) 111 111 111\nB) 333 333 333\nC) 123 456 789\nD) 363 636 363\nE) 444 444 444",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 21-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0021",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "O‘yin kubigida har bir juft qarama-qarshi yoqlardagi ochkolar yig‘indisi bir xil. Shu yig‘indini toping.\nA) 5\nB) 6\nC) 7\nD) 8\nE) 9\n[rasm: rasm1.svg, 30%]",
+   "javob": "C",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjUgLTEuNSAzMSAzMSI+PHBvbHlnb24gZmlsbD0iI2ZmZiIgcG9pbnRzPSIwLDggOCwwIDI4LDAgMjAsOCIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuMSI+PC9wb2x5Z29uPjxwb2x5Z29uIGZpbGw9IiNmZmYiIHBvaW50cz0iMjAsOCAyOCwwIDI4LDIwIDIwLDI4IiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS4xIj48L3BvbHlnb24+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIyMCIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuMSIgd2lkdGg9IjIwIiB4PSIwIiB5PSI4Ij48L3JlY3Q+PGNpcmNsZSBjeD0iNSIgY3k9IjEzIiBmaWxsPSIjMTExIiByPSIxLjYiPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjE1IiBjeT0iMTMiIGZpbGw9IiMxMTEiIHI9IjEuNiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTAiIGN5PSIxOCIgZmlsbD0iIzExMSIgcj0iMS42Ij48L2NpcmNsZT48Y2lyY2xlIGN4PSI1IiBjeT0iMjMiIGZpbGw9IiMxMTEiIHI9IjEuNiI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iMTUiIGN5PSIyMyIgZmlsbD0iIzExMSIgcj0iMS42Ij48L2NpcmNsZT48ZWxsaXBzZSBjeD0iMTQiIGN5PSI0IiBmaWxsPSIjMTExIiByeD0iMi4xIiByeT0iMS4xIj48L2VsbGlwc2U+PGVsbGlwc2UgY3g9IjIyIiBjeT0iMTEuNSIgZmlsbD0iIzExMSIgcng9IjEuMDUiIHJ5PSIxLjYiIHRyYW5zZm9ybT0icm90YXRlKC0yMCAyMiAxMS41KSI+PC9lbGxpcHNlPjxlbGxpcHNlIGN4PSIyNCIgY3k9IjE0LjUiIGZpbGw9IiMxMTEiIHJ4PSIxLjA1IiByeT0iMS42IiB0cmFuc2Zvcm09InJvdGF0ZSgtMjAgMjQgMTQuNSkiPjwvZWxsaXBzZT48ZWxsaXBzZSBjeD0iMjYiIGN5PSIxNy41IiBmaWxsPSIjMTExIiByeD0iMS4wNSIgcnk9IjEuNiIgdHJhbnNmb3JtPSJyb3RhdGUoLTIwIDI2IDE3LjUpIj48L2VsbGlwc2U+PC9zdmc+"
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 22-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0022",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Parishonxotir uy bekasining «Bodring», «Gullar» va «Moychechak» deb yozilgan uchta ko‘chat qutisi bor. U moychechak, bodring va qo‘ng‘iroqgul urug‘larini bu qutilarga shunday ekdiki, barcha yozuvlar noto‘g‘ri bo‘lib chiqdi. «Moychechak» deb yozilgan qutida nima o‘sib chiqadi?\nA) bodring\nB) qo‘ng‘iroqgul\nC) moychechak\nD) aniqlab bo‘lmaydi\nE) tarvuz",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 23-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0023",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Kvadrat taxta kataklarga bo‘lingan va rasmda ko‘rsatilganidek bo‘yalgan. Kataklardan tuzilgan nechta kvadratda bo‘yalgan va oq kataklar soni teng?\nA) 1\nB) 2\nC) 4\nD) 6\nE) 8\n[rasm: rasm1.svg, 30%]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjEgLTAuMSA0LjIgNC4yIj48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMCIgeT0iMCI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIxIiB5PSIwIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2M4YzhjOCIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjIiIHk9IjAiPjwvcmVjdD48cmVjdCBmaWxsPSIjYzhjOGM4IiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMyIgeT0iMCI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIwIiB5PSIxIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjEiIHk9IjEiPjwvcmVjdD48cmVjdCBmaWxsPSIjYzhjOGM4IiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMiIgeT0iMSI+PC9yZWN0PjxyZWN0IGZpbGw9IiNjOGM4YzgiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIzIiB5PSIxIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2M4YzhjOCIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjAiIHk9IjIiPjwvcmVjdD48cmVjdCBmaWxsPSIjYzhjOGM4IiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMSIgeT0iMiI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIyIiB5PSIyIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjMiIHk9IjIiPjwvcmVjdD48cmVjdCBmaWxsPSIjYzhjOGM4IiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMCIgeT0iMyI+PC9yZWN0PjxyZWN0IGZpbGw9IiNjOGM4YzgiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIxIiB5PSIzIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjIiIHk9IjMiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMyIgeT0iMyI+PC9yZWN0PjxyZWN0IGZpbGw9Im5vbmUiIGhlaWdodD0iNCIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMSIgd2lkdGg9IjQiPjwvcmVjdD48L3N2Zz4="
+   },
+   "manba": "Kenguru 1997, 3–4-sinf, 24-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0024",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Karlsonda 5 ta bulochka bor, Malishda Karlsondagidan kamroq, Frekken Bokda esa Karlson va Malishdagi bulochkalar birgalikda qancha bo‘lsa, shuncha bulochka bor. Ularning bulochkalari jami nechta bo‘lishi mumkin?\nA) 8\nB) 11\nC) 13\nD) 14\nE) 20",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1997, 3–4-sinf, 25-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0025",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "**KENGURU** so‘zini tuzish uchun quyidagi kartochkalardan eng kamida nechtasi kerak bo‘ladi?\n\n[[GURU]] [[K]] [[NGU]] [[ENG]] [[RU]] [[GU]] [[GNE]] [[EN]] [[KENG]]\nA) 2\nB) 3\nC) 4\nD) 5\nE) 6",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 1-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0026",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Men bir son o‘yladim va undan 40 ni ayirdim. Natijaga 2000 ni qo‘shib, 3250 ni hosil qildim. Men o‘ylagan son nechaga teng?\nA) 2040\nB) 1960\nC) 1290\nD) 3210\nE) 1250",
+   "javob": "C",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 2-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0027",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "«**КЕНГУРЯТА**» (ruscha «kenguru bolalari») so‘zining harflari rus alifbosi tartibida joylashtirildi. Uchinchi o‘rinda qaysi harf turadi?\nA) К\nB) Е\nC) Н\nD) Г\nE) У",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 3-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0028",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Ushbu jumboq bo‘laklari orasida yuzi bir xil bo‘lgan 2 tasi bor. Qaysilar?\n[rasm-past: rasm1.svg, 60%]\nA) 4 va 2\nB) 1 va 5\nC) 1 va 3\nD) 4 va 5\nE) 3 va 5",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5Mi4wIDE2LjgiPjxzdmcgeD0iMCIgeT0iMCIgd2lkdGg9IjE2LjgiIGhlaWdodD0iMTYuOCIgdmlld0JveD0iLTMuNCAtMy40IDE2LjggMTYuOCI+PHBhdGggZD0iTTAsMCBMMy43NSwwLjAwIEExLjYsMS42IDAgMSAxIDYuMjUsMC4wMCBMMTAsMCBMMTAuMDAsMy43NSBBMS42LDEuNiAwIDEgMSAxMC4wMCw2LjI1IEwxMCwxMCBMNi4yNSwxMC4wMCBBMS42LDEuNiAwIDEgMCAzLjc1LDEwLjAwIEwwLDEwIEwwLDAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMzIiPjwvcGF0aD48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjMuNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNSIgeT0iNi4zIj4xPC90ZXh0Pjwvc3ZnPjxzdmcgeD0iMTguOCIgeT0iMCIgd2lkdGg9IjE2LjgiIGhlaWdodD0iMTYuOCIgdmlld0JveD0iLTMuNCAtMy40IDE2LjggMTYuOCI+PHBhdGggZD0iTTAsMCBMMy43NSwwLjAwIEExLjYsMS42IDAgMSAwIDYuMjUsMC4wMCBMMTAsMCBMMTAuMDAsMy43NSBBMS42LDEuNiAwIDEgMCAxMC4wMCw2LjI1IEwxMCwxMCBMNi4yNSwxMC4wMCBBMS42LDEuNiAwIDEgMSAzLjc1LDEwLjAwIEwwLDEwIEwwLDAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMzIiPjwvcGF0aD48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjMuNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNSIgeT0iNi4zIj4yPC90ZXh0Pjwvc3ZnPjxzdmcgeD0iMzcuNiIgeT0iMCIgd2lkdGg9IjE2LjgiIGhlaWdodD0iMTYuOCIgdmlld0JveD0iLTMuNCAtMy40IDE2LjggMTYuOCI+PHBhdGggZD0iTTAsMCBMMy43NSwwLjAwIEExLjYsMS42IDAgMSAwIDYuMjUsMC4wMCBMMTAsMCBMMTAuMDAsMy43NSBBMS42LDEuNiAwIDEgMSAxMC4wMCw2LjI1IEwxMCwxMCBMNi4yNSwxMC4wMCBBMS42LDEuNiAwIDEgMSAzLjc1LDEwLjAwIEwwLDEwIEwwLjAwLDYuMjUgQTEuNiwxLjYgMCAxIDEgMC4wMCwzLjc1IEwwLDAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMzIiPjwvcGF0aD48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjMuNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNSIgeT0iNi4zIj4zPC90ZXh0Pjwvc3ZnPjxzdmcgeD0iNTYuNDAwMDAwMDAwMDAwMDA2IiB5PSIwIiB3aWR0aD0iMTYuOCIgaGVpZ2h0PSIxNi44IiB2aWV3Qm94PSItMy40IC0zLjQgMTYuOCAxNi44Ij48cGF0aCBkPSJNMCwwIEwzLjc1LDAuMDAgQTEuNiwxLjYgMCAxIDAgNi4yNSwwLjAwIEwxMCwwIEwxMC4wMCwzLjc1IEExLjYsMS42IDAgMSAxIDEwLjAwLDYuMjUgTDEwLDEwIEw2LjI1LDEwLjAwIEExLjYsMS42IDAgMSAwIDMuNzUsMTAuMDAgTDAsMTAgTDAuMDAsNi4yNSBBMS42LDEuNiAwIDEgMSAwLjAwLDMuNzUgTDAsMCBaIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4zMiI+PC9wYXRoPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMy42IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSI1IiB5PSI2LjMiPjQ8L3RleHQ+PC9zdmc+PHN2ZyB4PSI3NS4yIiB5PSIwIiB3aWR0aD0iMTYuOCIgaGVpZ2h0PSIxNi44IiB2aWV3Qm94PSItMy40IC0zLjQgMTYuOCAxNi44Ij48cGF0aCBkPSJNMCwwIEwzLjc1LDAuMDAgQTEuNiwxLjYgMCAxIDEgNi4yNSwwLjAwIEwxMCwwIEwxMCwxMCBMNi4yNSwxMC4wMCBBMS42LDEuNiAwIDEgMSAzLjc1LDEwLjAwIEwwLDEwIEwwLjAwLDYuMjUgQTEuNiwxLjYgMCAxIDAgMC4wMCwzLjc1IEwwLDAgWiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjAuMzIiPjwvcGF0aD48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjMuNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNSIgeT0iNi4zIj41PC90ZXh0Pjwvc3ZnPjwvc3ZnPg=="
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 4-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0029",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Tamagochi sayyorasida bir sutka Yerdagidan 40 daqiqa uzunroq. Tamagochidagi bir hafta Yerdagi bir haftadan qanchaga farq qiladi?\nA) 4 soat 40 daqiqa\nB) 2 soat 20 daqiqa\nC) 7 soat 20 daqiqa\nD) 40 daqiqa\nE) 0",
+   "javob": "A",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 5-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0030",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Simdan ikkita kvadrat yasaldi. Ularni bir-biriga yonma-yon qo‘yilsa, tomonlari 3 dm va 6 dm bo‘lgan to‘g‘ri to‘rtburchak hosil bo‘ladi. Ikki kvadrat uchun necha detsimetr sim sarflangan?\nA) 9\nB) 12\nC) 18\nD) 24\nE) 36",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 6-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0031",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "It ko‘rgazmasiga 101 ta dalmatin olib kelindi. Ulardan 56 tasining faqat chap qulog‘ida, 15 tasining faqat o‘ng qulog‘ida qora dog‘ bor, 29 tasining esa quloqlari oq. Nechta itning ikkala qulog‘ida ham dog‘ bor?\nA) 1\nB) 26\nC) 55\nD) 71\nE) 100",
+   "javob": "A",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 7-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0032",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Bill 4 porsiya muzqaymoq sotib olishi uchun unga 60 sent yetmaydi. U 3 porsiya sotib oldi va unda 30 sent qoldi. Bir porsiya muzqaymoq necha sent turadi?\nA) 10 sent\nB) 20 sent\nC) 30 sent\nD) 70 sent\nE) 90 sent",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 8-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0033",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Dumaloq pirogni to‘g‘ri chiziqli kesishlar bilan 7 ta (teng bo‘lishi shart emas) bo‘lakka bo‘lish kerak. Buning uchun eng kamida nechta kesish kerak bo‘ladi?\nA) 2\nB) 3\nC) 4\nD) 6\nE) 7",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 9-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0034",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 3,
+   "matn": "Yugurish musobaqasida 31 nafar sportchi qatnashdi. Jondan oldin kelgan sportchilar soni undan keyin kelganlar sonidan 4 marta kam. Jon nechanchi o‘rinni egalladi?\nA) 6\nB) 7\nC) 8\nD) 20\nE) 21",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 10-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0035",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Kvadrat hosil qilish uchun bo‘yalgan shaklga qaysi shaklni qo‘shish kerak?\n[rasm: rasm1.svg, 30%]\nA) [rasm: rasm2.svg]\nB) [rasm: rasm3.svg]\nC) [rasm: rasm4.svg]\nD) [rasm: rasm5.svg]\nE) [rasm: rasm6.svg]",
+   "javob": "A",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5Z29uIGZpbGw9IiNiZGJkYmQiIHBvaW50cz0iMCwxMzggNDcsOTAgOTUsMTM4IDE0MCwxNiAxODUsMTg1IDE4NSwxODUgMCwxODUiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1Ij48L3BvbHlnb24+PC9zdmc+",
+    "rasm2.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5bGluZSBmaWxsPSJub25lIiBwb2ludHM9IjAsMTg1IDAsMCA0NSwxNjMgOTIsNDMgMTM4LDkzIDE4NSw0NiAxODUsMTg1IDAsMTg1IiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iNSI+PC9wb2x5bGluZT48L3N2Zz4=",
+    "rasm3.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5bGluZSBmaWxsPSJub25lIiBwb2ludHM9IjAsMTg1IDAsMCA0NSw5MyA5Miw0MyAxMzgsOTMgMTg1LDQ2IDE4NSwxODUgMCwxODUiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSI1Ij48L3BvbHlsaW5lPjwvc3ZnPg==",
+    "rasm4.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5bGluZSBmaWxsPSJub25lIiBwb2ludHM9IjAsMTg1IDAsOTYgNDUsNTAgOTEsOTkgMTM4LDYgMTg1LDE4NSAxODUsMTg1IDAsMTg1IiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iNSI+PC9wb2x5bGluZT48L3N2Zz4=",
+    "rasm5.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5bGluZSBmaWxsPSJub25lIiBwb2ludHM9IjAsMTg1IDAsNTMgNDIsMTAgOTIsOTkgMTM1LDUzIDE4NSwxODUgMTg1LDE4NSAwLDE4NSIgc3Ryb2tlPSIjMTExIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjUiPjwvcG9seWxpbmU+PC9zdmc+",
+    "rasm6.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii02IC02IDE5NyAxOTciPjxwb2x5bGluZSBmaWxsPSJub25lIiBwb2ludHM9IjAsMTg1IDAsOCA0NywxMDAgOTMsNTUgMTQwLDEwMCAxODUsOCAxODUsMTg1IDAsMTg1IiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iNSI+PC9wb2x5bGluZT48L3N2Zz4="
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 11-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0036",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Yarim non chorak nondan yarim so‘m qimmat. Bitta non necha so‘m turadi?\nA) 50 tiyin\nB) 1 so‘m\nC) 1 so‘m 50 tiyin\nD) 2 so‘m\nE) 3 so‘m",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 12-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0037",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Qutida 15 ta shar bor: qizil, oq va qora. Oq sharlar qizil sharlardan 7 marta ko‘p. Qutida nechta qora shar bor?\nA) 1\nB) 3\nC) 5\nD) 7\nE) 9",
+   "javob": "D",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 13-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0038",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Quyonning uychasi 4 marta, Cho‘chqachaning uychasi esa faqat bir marta chizilgan. Cho‘chqachaning uychasi qaysi?\n[rasm-past: rasm1.svg, 60%]",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNjk4IDE1Mi41Ij48aW1hZ2UgaHJlZj0iZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFyb0FBQUI5Q0FJQUFBREM3VmRyQUFBQUNYQklXWE1BQUFzU0FBQUxFZ0hTM1g3OEFBQVNha2xFUVZSNDJ1MmRXNDdrdGc1QVBZWVhNZ1BNL2xjVUlObEozNC9HYlJUc0tsc1NIeUtwUStSamtreTNiWklpRDZuWHI2K3ZydzFCRUFSQkVPU3o3S2dBUVJBRVFaQjdPZGI4N0wrLy8zei80Wi8vL3NVSkVBUkJFT1JlZnEwMkdmRURDcThDTkNCd0xZSWdDTGh3eHdxRVl5U0x1K0tsY0NHQzlMcVdsbE90Z2d1bnlQdWp2dGYvemtDTlpxOWxMWExEdFRqcUNyYkd4SWhkMWdNWHhsVUdNZFIyOGRRYWVNdTErQ3BjaUNBRGZpWDBxT0s0MEo1N2dJYklvWE1SaXp3NklkQlFQalNCeTBoWUJpMkxDd09qam9FYUtsT3VabzUyWUFVYXlrY25ZaEdpQWdxNkdGb1RGNFpWd3lpTlpxd1ZMRExXMlFJYWFvY203SXVvZ0lKaUxLMkdDeXJaQldpSWxpa0xUeFZKUG8yTVV0N1dtQmhSOUJCaGFxdURDN281SG1LSUZqcnJFWU9XajVGUnluUGh4dUlxUkMrR0RQdFNCVnd3U3UxRTRXajJLc053RmgrQ3U2N0doZGdYcHhwMmhyRWZUNDhMMWtPSUlScEttUVhNWWZvSlFBTmNpQ3psVkp2U25Idkw3MG1NQzI3REJtSlFWNlBpVkZFaWM3ZzVFaG1sZkhUQ3hQaVZpdEc3Zm1GS1hQQWZLaEJEOEJvcnZrWDhFWWVNc2hvWFlsOEExTlNMOHVIQ3hCRkMvSTFtckN4dGhvbnZpZE9XMXpiUVFDRDFlVVF5WEppZUhoaVowWFFWbkJpQ3ZCN1FVRDQ0RUpwd0t1dG5wY0dGT0lPQkhVM1JqQlV6VVBKV3kvcDhIQzdFdm1XaTZCYWdVNVVBRjBJTkFFWmpXUDFFSzZERFlpV2Rodkl4Z1RDRlUxazgvWURaSlhFV2lXT3NmLzc3RndNMUt1cGtyTCsvLzVCUkZIVWJ6Y1NMWHdjUEtHakYwcmpkaFdqRkdkZlNwNmhtNHJoTmlpS2VNclM4RGpFeGpxUVZTQSswTnZBK1ZMR1J3UzZ5b3FMcGh6SzB2SlV4TVZGVXBUYU8yRjBJM2xRNDNRZTYrS2pMWXF5NUwzUGl5N0ErUXhtcUdGdGphZzhUWXhTSlB3ZkNoZUFyaHQ1ZXJMenNlRXZrNGhGd0lTWmR0YWlSakRMTWhSdlRUMGptbEhkOXNSQzRFSC9MMmFlN3d4Y2NiQ21vTG9KMXJyaXdKWm00QVJvRzFQVVdDck5ZR2ZzU1NHOEM2YysvSHFnTUFDL200cEhsdFFBTlM1elh6TWZVVzYvMlVsZ1oreEpGdXdMcGdkWWFReWN1RHRVWnBaT3diMzdxcnBOVTdyM3hWVE5YMVlYbFFxQ0JrTlVZM3VkTVJtVFgybEpESzJNSDZPMUV3S3czL1BRT2lYQ0g2WW14VUpCSWI3UlVDYVNQZ2ZSQVpaRUxhRnhjWXFuZ1JzelZadGd1SnpzeFRNYjBGcm1OU3FlQjh2Z21rTHAyRnlMbjQ5NTZ0UHh3U3UzaVlaYzZGaWpzNkRRTUdKcE9FcUNRc1R3KytiWVRMaVE2K0F4Y0NBdDI3VjZVWWpJaUx6R1FWTVpDUWFMK0pmWmRwT0pxQ2FSKzNZVkVHNUc3M3EwcUxoUnc4WXk0a0M2ZGJCeUx2Z0FYc3FDaFdNWFYrMkorYXhmaTh5bUxGYktFaGtVc2xXdHYyOXVUQnBhZDgyNzg1RVFMVnJZUEN4cUlsbm16bmpDUTdtNjVCMWFJN09JbmJjQUtFd1AwcDJPZHNyenoxYVBXekJPTmJCRmZVVy90Q3huY1I5R1NnWFMzMWxwQVVJQVZzalFWbHJWVU9tTFlQcHg4dWs1ZTZYWE9rNG5UUWNPQ1JMaHNlV3gxSTJXS3VTNVlJWXV4VnJaVXhrUDNydnNHdC9EOTlpQW16cUlvOWx1bVRubkMxOXZ0RkJmY3VqSGJIck15Y1VsV3lHN2ZwQjNnVHhlc0xKVTJhcGZzekQwbCttbzVLL3o4aG1QdWFLRlVCWWV4VkZjeGwxUWg1WHNNa3E4cjBHWllyZE93Wmg5OXQzaXRUNWV6a1lGb0ttQXBZUTBhdjZiNVpNSGFCYWp3NnpJdWNVMWFOOElLd3lpOHk5K3A1YUpuTWxBRUpheldBU29XdVZLa2s2c0ZjN0hPbE81Q1VycjY5SWFyY1dIQTd6VktlYnZpTzUwdVpBdWlUVmdoU3paVnQxUTljd2RQSnpldnRFNmJRZGZFV2Jpd1RIZWtBQ0dwQjlLZlg3amJ2Vk9FWU0zQ3hsUFFDYXNIQzZwTEZMUGFFME9LZFBMV3pTQ0dNZTBsS2w1cjc3Uk1NWk5yV2g3dnV1NFNLbkJMVG5ldTZ1S25Qd1NaS2pLaW1YU0EyRTRNQWROSnkyc3NNakZoMFdiSVF2WlZEM1Q2RkVqanhGSTdtaEd0WFdobmhWa2VmOHBBdlo5V0pwRGRXQ3FJbHcremNNdHJaelJpK3p1SFNpZGRkcVROTU5CbUNCaVVQaG02SGpFMHV2ZkVML1VKcEh2dk8vVytsbjlvTUZWY0l2OXUxOE9zRDhkU0xiWnJIMXlKN0FneEpHMHpERGZBa2xxNUpaQk9OOUJZSVAzNXRQWjMzbFdjV090dlRsZGNtWHd6VUFUQUNobmJETk1uSm9idHVPQ0p3dCtmT2ZDeFNia3dlNXVoZmNQa3hERTROcE03OXBKN2w2TVB2TlpKbTZhcUhHYUZ3blZKNDJ6UkxCZUhGVlRpenF4MElseFh0Y2h5ZWhWUFRzcUZlZHNNOFJjMmJ1N3I4M2FIb09DUW1WU1d5MTIzQXlVdFg4WXM1VFpWTkd5cFJkTEpXSGlkbTA2RVp4cENESW5hREdOY21Hc2d4NTlmRTY3UHM4S0YrRHZjSktWcXBSdmN4OUt3cDVkTGZDbkY2U2lLRVRsK20wSHhseSs3WTJLTUdDWXVDSk9YaThFSHIyUXZvcHRkWm5WbmQwOVdzTkNtaXVLeXM0S1FlM3crWDVjVnRnVU8zWklUZzEzWXNoZytpN1FaVlBMOUZNclhPa3M0Q3hmR2pLVmFLZSs2ci83eG8vYlVFVUYzbHFSQWdSSnpxbWhUNmdCSkdpZXJFWU5wbThFT3RkZFoveWovVWg5aTBPMi9Yc2R2cUh1RlZBNkFzWjUySDNqRCs1YUpkR2VFNmVGUTZqTWFBNmE5R1FPNUlwUnVROWhJQStvNDdLK2NJTVZvMXhjWnhXWHJ0bHpWYzM0czJneldremhHeWc5b1lpT3ZOc0owenlpNjNaKzc0SHlla2h3RFRWMDVFU3NFOUhLdGhZMWM5akZXaVpyR1pUdWpwT3RhUzNRYmRtTENkQUNHMmhTai9uUjFkVTFaMk5qYVhaQkVLR3YvSm90b01hTzFsMnN0VnZqMHMwdXRvaGZ1OTlFYXk1V1dCc2ZKRUNyRW9Oc2Q5QW16RWVhZWpEWk1LcHBqVm5kMkVCZGV6YWxsMUxFUjR1REVLWktRdzFTUlVBL1dyTEIxSGpaY0RCcDZoNkZLbThGaFNaMWloRm1ITnQ0TzNyeW5LSlo1bkVvc0RiV1cveGo3V3EzbGRWMTZwSy9nUEtMKy92NHpwbWNIVmpCOWY2MWc0WkJmdXhaK3ZyN1A5NS9IVGpQVHZSVzN6S2lNRUpSZXJUeGwvQ2F5Zm5BUGxNdzFHMW53a0ZPU3lwczllclpQRnpSK3IvVVR1dW5lUHpZOGtJVExLYnA4S1VpQVRwUVNmam9UdlRyVVpUaUhSc2pLWUhGeWp3aVpKdXcxNjZjWFUvLzJuMGYwR2oxSXhUV0NDMitmZlk4TzdTZGh0UVErV09FeGw2dWZrREhnNVZvNHZOVTZOY3ZJRGJhWEMxUjdENVBwSWdhaGF3MWNsNVdVNGNKR2lYWVAwUTBqalhlYXgwUUs5WFRnWUFXaktQcnpldzZWNGZGNDR0NzlEUFNObzdoTlFHUlp3OVY3Y2JOOHFtaWdBUFh4Y2xiYm5SUW9tWmhvV1U4NkVPd3czNVFHdzNicEpMVThVWGRSM3BqZHA5eEhlTzI2S2ViZzNsNmdWc3JUM1NqMy9kc09SZGVVYS95a1RWaWgzUnRhTk84d1ZiU0pUMnpzYW1Zc1Rnd0RLZUhtWjRVZXNqZ2l0Q2hmWldHQkpGZHR6ZnVNRk5Hd3QzS1k1U1M5RVhXWXpoUDFGVTV5ek5YNDl2L0YzdGRSQkN1b2E5NTZxbWp6bldZcm1Yc0d3cVVrQ2QyM0dlUW53YTNEYzdwanlwa3BlOWNNMWJEN2ZSWi9kUGd1cGJVMGExVnVCelRWL09FMmhCb2JEeXFnMUs3M3F2dkl0VmFudGs4VnVYbDV5VjEyd2l3aUpJYTNiWWFiVldEQWdZVHpoRXNScmRzTXRSRmhPSkpvVGI0L0VsdmtLSHE0MlVibHZod2pSUlErWGJoOWRlcWpLbTVLejgycmRiYklqbnc1TVd6OWwrbGR0MW5TUC9DcGEvMG5KcllQZmR5bFdrZkRXOEM2SnQ5ZmIzSjZ5L1QrM2RuaDhIdk1zdE9qYThwM0RCUHY3ciswa1I3VXA0cFVXS0hrRVV6YjZFSUVsU1RVSGoxQkJBdHpkdzJCNFNNK0h4L2EzcDh2QU9YK0VmVTBQUDBYSzBpaTZCRmsyS2pZcjZza0dtc0RWc3BZWTc2dU9BR3hDQ3NNSDZZMGhSaTJpcHRhNjZVM1NVT2l0NnJHQVl4eTJWeFdHSkFqbXJyZGpxZjFtZWJJNk90MmplaFFCNXA2T25NWG04cUpRZGlsSUUvTTZqSDBzcUNremJCT0YwRTkzYWlqZzA4d2xFZlJ2WURWMy9iUFRaOWk5SWc0bytqbm4rbXNNSENYZWh5cVU4blRZK2YvUzVwMlVJSTFaNDhwdkhmdW9QMmhyME1lNjl0RjFGeXNjSjM1U284TDkyMFp4WXVZMXd5bW40S0kveVJPWXlDTFpxbmh0QzIvNFRmQ2RYOExFb1BrU3NsN0ozOWROQmVUajFQbmppbmNFSjhWNm5RWEhxZHcxTy9DV1JtOWh4ZWZ5dnNLVTQ2d25VNE1tM2hsRDNrbGhaWGw5SXhsM1FMYXJFZkxXYUc5ZGZUcFdYc29KVXJVNTNCeldyUnF0YkNOaERnY1RVdVNRaDlpZ0Jncy9BckpHMGpIU2pVNVh1eU5YWWcxSVpHK2dwYjJyTlVlMzFLU2NsQk9ERlNpaFlrQjR4YU9qY1BkMlJzbmFXU0Y2LzlOM0YySUNYUUlmUVdMZENKUENmandGQk5QYVROZ2hSb2xybVREWks4YnRFeitkcTlkK1A2bFdUelNzOEJGNU5xcnpRcHlZaEF1d3NlVDNVdzhkMklDcWUxUlJxWGFveU1kd3ltMmNFS0ZGVzQ4eWU2QUY1V3RQb2xxaTU4clo3YWgyKzFTWDhoNTlhS1N4M1JPdkg4U3lWN0h5bzhnR2lDTSt4ODVMRDUrK3NpWFpCRllRZDJETGZ5bmdKbms2U1FMTVN5YncveUpBVW5obGtaZ1o5MmROVm03OEROaE1jVWVrb2NPN0RsWmFnd01uQ2hzOFlneVNEZDg3NXI4YUNCcko1d2JCRUtaV0g0cUEvZzFQWnJGZjArSG1kenh5WWo3UzlOVkNuMGZ2S3FVZ1Y3NzJ4YWYweFduV3NxcEZSWXJHQldncjdNU1c2U1dYbGZjV0NUejBXWkFKQ1ByOFVac0g3dzRGUHNrY3dPQi96V2d3YU9TMEprY29CaFdlSnRMdHRGSnRLNnB5amh1c0U0dHEwZ01RUmhSTjRFdFJRQnpFOS9ZVHgwT1ljSmhaWmJLQkVRQnR6NTl5K01oOHhPL0YxYTREcGJlZEtKNG14UjhrSUlZaERlT3hrOStXYko3RUNmM1pJVXQybzJVYy9OOXBjNzI5N2M4VG8zUDJsa0FLeGlsa3k3T2dCWG1jdUV3TWN4bFJGWk95TnNuTFMzOHg3L2p6QXBGY0dINDQ1ZmFCUEhhN0ptNzRRcFcwQ1dHbUQwR0M0V1V6RHJ5RzZqZExONTdFWE1Ody9WdWV0U3loU2tyckh1Qk5hd3dvS2pUM1dodUF4dFc2UExrOXJYMFhac3NFc1h4a3F5Z3NsMGl5SVVSTjNkcDFoaXRiMi82dnZkWWEzTk1ZWVU2dUxENEhFU1dRQThyREtTVGJXalRBUjNqZEZ3b2oxMXVSbSs1YnJ1MkU3NXE0Sk1TSEU2cDhXU0YzTGp3NmZiM0ZzVWxQUTB3TlpZcDNxTktPb0VZSUliZTBaUXJYTlNqQnhYdFRXU0Y5TjJGQWR0d2FLTnV3OENPendvY21SV0JHSUNHWENhT2Z4c0lZWE5Lc0QxRlVYOVdpSWdMcHI0SUs4eDEraWt1WHFOdzZVb25qM01aYURWeTBCTVNBOFkxTFg2bWx3cGo5MUtxZU1XK3BuTXdvbUNGMWRvTWlRTGw0bEM0Vlp5WVFKeHB4aUxmN2F1cG5oR2xXQVpaUkRGWXdZNFlvSVI2SmthV1pVci8ybmhYaDVwNm1JYTRFUWFzWUVvTUZoRUVNVFV4c1N0YThUTXJKZmtjeE5TTkM4VkNDWE1RV2N3RUs3Z1JBMG1JTkViMVZkSWxUUFBkRWMwYmRKOU9Cc0xGcXlxMjZ6cksybWNqWW1LRVFPb1FTQ3Z2aktnZEg2ZDhYZnREWVlWb2JZWWc1d1FqZGlZbVJoV3ovdGlxTDd2QnZsZjFzUEpyR3lOL0ZLeXdMREZnUkl1Y2tTNzdzdXBpbHJaTjg5M3gxa0VuV2xybDZjeEJSTFlPckdCa2taYXJobnBYbm1LWGFJa2hwa1VXZ1FQaFJaVFdyMlQ5UGtjOXQ2dk5DdTNYbENYNkVIS1NKekhRS3NobzRpM1NVZ2FMU2NrYTBYamdsR0hUUTZPTDR3SVp5TE8reDFLa0UyUlpMclFJSnVWbmZsVUtOaTNOTzlmR2RaWTZrb0d5ZkRpV21oN1UxSXZJeFYwNnFZbFY3R3R4dTFKd0U4aS9WNTdtcCt3OEw5SmRJQVA1NnhsTGxTOUFNVkJZWWxEcEpJM1Z1SGlGSE9DRTNZVlpVYlFDTHBDQlFwV0Rwa3lOZUJKRCs0K3pERDZqbFh1dHhyQ05vSitKK1c2UHFSRllJYWEvQ25NUFpuSnpnOTVMTElYbXRyTXBJTkpZMTlJbldLSEFtNXZ2OXRTakYxYklNaVJnaGVucEpHYjRReFR4WFpKN2tQZ0YzdlI4bC9WR3loTk5yNU9FMGgzUkRkSXRSUXlZMk4vRTNHTzVRanlQRUVqM0dnTUdHdlVKRmdPN2lra2tvWWdoWFRyQmJleTRFTjFtcElxSlZ0dkRGcklrb2V5eEZUUEY5SXBjeEVDNWJFY002RFpGeEk0VFNJL0dGdzBTN3NsQTREQXlISldNRG44RUZPSllPWmVKa2E0aE1OMmdleVB5ZkxjeDR3eGdSa0xrQ0E0cmxDbEFwL2pZTmRUZ1JXTW16b0pjb0dGOFZyanJManhHRnYvR0E2dnJRNVV2c0FJRnFFL0N3SXNrZ3pSbW0rR1R1YWU4YXNCejAyTkcwYVBSLzFxNFlYUFpmazNzaUt3UVdDRkxBVHJyZ29sSDNNUnRkRTBjaHhpQ216NU9SQTBiUlk4QkwzUkdCekxRWS9Yd1Ztbit1Z0xwYURPQUNHdWFPS25kMzdaTDU4NENSTTUzaDBUUjk1Nmhmc2tOTWVWVDlYQ2pPcWFLRU05MDBuNGpIL3IzTjdHRDV1OGRJS0RkdTJwZzYwOEludTkrZlgxOVJZUEt0ejlPZkJGcS9wTUN1OUw4cDc4TUs5UndtOU8wWTdzMVd5Z0Izd2dTR2E2VHl5cUh1eGN6dXJWTFg0ZFkvTnJZQkJjazZBQXJPS3U5TjJTY3ZKejJUOGwwMHVJVklFSjJZaGpEaFRXbmx0UzlQV01nTmNlRlhvMFRjWUw3K3F1WHd3cmxuYVJyN3lVK2tEUU9QQm9PTkZSWHhTdXJaUW1rcnJnd2dBNEVJR2ZOandVT3pMUk9LTVQwdGFFUU90UWRNbyt6d0lsVU9nMFhTRUpKZmYzNkk1aUo0Z21wRFlWWVgzM2daQXlrVVhEaHBIYzhNbWJYQVZaWTB4T3c4dUxRZ0FOWUExa0tEVWZFQlNTTHJ4TkVFS1RlU0dkY080ZlRMQW9IRnhCaUNvS3NQcm9aemdSU2NBRXhjWGVDQzRJZ2lEQ2M1Z3FrNEFLQ0lBaUNJQSt5b3dJRVFSQUVRY0FGQkVFUUJFSEFCUVJCRUFSQndBVUVRUkFFUVNiSy93QU54SE8wcW8yWjF3QUFBQUJKUlU1RXJrSmdnZz09IiB4PSIwIiB5PSIwIiB3aWR0aD0iNjk4IiBoZWlnaHQ9IjEyNSIvPjx0ZXh0IHg9IjY5LjgiIHk9IjE0Ny4wIiBmb250LXNpemU9IjIwLjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJQVCBTZXJpZiwgc2VyaWYiPkE8L3RleHQ+PHRleHQgeD0iMjA5LjQiIHk9IjE0Ny4wIiBmb250LXNpemU9IjIwLjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJQVCBTZXJpZiwgc2VyaWYiPkI8L3RleHQ+PHRleHQgeD0iMzQ5LjAiIHk9IjE0Ny4wIiBmb250LXNpemU9IjIwLjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJQVCBTZXJpZiwgc2VyaWYiPkM8L3RleHQ+PHRleHQgeD0iNDg4LjYiIHk9IjE0Ny4wIiBmb250LXNpemU9IjIwLjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJQVCBTZXJpZiwgc2VyaWYiPkQ8L3RleHQ+PHRleHQgeD0iNjI4LjIiIHk9IjE0Ny4wIiBmb250LXNpemU9IjIwLjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJQVCBTZXJpZiwgc2VyaWYiPkU8L3RleHQ+PC9zdmc+"
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 14-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0039",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Teleserial 1996-yil 1-aprelda ko‘rsatila boshladi. U har kuni 20 daqiqadan namoyish etildi va 1997-yil 1-aprelda tugadi. Butun serial qancha vaqt davom etgan?\nA) 100 soat\nB) 110 soat\nC) 121 soat 20 daqiqa\nD) 121 soat 40 daqiqa\nE) 122 soat",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 15-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0040",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Stadion yo‘lkalariga to‘siqlar qo‘yilgan (har bir yo‘lkadagi to‘siqlar soni rasmda ko‘rsatilgan). Kenguru startdan marragacha imkon qadar kam to‘siqdan sakrab o‘tib yugurmoqchi. Kenguru necha marta to‘siqdan sakrashi kerak bo‘ladi?\n[rasm-past: rasm1.svg, 60%]\nA) 11\nB) 8\nC) 10\nD) 18\nE) 6",
+   "javob": "A",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii00OCAtMTQgMzE2IDEyOCI+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjIiIHgxPSIwIiB4Mj0iNjAiIHkxPSI1MCIgeTI9IjAiPjwvbGluZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIyMS4wIiB5PSIyMS4wIj4yPC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyIiB4MT0iMCIgeDI9IjYwIiB5MT0iNTAiIHkyPSIxMDAiPjwvbGluZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIyMS4wIiB5PSI4MS4wIj44PC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyIiB4MT0iNjAiIHgyPSIxNjAiIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjExMC4wIiB5PSItNi4wIj4yPC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyIiB4MT0iNjAiIHgyPSI2MCIgeTE9IjAiIHkyPSIxMDAiPjwvbGluZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSI1My4wIiB5PSI1My4wIj42PC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyIiB4MT0iNjAiIHgyPSIxNjAiIHkxPSIxMDAiIHkyPSIwIj48L2xpbmU+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMTE4LjAiIHk9IjYwLjAiPjM8L3RleHQ+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjIiIHgxPSIxNjAiIHgyPSIxNjAiIHkxPSIwIiB5Mj0iMTAwIj48L2xpbmU+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMTUzLjAiIHk9IjUzLjAiPjY8L3RleHQ+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjIiIHgxPSI2MCIgeDI9IjE2MCIgeTE9IjEwMCIgeTI9IjEwMCI+PC9saW5lPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjExMC4wIiB5PSIxMTMuMCI+MjwvdGV4dD48bGluZSBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMiIgeDE9IjE2MCIgeDI9IjIyMCIgeTE9IjAiIHkyPSI1MCI+PC9saW5lPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE5OS4wIiB5PSIyMS4wIj43PC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIyIiB4MT0iMTYwIiB4Mj0iMjIwIiB5MT0iMTAwIiB5Mj0iNTAiPjwvbGluZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIxOTkuMCIgeT0iODEuMCI+MTwvdGV4dD48Y2lyY2xlIGN4PSIwIiBjeT0iNTAiIGZpbGw9IiMxMTEiIHI9IjMiPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjIyMCIgY3k9IjUwIiBmaWxsPSIjMTExIiByPSIzIj48L2NpcmNsZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjExIiB0ZXh0LWFuY2hvcj0iZW5kIiB4PSItNiIgeT0iNTQiPlNUQVJUPC90ZXh0Pjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMTEiIHg9IjIyNiIgeT0iNTQiPk1BUlJBPC90ZXh0Pjwvc3ZnPg=="
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 16-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0041",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Masha uydan maktabgacha 12 daqiqada piyoda boradi, uning akasi Misha esa maktabgacha va orqaga to‘xtamasdan 8 daqiqada yugurib boradi. Mishaning tezligi Mashanikidan necha marta katta?\nA) 1\nB) 2\nC) 3\nD) 4\nE) 5",
+   "javob": "C",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 17-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0042",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "O‘rindiqda Mari, uning onasi, buvisi va qo‘g‘irchoq o‘tiribdi. Buvisi nevarasining yonida o‘tiribdi, lekin qo‘g‘irchoqning yonida emas. Qo‘g‘irchoq onasining yonida o‘tirmaydi. Marining onasi yonida kim o‘tiribdi?\nA) Mari\nB) buvisi\nC) Mari va buvisi\nD) Mari va qo‘g‘irchoq\nE) buvisi va qo‘g‘irchoq",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 18-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0043",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Katakli qog‘ozda teng kesmalar belgilangan. Ularning qaysi birida kesmaning roppa-rosa to‘rtdan uch qismi ajratib ko‘rsatilgan?\n[rasm-past: rasm1.svg, 60%]\nA) A\nB) B\nC) C\nD) D\nE) E",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjYgLTAuMiAxMy44IDYuNCI+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMCIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIxIiB4Mj0iMSIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIyIiB4Mj0iMiIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIzIiB4Mj0iMyIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI0IiB4Mj0iNCIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI1IiB4Mj0iNSIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI2IiB4Mj0iNiIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI3IiB4Mj0iNyIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI4IiB4Mj0iOCIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSI5IiB4Mj0iOSIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIxMCIgeDI9IjEwIiB5MT0iMCIgeTI9IjYiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjExIiB4Mj0iMTEiIHkxPSIwIiB5Mj0iNiI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMTIiIHgyPSIxMiIgeTE9IjAiIHkyPSI2Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTIiIHkxPSIwIiB5Mj0iMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMCIgeDI9IjEyIiB5MT0iMSIgeTI9IjEiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIxMiIgeTE9IjIiIHkyPSIyIj48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTIiIHkxPSIzIiB5Mj0iMyI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzhkODc4MSIgc3Ryb2tlLXdpZHRoPSIwLjAzIiB4MT0iMCIgeDI9IjEyIiB5MT0iNCIgeTI9IjQiPjwvbGluZT48bGluZSBzdHJva2U9IiM4ZDg3ODEiIHN0cm9rZS13aWR0aD0iMC4wMyIgeDE9IjAiIHgyPSIxMiIgeTE9IjUiIHkyPSI1Ij48L2xpbmU+PGxpbmUgc3Ryb2tlPSIjOGQ4NzgxIiBzdHJva2Utd2lkdGg9IjAuMDMiIHgxPSIwIiB4Mj0iMTIiIHkxPSI2IiB5Mj0iNiI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjEzIiB4MT0iMCIgeDI9IjMiIHkxPSIxIiB5Mj0iMSI+PC9saW5lPjxjaXJjbGUgY3g9IjAiIGN5PSIxIiBmaWxsPSIjMTExIiByPSIwLjE3Ij48L2NpcmNsZT48Y2lyY2xlIGN4PSIzIiBjeT0iMSIgZmlsbD0iIzExMSIgcj0iMC4xNyI+PC9jaXJjbGU+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYiIHRleHQtYW5jaG9yPSJlbmQiIHg9Ii0wLjM1IiB5PSIxLjIyIj4oQSk8L3RleHQ+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMTMiIHgxPSIwIiB4Mj0iOSIgeTE9IjIiIHkyPSIyIj48L2xpbmU+PGNpcmNsZSBjeD0iMCIgY3k9IjIiIGZpbGw9IiMxMTEiIHI9IjAuMTciPjwvY2lyY2xlPjxjaXJjbGUgY3g9IjkiIGN5PSIyIiBmaWxsPSIjMTExIiByPSIwLjE3Ij48L2NpcmNsZT48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjAuNiIgdGV4dC1hbmNob3I9ImVuZCIgeD0iLTAuMzUiIHk9IjIuMjIiPihCKTwvdGV4dD48bGluZSBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4xMyIgeDE9IjIiIHgyPSI5IiB5MT0iMyIgeTI9IjMiPjwvbGluZT48Y2lyY2xlIGN4PSIyIiBjeT0iMyIgZmlsbD0iIzExMSIgcj0iMC4xNyI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iOSIgY3k9IjMiIGZpbGw9IiMxMTEiIHI9IjAuMTciPjwvY2lyY2xlPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMC42IiB0ZXh0LWFuY2hvcj0iZW5kIiB4PSItMC4zNSIgeT0iMy4yMiI+KEMpPC90ZXh0PjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjEzIiB4MT0iMCIgeDI9IjYiIHkxPSI0IiB5Mj0iNCI+PC9saW5lPjxjaXJjbGUgY3g9IjAiIGN5PSI0IiBmaWxsPSIjMTExIiByPSIwLjE3Ij48L2NpcmNsZT48Y2lyY2xlIGN4PSI2IiBjeT0iNCIgZmlsbD0iIzExMSIgcj0iMC4xNyI+PC9jaXJjbGU+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjYiIHRleHQtYW5jaG9yPSJlbmQiIHg9Ii0wLjM1IiB5PSI0LjIyIj4oRCk8L3RleHQ+PGxpbmUgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMTMiIHgxPSI0IiB4Mj0iMTIiIHkxPSI1IiB5Mj0iNSI+PC9saW5lPjxjaXJjbGUgY3g9IjQiIGN5PSI1IiBmaWxsPSIjMTExIiByPSIwLjE3Ij48L2NpcmNsZT48Y2lyY2xlIGN4PSIxMiIgY3k9IjUiIGZpbGw9IiMxMTEiIHI9IjAuMTciPjwvY2lyY2xlPjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMC42IiB0ZXh0LWFuY2hvcj0iZW5kIiB4PSItMC4zNSIgeT0iNS4yMiI+KEUpPC90ZXh0Pjwvc3ZnPg=="
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 19-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0044",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 4,
+   "matn": "Bizning futbol jamoamiz 31 ta o‘yin o‘tkazdi, ulardan 7 tasi durang bilan tugadi. Jamoa 64 ochko to‘pladi (g‘alaba uchun 3, durang uchun 1, mag‘lubiyat uchun 0 ochko). Jamoa nechta o‘yinda mag‘lub bo‘lgan?\nA) 0\nB) 5\nC) 19\nD) 21\nE) 24",
+   "javob": "B",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 20-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0045",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Qaysidir yilning yanvar oyida 4 ta dushanba va 4 ta juma bo‘lgan. 1-yanvar haftaning qaysi kuni bo‘lgan?\nA) seshanba\nB) chorshanba\nC) payshanba\nD) shanba\nE) yakshanba",
+   "javob": "A",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 21-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0046",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Yetti gnom bo‘yi bo‘yicha saf tortdi, Qorqiz ularga 707 ta qo‘ziqorin tarqatmoqchi. Avval u eng kichigiga bir nechta qo‘ziqorin beradi. Keyingi har biri oldingisidan 1 ta ko‘p qo‘ziqorin oladi. Eng kattasi nechta qo‘ziqorin oladi?\nA) 107\nB) 105\nC) 104\nD) 101\nE) 98",
+   "javob": "C",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 22-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0047",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Rasmda nechta uchburchak tasvirlangan?\nA) 12\nB) 6\nC) 14\nD) 20\nE) 18\n[rasm: rasm1.svg, 30%]",
+   "javob": "D",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xLjcgLTEuODUgMy40IDMuNyI+PHBvbHlnb24gZmlsbD0ibm9uZSIgcG9pbnRzPSIwLC0xLjczMjEgMS41LDAuODY2IC0xLjUsMC44NjYiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA2Ij48L3BvbHlnb24+PHBvbHlnb24gZmlsbD0ibm9uZSIgcG9pbnRzPSIwLDEuNzMyMSAtMS41LC0wLjg2NiAxLjUsLTAuODY2IiBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4wNiI+PC9wb2x5Z29uPjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA2IiB4MT0iMS4wMDAwIiB4Mj0iLTEuMDAwMCIgeTE9IjAuMDAwMCIgeTI9IjAuMDAwMCI+PC9saW5lPjxsaW5lIHN0cm9rZT0iIzExMSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIwLjA2IiB4MT0iMC41MDAwIiB4Mj0iLTAuNTAwMCIgeTE9IjAuODY2MCIgeTI9Ii0wLjg2NjAiPjwvbGluZT48bGluZSBzdHJva2U9IiMxMTEiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMC4wNiIgeDE9Ii0wLjUwMDAiIHgyPSIwLjUwMDAiIHkxPSIwLjg2NjAiIHkyPSItMC44NjYwIj48L2xpbmU+PC9zdmc+"
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 23-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0048",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Jan-Kristof dedi: «Indinga “kecha” bo‘ladigan kun yakshanbadan qanchalik uzoq bo‘lsa, o‘tgan kuni “ertaga” bo‘lgan kun ham yakshanbadan shunchalik uzoq». Bu gap haftaning qaysi kunida aytilgan?\nA) chorshanba\nB) payshanba\nC) juma\nD) dushanba\nE) yakshanba",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 24-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0049",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Jadvalni 1, 2, 3, 4, 5 sonlari bilan shunday to‘ldirish kerakki, har bir son har bir ustunda, har bir qatorda va har bir diagonalda roppa-rosa bir martadan uchrasin. Dastlabki bir nechta son joylashtirilgan. Markaziy katakda qaysi son turadi?\nA) 1\nB) 2\nC) 3\nD) 4\nE) 5\n[rasm: rasm1.svg, 30%]",
+   "javob": "B",
+   "rasmlar": {
+    "rasm1.svg": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0wLjEgLTAuMSA1LjIgNS4yIj48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMCIgeT0iMCI+PC9yZWN0Pjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMC42OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMC41IiB5PSIwLjczIj4zPC90ZXh0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIxIiB5PSIwIj48L3JlY3Q+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjY4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSIxLjUiIHk9IjAuNzMiPjQ8L3RleHQ+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjIiIHk9IjAiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMyIgeT0iMCI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSI0IiB5PSIwIj48L3JlY3Q+PHRleHQgZmlsbD0iIzExMSIgZm9udC1zaXplPSIwLjY4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiB4PSI0LjUiIHk9IjAuNzMiPjU8L3RleHQ+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjAiIHk9IjEiPjwvcmVjdD48dGV4dCBmaWxsPSIjMTExIiBmb250LXNpemU9IjAuNjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjAuNSIgeT0iMS43MyI+MjwvdGV4dD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMSIgeT0iMSI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIyIiB5PSIxIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjMiIHk9IjEiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iNCIgeT0iMSI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIwIiB5PSIyIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjEiIHk9IjIiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMiIgeT0iMiI+PC9yZWN0Pjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMC42OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMi41IiB5PSIyLjczIj4/PC90ZXh0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIzIiB5PSIyIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjQiIHk9IjIiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMCIgeT0iMyI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIxIiB5PSIzIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjIiIHk9IjMiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMyIgeT0iMyI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSI0IiB5PSIzIj48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjAiIHk9IjQiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iMSIgeT0iNCI+PC9yZWN0PjxyZWN0IGZpbGw9IiNmZmYiIGhlaWdodD0iMSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDUiIHdpZHRoPSIxIiB4PSIyIiB5PSI0Ij48L3JlY3Q+PHJlY3QgZmlsbD0iI2ZmZiIgaGVpZ2h0PSIxIiBzdHJva2U9IiMxMTEiIHN0cm9rZS13aWR0aD0iMC4wNSIgd2lkdGg9IjEiIHg9IjMiIHk9IjQiPjwvcmVjdD48cmVjdCBmaWxsPSIjZmZmIiBoZWlnaHQ9IjEiIHN0cm9rZT0iIzExMSIgc3Ryb2tlLXdpZHRoPSIwLjA1IiB3aWR0aD0iMSIgeD0iNCIgeT0iNCI+PC9yZWN0Pjx0ZXh0IGZpbGw9IiMxMTEiIGZvbnQtc2l6ZT0iMC42OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iNC41IiB5PSI0LjczIj40PC90ZXh0PjxyZWN0IGZpbGw9Im5vbmUiIGhlaWdodD0iNSIgc3Ryb2tlPSIjMTExIiBzdHJva2Utd2lkdGg9IjAuMDkiIHdpZHRoPSI1Ij48L3JlY3Q+PC9zdmc+"
+   },
+   "manba": "Kenguru 1998, 3–4-sinf, 25-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0050",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  },
+  {
+   "sinf": [
+    3,
+    4
+   ],
+   "ball": 5,
+   "matn": "Kolya va Vasya bir uyda yashaydi, uyning har bir qavatida 4 tadan xonadon bor. Kolya beshinchi qavatda 83-xonadonda, Vasya esa uchinchi qavatda 169-xonadonda yashaydi. Uy necha qavatli?\nA) 12\nB) 6\nC) 9\nD) 10\nE) 8",
+   "javob": "E",
+   "rasmlar": {},
+   "manba": "Kenguru 1998, 3–4-sinf, 26-savol",
+   "teglar": [
+    "kenguru"
+   ],
+   "izoh": "",
+   "id": "S0051",
+   "yaratildi": "2026-11-26T08:33:55",
+   "ozgartirildi": "2026-11-26T08:33:55"
+  }
+ ],
+ "testlar": [],
+ "sozlamalar": {
+  "sarlavha": "Mantiqiy test",
+  "vaqt": "50",
+  "soni": {
+   "3": 10,
+   "4": 10,
+   "5": 5
+  }
+ }
+}
