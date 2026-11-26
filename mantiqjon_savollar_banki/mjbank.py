@@ -404,6 +404,8 @@ def test_mjtest(t):
                 yangi = "%s_%s" % (q["id"].lower(), nom)
                 imgs[yangi] = url
                 m = re.sub(r"(\[rasm(?:-past)?\s*:\s*)" + re.escape(nom) + r"(\s*[,\]])", r"\g<1>" + yangi + r"\g<2>", m)
+            m = re.sub(r"\s*,\s*[xy]\s*[:=]\s*-?[\d.]+\s*(?:mm)?(?=[^\[]*\])", "", m)  # muharrir siljishni bilmaydi
+            m = re.sub(r"(\[rasm(?:-past)?\s*:[^,\]]+,\s*)(\d+)\.\d+%", r"\g<1>\g<2>%", m)
             L += ["%d. %s" % (n, m), "% " + q["id"] + (", javob: " + q["javob"] if q.get("javob") else ""), ""]
             kalit.append("%d-%s" % (n, q.get("javob") or "?"))
     L += ["% Javoblar kaliti: " + " ".join(kalit)]

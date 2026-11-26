@@ -41,6 +41,7 @@ AI qilgan o'zgarish 2–3 soniyada oynada ko'rinadi.
 - Raqam yozilmaydi — test yaratilganda qo'yiladi. Bo'sh qator = yangi xatboshi.
 - Variantlar: `A) ...` … `E) ...`, har biri alohida qatorda.
 - `[rasm: nom, 30%]` — rasm o'ngda; `[rasm-past: nom, 60%]` — rasm matn tagida.
+- `[rasm: nom, 24%, x:-5, y:3]` — rasm o'z joyidan millimetrda surilgan (oynada sichqoncha bilan surilganda shunday yoziladi).
 - `A) [rasm: a.svg]` — variantlar rasm bo'lsa, beshtasi bir qatorga tushadi.
 - `**qalin**`, `*qiya*`, `x^{2}`, `a_{1}`, `[[SO'Z]]` (ramkali kartochka).
 - Rasmlar `rasmlar` ichida data URL bo'lib turadi. Chizmalarni SVG qilish afzal (chop etishda tiniq).

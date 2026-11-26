@@ -401,7 +401,12 @@ textarea.src::selection{background:var(--sel)}
 .fr .fig{width:100%;margin:.1em 0 0}
 .fig{display:block;max-width:100%;margin:.4em 0 .1em}
 .fig svg,.fig img{display:block;width:100%;height:auto}
-.fr .fig svg,.fr .fig img{max-height:7.5em;width:auto;max-width:100%;margin-left:auto}
+#ePv .drg{cursor:move;position:relative;outline:1px dashed transparent;outline-offset:2px;touch-action:none}
+#ePv .drg:hover,#ePv .drg.on{outline-color:#d0652d}
+#ePv .drg .rsz{position:absolute;right:0;bottom:0;z-index:2;width:12px;height:12px;background:#d0652d;border:2px solid #fff;border-radius:3px;cursor:nwse-resize;display:none}
+#ePv .drg:hover .rsz,#ePv .drg.on .rsz{display:block}
+#ePv .drg svg,#ePv .drg img{pointer-events:none;user-select:none}
+.drghint{font-size:12px;color:var(--muted);text-align:center;max-width:148mm}
 .figc .fig{margin-inline:auto}
 .card-w{display:inline-block;border:.09em solid #111;padding:.05em .4em;margin:.15em .3em .15em 0;font-family:"Carlito","Calibri",sans-serif;font-weight:700;letter-spacing:.04em}
 .time{text-align:right;font-style:italic;font-weight:700;font-size:.85em;margin-top:.8em}
@@ -661,7 +666,7 @@ function inline(s){
   return s;
 }
 const RE_OPT=/^\s*([A-EА-Д])\s*[.)]\s*(.*)$/;
-const RE_IMG=/^\s*\[(rasm|rasm-past)\s*:\s*([^,\]]+?)\s*(?:,\s*(\d+)\s*%?)?\s*\]\s*$/i;
+const RE_IMG=/^\s*\[(rasm|rasm-past)\s*:\s*([^,\]]+?)\s*(?:,\s*(\d+(?:\.\d+)?)\s*%?)?\s*(?:,\s*x\s*[:=]\s*(-?\d+(?:\.\d+)?)\s*(?:mm)?)?\s*(?:,\s*y\s*[:=]\s*(-?\d+(?:\.\d+)?)\s*(?:mm)?)?\s*\]\s*$/i;
 const RE_JAV=/^\s*(?:@javob|javob)\s*[:=]?\s*([A-EА-Д])\s*\.?\s*$/i;
 const CYR2LAT={"А":"A","Б":"B","В":"C","Г":"D","Д":"E"};
 function parseQ(text,images){
@@ -671,7 +676,7 @@ function parseQ(text,images){
     if(/^\s*%/.test(line)||RE_JAV.test(line)) return;
     if((m=line.match(RE_OPT))){ q.opts.push({l:CYR2LAT[m[1]]||m[1],text:m[2],ln}); return; }
     if((m=line.match(RE_IMG))){
-      const im={name:m[2].trim(),w:m[3]?+m[3]:null,ln};
+      const im={name:m[2].trim(),w:m[3]?+m[3]:null,x:m[4]?+m[4]:0,y:m[5]?+m[5]:0,kind:m[1].toLowerCase(),ln};
       if(!images||!images[im.name]) q.warn.push({ln,msg:`"${im.name}" rasmi topilmadi`});
       if(m[1].toLowerCase()==="rasm"){ if(q.img) q.warn.push({ln,msg:"o'ngda faqat bitta rasm bo'ladi — ikkinchisini [rasm-past: …] qiling"}); else q.img=im; }
       else q.below.push({...im,after:q.opts.length?"opts":"text"});
@@ -695,10 +700,12 @@ function svgFromData(url){
     return s;
   }catch(e){ return null; }
 }
-function imgHTML(name,images,w,cls){
+function imgHTML(name,images,w,cls,im){
   const url=images&&images[name];
   if(!url) return `<div class="missing">Rasm topilmadi: ${esc(name)}</div>`;
-  const st=w?` style="width:${w}%"`:"";
+  let css=w?`width:${w}%;`:""; let extra="";
+  if(im){ if(im.x||im.y) css+=`transform:translate(${im.x}mm,${im.y}mm);`; extra=` data-ln="${im.ln}" data-w="${im.w||(im.kind==="rasm"?30:60)}"`; cls=(cls||"fig")+" drg"; }
+  const st=(css?` style="${css}"`:"")+extra;
   if(/^data:image\/svg/.test(url)){ const s=svgFromData(url); if(s) return `<div class="${cls||"fig"}"${st}>${s}</div>`; }
   return `<div class="${cls||"fig"}"${st}><img src="${url}" alt=""></div>`;
 }
@@ -714,14 +721,14 @@ function optsHTML(opts,images){
 function qInner(q,images){
   const P=parseQ(q.matn||q,images);
   const ps=P.paras.map(p=>`<p>${inline(p)}</p>`).join("");
-  const bt=P.below.filter(x=>x.after==="text").map(x=>`<div class="figc">${imgHTML(x.name,images,x.w||60)}</div>`).join("");
-  const bo=P.below.filter(x=>x.after==="opts").map(x=>`<div class="figc">${imgHTML(x.name,images,x.w||60)}</div>`).join("");
+  const bt=P.below.filter(x=>x.after==="text").map(x=>`<div class="figc">${imgHTML(x.name,images,x.w||60,null,x)}</div>`).join("");
+  const bo=P.below.filter(x=>x.after==="opts").map(x=>`<div class="figc">${imgHTML(x.name,images,x.w||60,null,x)}</div>`).join("");
   const figOpts=P.opts.length&&P.opts.every(o=>optImgName(o.text));
   let mid;
   if(P.img){
     const w=` style="--imgw:${P.img.w||30}%"`;
-    if(figOpts) mid=`<div class="fr"${w}><div>${ps}${bt}</div>${imgHTML(P.img.name,images)}</div>${optsHTML(P.opts,images)}`;
-    else mid=`<div class="fr"${w}><div>${ps}${bt}${optsHTML(P.opts,images)}</div>${imgHTML(P.img.name,images)}</div>`;
+    if(figOpts) mid=`<div class="fr"${w}><div>${ps}${bt}</div>${imgHTML(P.img.name,images,null,null,P.img)}</div>${optsHTML(P.opts,images)}`;
+    else mid=`<div class="fr"${w}><div>${ps}${bt}${optsHTML(P.opts,images)}</div>${imgHTML(P.img.name,images,null,null,P.img)}</div>`;
   } else mid=ps+bt+optsHTML(P.opts,images);
   return {html:mid+bo,warn:P.warn};
 }
@@ -898,9 +905,41 @@ function edPreview(){
   if(!ed) return;
   const r=qInner($("#eSrc").value,ed.images);
   const b=eBall.get()[0]||"?";
-  $("#ePv").innerHTML=`<div class="pg" style="height:auto"><div class="body" style="overflow:visible"><h3 class="sec">${b} ballik savollar</h3><section class="q"><b class="n">1.</b><div>${r.html}</div></section></div></div>`;
+  $("#ePv").innerHTML=`<div class="drghint">Rasmni sichqoncha bilan suring, burchakdagi to'q sariq nuqtadan tortib kattalashtiring. Ikki marta bossangiz, joyiga qaytadi.</div><div class="pg" style="height:auto;overflow:visible"><div class="body" style="overflow:visible"><h3 class="sec">${b} ballik savollar</h3><section class="q"><b class="n">1.</b><div>${r.html}</div></section></div></div>`;
+  $$("#ePv .drg").forEach(d=>{ const h=document.createElement("i"); h.className="rsz"; d.appendChild(h); });
   $("#eMsgs").innerHTML=r.warn.map(w=>`<div>${w.ln?w.ln+"-qator: ":""}${esc(w.msg)}</div>`).join("");
 }
+/* rasmni surish / kattalashtirish */
+const PXMM=96/25.4;
+function setImgLine(ln,fn){
+  const src=$("#eSrc"), L=src.value.split("\n"), m=(L[ln-1]||"").match(RE_IMG); if(!m) return;
+  const cur={kind:m[1].toLowerCase(),name:m[2].trim(),w:m[3]?+m[3]:(m[1].toLowerCase()==="rasm"?30:60),x:m[4]?+m[4]:0,y:m[5]?+m[5]:0};
+  const n=fn(cur), r=v=>Math.round(v*10)/10;
+  L[ln-1]=`[${n.kind}: ${n.name}, ${r(n.w)}%${(r(n.x)||r(n.y))?`, x:${r(n.x)}, y:${r(n.y)}`:""}]`;
+  const st=src.scrollTop; src.value=L.join("\n"); src.scrollTop=st; ed.dirty=true; edPreview();
+}
+(function(){
+  let d=null;
+  const pv=$("#ePv");
+  pv.addEventListener("pointerdown",e=>{
+    const el=e.target.closest(".drg"); if(!el||e.button!==0) return;
+    e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("on");
+    const m=(el.style.transform||"").match(/translate\((-?[\d.]+)mm,\s*(-?[\d.]+)mm\)/);
+    d={el,mode:e.target.classList.contains("rsz")?"size":"move",sx:e.clientX,sy:e.clientY,x:m?+m[1]:0,y:m?+m[2]:0,
+       w0:el.getBoundingClientRect().width,wp:+el.dataset.w,ln:+el.dataset.ln,col:el.closest(".fr")};
+  });
+  pv.addEventListener("pointermove",e=>{
+    if(!d) return;
+    const dx=e.clientX-d.sx, dy=e.clientY-d.sy;
+    if(d.mode==="move"){ d.nx=d.x+dx/PXMM; d.ny=d.y+dy/PXMM; d.el.style.transform=`translate(${d.nx}mm,${d.ny}mm)`; }
+    else{ d.nw=Math.max(5,Math.min(100,d.wp*(d.w0+dx)/d.w0)); if(d.col) d.col.style.setProperty("--imgw",d.nw+"%"); else d.el.style.width=d.nw+"%"; }
+  });
+  const end=()=>{ if(!d) return; const k=d; d=null; k.el.classList.remove("on");
+    if(k.mode==="move"&&k.nx!==undefined) setImgLine(k.ln,c=>({...c,x:k.nx,y:k.ny}));
+    if(k.mode==="size"&&k.nw!==undefined) setImgLine(k.ln,c=>({...c,w:k.nw})); };
+  pv.addEventListener("pointerup",end); pv.addEventListener("pointercancel",end);
+  pv.addEventListener("dblclick",e=>{ const el=e.target.closest(".drg"); if(el) setImgLine(+el.dataset.ln,c=>({...c,x:0,y:0})); });
+})();
 function drawEdImgs(){
   const box=$("#eImgs"), names=Object.keys(ed.images);
   const add=document.createElement("button"); add.className="btn"; add.textContent="+ Rasm"; add.onclick=()=>$("#eFile").click();
